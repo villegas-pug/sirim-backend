@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+   <modelVersion>4.0.0</modelVersion>
+
+   <parent>
+      <artifactId>simparent</artifactId>
+      <groupId>com.simparent</groupId>
+      <version>1.0</version>
+   </parent>
+
+   <groupId>com.businessdomain</groupId>
+   <artifactId>businessdomain</artifactId>
+   <version>1.0</version>
+   <packaging>pom</packaging>
+   <name>businessdomain</name>
+
+   <dependencies>
+
+      <dependency>
+         <groupId>com.commons</groupId>
+         <artifactId>utils</artifactId>
+         <version>1.0</version>
+      </dependency>
+
+      <dependency>
+         <groupId>org.springframework.boot</groupId>
+         <artifactId>spring-boot-devtools</artifactId>
+         <scope>runtime</scope>
+         <optional>true</optional>
+      </dependency>
+
+      <dependency>
+         <groupId>org.projectlombok</groupId>
+         <artifactId>lombok</artifactId>
+         <optional>true</optional>
+      </dependency>
+
+      <dependency>
+         <groupId>com.microsoft.sqlserver</groupId>
+         <artifactId>mssql-jdbc</artifactId>
+         <scope>runtime</scope>
+      </dependency>
+
+      <dependency>
+         <groupId>org.springframework.cloud</groupId>
+         <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+         <version>2.1.2.RELEASE</version>
+      </dependency>
+
+      <dependency>
+         <groupId>org.springframework.cloud</groupId>
+         <artifactId>spring-cloud-config-client</artifactId>
+         <version>2.2.7.RELEASE</version>
+      </dependency>
+
+      <dependency>
+         <groupId>org.springframework.boot</groupId>
+         <artifactId>spring-boot-starter-actuator</artifactId>
+      </dependency>
+
+      <!-- Handle Multipart/form-data -->
+      <dependency>
+         <groupId>org.apache.poi</groupId>
+         <artifactId>poi</artifactId>
+         <version>4.1.2</version>
+      </dependency>
+
+      <dependency>
+         <groupId>org.apache.poi</groupId>
+         <artifactId>poi-ooxml</artifactId>
+         <version>4.1.2</version>
+      </dependency>
+
+      <!-- Client Feign -->
+      <dependency>
+         <groupId>org.springframework.cloud</groupId>
+         <artifactId>spring-cloud-starter-openfeign</artifactId>
+      </dependency>
+
+      <!-- Hystrix -->
+      <dependency>
+         <groupId>org.springframework.cloud</groupId>
+         <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
+      </dependency>
+
+      <!-- Log's -->
+      <dependency>
+         <groupId>org.apache.logging.log4j</groupId>
+         <artifactId>log4j-api</artifactId>
+         <version>2.6.1</version>
+      </dependency>
+      <dependency>
+         <groupId>org.apache.logging.log4j</groupId>
+         <artifactId>log4j-core</artifactId>
+      </dependency>
+
+      <!-- Util's -->
+      <dependency>
+         <groupId>org.modelmapper</groupId>
+         <artifactId>modelmapper</artifactId>
+         <version>2.4.2</version>
+      </dependency>
+
+   </dependencies>
+
+   <modules>
+      <module>dependencia</module>
+      <module>empresa</module>
+      <module>interpol</module>
+      <module>nacionalizacion</module>
+      <module>operativo</module>
+      <module>pais</module>
+      <module>preinscripcion</module>
+      <module>produccion</module>
+      <module>usuario</module>
+      <module>rimextraccion</module>
+      <module>rimsim</module>
+   </modules>
+
+</project>

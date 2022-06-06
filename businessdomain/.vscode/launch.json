@@ -1,0 +1,59 @@
+{
+   "configurations": [
+      {
+         "type": "java",
+         "name": "Spring Boot-RimsimApplication<rimsim>",
+         "request": "launch",
+         "cwd": "${workspaceFolder}",
+         "console": "internalConsole",
+         "mainClass": "com.microservicio.rimsim.RimsimApplication",
+         "projectName": "rimsim",
+         "args": "",
+         "envFile": "${workspaceFolder}/.env"
+      },
+      {
+         "type": "java",
+         "name": "Spring Boot-UsuarioApplication<usuario>",
+         "request": "launch",
+         "cwd": "${workspaceFolder}",
+         "console": "internalConsole",
+         "mainClass": "com.microservicio.usuario.UsuarioApplication",
+         "projectName": "usuario",
+         "args": "",
+         "envFile": "${workspaceFolder}/.env"
+      },
+      {
+         "type": "java",
+         "name": "Spring Boot-RimextraccionApplication<rimextraccion>",
+         "request": "launch",
+         "cwd": "${workspaceFolder}",
+         "console": "internalConsole",
+         "mainClass": "com.microservicio.rimextraccion.RimextraccionApplication",
+         "projectName": "rimextraccion",
+         "args": "",
+         "envFile": "${workspaceFolder}/.env"
+      },
+      {
+         "type": "java",
+         "name": "Spring Boot-PaisApplication<pais>",
+         "request": "launch",
+         "cwd": "${workspaceFolder}",
+         "console": "internalConsole",
+         "mainClass": "com.microservicios.pais.PaisApplication",
+         "projectName": "pais",
+         "args": "",
+         "envFile": "${workspaceFolder}/.env"
+      },
+      {
+         "type": "java",
+         "name": "Spring Boot-DependenciaApplication<dependencia>",
+         "request": "launch",
+         "cwd": "${workspaceFolder}",
+         "console": "internalConsole",
+         "mainClass": "com.microservicio.dependencia.DependenciaApplication",
+         "projectName": "dependencia",
+         "args": "",
+         "envFile": "${workspaceFolder}/.env"
+      }
+   ]
+}

@@ -1,0 +1,103 @@
+{
+   "configurations": [
+      {
+         "type": "java",
+         "name": "Spring Boot-EurekaApplication<eureka>",
+         "request": "launch",
+         "cwd": "${workspaceFolder}",
+         "console": "internalConsole",
+         "mainClass": "com.server.eureka.EurekaApplication",
+         "projectName": "eureka",
+         "args": "",
+         "envFile": "${workspaceFolder}/.env"
+      },
+      {
+         "type": "java",
+         "name": "Spring Boot-ConfigApplication<config>",
+         "request": "launch",
+         "cwd": "${workspaceFolder}",
+         "console": "internalConsole",
+         "mainClass": "com.server.config.ConfigApplication",
+         "projectName": "config",
+         "args": "",
+         "envFile": "${workspaceFolder}/.env"
+      },
+      {
+         "type": "java",
+         "name": "Spring Boot-GatewayApplication<gateway>",
+         "request": "launch",
+         "cwd": "${workspaceFolder}",
+         "console": "internalConsole",
+         "mainClass": "com.microservicios.gateway.GatewayApplication",
+         "projectName": "gateway",
+         "args": "",
+         "envFile": "${workspaceFolder}/.env"
+      },
+      {
+         "type": "java",
+         "name": "Spring Boot-UsuarioApplication<usuario>",
+         "request": "launch",
+         "cwd": "${workspaceFolder}",
+         "console": "internalConsole",
+         "mainClass": "com.microservicio.usuario.UsuarioApplication",
+         "projectName": "usuario",
+         "args": "",
+         "envFile": "${workspaceFolder}/.env"
+      },
+      {
+         "type": "java",
+         "name": "Spring Boot-OperativoApplication<operativo>",
+         "request": "launch",
+         "cwd": "${workspaceFolder}",
+         "console": "internalConsole",
+         "mainClass": "com.microservicios.operativo.OperativoApplication",
+         "projectName": "operativo",
+         "args": "",
+         "envFile": "${workspaceFolder}/.env"
+      },
+      {
+         "type": "java",
+         "name": "Spring Boot-RimextraccionApplication<rimextraccion>",
+         "request": "launch",
+         "cwd": "${workspaceFolder}",
+         "console": "internalConsole",
+         "mainClass": "com.microservicio.rimextraccion.RimextraccionApplication",
+         "projectName": "rimextraccion",
+         "args": "",
+         "envFile": "${workspaceFolder}/.env"
+      },
+      {
+         "type": "java",
+         "name": "Spring Boot-EmpresaApplication<empresa>",
+         "request": "launch",
+         "cwd": "${workspaceFolder}",
+         "console": "internalConsole",
+         "mainClass": "com.microservicio.empresa.EmpresaApplication",
+         "projectName": "empresa",
+         "args": "",
+         "envFile": "${workspaceFolder}/.env"
+      },
+      {
+         "type": "java",
+         "name": "Spring Boot-PaisApplication<pais>",
+         "request": "launch",
+         "cwd": "${workspaceFolder}",
+         "console": "internalConsole",
+         "mainClass": "com.microservicios.pais.PaisApplication",
+         "projectName": "pais",
+         "args": "",
+         "envFile": "${workspaceFolder}/.env"
+      },
+      {
+         "type": "java",
+         "name": "Spring Boot-DependenciaApplication<dependencia>",
+         "request": "launch",
+         "cwd": "${workspaceFolder}",
+         "console": "internalConsole",
+         "mainClass": "com.microservicio.dependencia.DependenciaApplication",
+         "projectName": "dependencia",
+         "args": "",
+         "envFile": "${workspaceFolder}/.env"
+      }
+   ]
+}

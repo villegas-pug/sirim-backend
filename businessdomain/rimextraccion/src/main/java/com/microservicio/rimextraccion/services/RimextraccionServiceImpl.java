@@ -1,0 +1,70 @@
+package com.microservicio.rimextraccion.services;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import javax.persistence.Tuple;
+
+import com.commons.utils.models.dto.QueryClauseDto;
+import com.commons.utils.services.CommonServiceImpl;
+import com.microservicio.rimextraccion.clients.RimsimClientRest;
+import com.microservicio.rimextraccion.helpers.DataModelHelper;
+import com.microservicio.rimextraccion.models.entities.TablaDinamica;
+import com.microservicio.rimextraccion.models.repository.RimextraccionRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+public class RimextraccionServiceImpl extends CommonServiceImpl<TablaDinamica, RimextraccionRepository> implements RimextraccionService {
+
+   @Autowired
+   private RimsimClientRest rimsimClient;
+
+   @Override
+   @Transactional
+   public List<Tuple> createTable(String nombreTabla) {
+      return super.repository.createTable(nombreTabla);
+   }
+
+   @Override
+   @Transactional(readOnly = true)
+   public Optional<TablaDinamica> findByNombre(String nombre) {
+      return super.repository.findByNombre(nombre);
+   }
+
+   @Override
+   @Transactional(readOnly = true)
+   public List<Map<String, String>> findMetaTablaDinamicaByNombre(String nombreTabla) {
+      return DataModelHelper.convertMetaFields(super.repository.findMetaTablaDinamicaByNombre(nombreTabla));
+   }
+
+   @Override
+   @Transactional
+   public Long saveTablaDinamica(String nombreTabla, String sqlInsertValues) {
+      return super.repository.saveTablaDinamica(nombreTabla, sqlInsertValues);
+   }
+
+   @Override
+   @Transactional
+   public Long alterTablaDinamica(String queryString) {
+      return super.repository.alterTablaDinamica(queryString);
+   }
+
+   @Override
+   @Transactional(readOnly = true)
+   public Long countRegistrosExtraccion(String nombreTabla) {
+      return super.repository.countRegistrosExtraccion(nombreTabla);
+   }
+
+   @Override
+   public List<Map<String, String>> findTableMetaByNameSim(String nombreTabla) {
+      return this.rimsimClient.findTableMetaByNameSim(nombreTabla);
+   }
+
+   @Override
+   public List<Object[]> dynamicJoinStatementSim(QueryClauseDto queryClauseDto) {
+      return this.rimsimClient.dynamicJoinStatementSim(queryClauseDto);
+   }
+
+}

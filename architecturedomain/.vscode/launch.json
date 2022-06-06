@@ -1,0 +1,37 @@
+{
+   "configurations": [
+      {
+         "type": "java",
+         "name": "Spring Boot-ConfigApplication<config>",
+         "request": "launch",
+         "cwd": "${workspaceFolder}",
+         "console": "internalConsole",
+         "mainClass": "com.server.config.ConfigApplication",
+         "projectName": "config",
+         "args": "",
+         "envFile": "${workspaceFolder}/.env"
+      },
+      {
+         "type": "java",
+         "name": "Spring Boot-EurekaApplication<eureka>",
+         "request": "launch",
+         "cwd": "${workspaceFolder}",
+         "console": "internalConsole",
+         "mainClass": "com.server.eureka.EurekaApplication",
+         "projectName": "eureka",
+         "args": "",
+         "envFile": "${workspaceFolder}/.env"
+      },
+      {
+         "type": "java",
+         "name": "Spring Boot-GatewayApplication<gateway>",
+         "request": "launch",
+         "cwd": "${workspaceFolder}",
+         "console": "internalConsole",
+         "mainClass": "com.microservicios.gateway.GatewayApplication",
+         "projectName": "gateway",
+         "args": "",
+         "envFile": "${workspaceFolder}/.env"
+      }
+   ]
+}
