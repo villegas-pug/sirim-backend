@@ -54,6 +54,26 @@
          "projectName": "dependencia",
          "args": "",
          "envFile": "${workspaceFolder}/.env"
+      },
+      {
+         "type": "java",
+         "name": "Spring Boot-CommonApplication<common>",
+         "request": "launch",
+         "cwd": "${workspaceFolder}",
+         "mainClass": "com.microservicio.common.CommonApplication",
+         "projectName": "common",
+         "args": "",
+         "envFile": "${workspaceFolder}/.env"
+      },
+      {
+         "type": "java",
+         "name": "Spring Boot-InterpolApplication<interpol>",
+         "request": "launch",
+         "cwd": "${workspaceFolder}",
+         "mainClass": "com.microservicios.interpol.InterpolApplication",
+         "projectName": "interpol",
+         "args": "",
+         "envFile": "${workspaceFolder}/.env"
       }
    ]
 }

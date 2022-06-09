@@ -115,6 +115,7 @@
       <module>usuario</module>
       <module>rimextraccion</module>
       <module>rimsim</module>
+      <module>common</module>
    </modules>
 
 </project>

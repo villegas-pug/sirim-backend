@@ -2,13 +2,10 @@ package com.microservicio.rimsim.controllers;
 
 import java.util.List;
 import java.util.Map;
-import com.commons.utils.errors.DataAccessEmptyWarning;
 import com.commons.utils.models.dto.QueryClauseDto;
-import com.commons.utils.models.entities.Pais;
 import com.microservicio.rimsim.services.RimsimService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
