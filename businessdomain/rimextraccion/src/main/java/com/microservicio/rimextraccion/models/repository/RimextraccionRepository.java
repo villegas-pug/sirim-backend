@@ -27,7 +27,9 @@ public interface RimextraccionRepository extends JpaRepository<TablaDinamica, Lo
    Long alterTablaDinamica(String queryString);
 
    @Query(value = "{CALL dbo.usp_Rim_Procedimiento_ContarRegExtraccion(?)}", nativeQuery = true)
-   @Procedure()
    Long countRegistrosExtraccion(String nombreTabla);
+
+   @Query(value = "SELECT * FROM SidDependencia", nativeQuery = true)
+   List<Tuple> findAllTest();
 
 }

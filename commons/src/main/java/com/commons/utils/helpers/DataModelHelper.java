@@ -1,28 +1,36 @@
 package com.commons.utils.helpers;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import javax.persistence.Tuple;
 
 public class DataModelHelper{
 
-   public static List<Map<String, String>> convertTuplesToFieldMetadata(List<Tuple> tuples){
+   public static List<Map<String, Object>> convertTuplesToJson(List<Tuple> tuples, Boolean removePrefix){
       
-      List<Map<String, String>> metaFields = new ArrayList<>();
+      /*► Repo ... */
+      List<Map<String, Object>> metaFields = new ArrayList<>();
 
       tuples.forEach(tuple -> {
-         Map<String, String> metaField = new HashMap<>();
+         Map<String, Object> metaField = new LinkedHashMap<>();
 
-         tuple.getElements().forEach(element -> {
-            metaField.put(element.getAlias(), tuple.get(element.getAlias()).toString());
+         tuple.getElements().forEach(e -> {
+            if(removePrefix)
+               metaField.put(removePrefixOfFieldName(e.getAlias()), tuple.get(e.getAlias()));
+            else 
+               metaField.put(e.getAlias(), tuple.get(e.getAlias()));
          });
          metaFields.add(metaField);
       });
 
       return metaFields;
             
+   }
+
+   public static String removePrefixOfFieldName(String fieldName){
+      return fieldName.substring(1, 2).toLowerCase().concat(fieldName.substring(2));
    }
 
 }

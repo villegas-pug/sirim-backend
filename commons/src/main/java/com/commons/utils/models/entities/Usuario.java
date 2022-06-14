@@ -46,7 +46,7 @@ public class Usuario implements Serializable{
 
 
    @ManyToOne(fetch = FetchType.EAGER)
-   @JoinColumn(name = "nIdDependencia", nullable = true)
+   @JoinColumn(name = "sIdDependencia", nullable = true)
    private Dependencia dependencia;
 
    @Column(name = "sCargo", length = 70, nullable = false)

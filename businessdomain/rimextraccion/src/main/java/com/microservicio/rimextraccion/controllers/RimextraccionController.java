@@ -15,6 +15,7 @@ import com.commons.utils.controllers.CommonController;
 import com.commons.utils.errors.AsignWarning;
 import com.commons.utils.errors.CreateTableWarning;
 import com.commons.utils.errors.DataAccessEmptyWarning;
+import com.commons.utils.helpers.DataModelHelper;
 import com.commons.utils.models.dto.QueryClauseDto;
 import com.commons.utils.utils.Response;
 import com.microservicio.rimextraccion.dto.TablaDinamicaDto;
@@ -536,6 +537,12 @@ public class RimextraccionController extends CommonController<TablaDinamica, Rim
                                        .data(basesDatos)
                                        .build());
    }
+
+   @GetMapping(path = { "/findAllTest" })
+   public ResponseEntity<?> findAllTest() {
+       return ResponseEntity.ok().body(DataModelHelper.convertTuplesToJson(this.service.findAllTest(), false));
+   }
+   
 
    // #region: Métodos privados ...
 

@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import javax.persistence.Tuple;
-
 import com.commons.utils.models.dto.QueryClauseDto;
 import com.commons.utils.services.CommonServiceImpl;
 import com.microservicio.rimextraccion.clients.RimsimClientRest;
@@ -65,6 +64,11 @@ public class RimextraccionServiceImpl extends CommonServiceImpl<TablaDinamica, R
    @Override
    public List<Object[]> dynamicJoinStatementSim(QueryClauseDto queryClauseDto) {
       return this.rimsimClient.dynamicJoinStatementSim(queryClauseDto);
+   }
+
+   @Override
+   public List<Tuple> findAllTest() {
+      return this.repository.findAllTest();
    }
 
 }

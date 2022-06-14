@@ -41,8 +41,6 @@ public class AuthenticationFilter extends BasicAuthenticationFilter {
 
       String token = authorizationHeader.replace(env.getProperty("authorization.token.header.prefix"), "");
       
-      log.info("toke: {}", token);
-      
       String login = Jwts.parser()
                         .setSigningKey(env.getProperty("token.secret"))
                         .parseClaimsJws(token)

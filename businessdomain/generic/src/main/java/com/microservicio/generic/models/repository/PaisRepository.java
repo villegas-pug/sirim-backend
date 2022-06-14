@@ -1,5 +1,6 @@
 package com.microservicio.generic.models.repository;
 
+import java.util.List;
 import java.util.Optional;
 import com.commons.utils.models.entities.Pais;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,6 +10,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PaisRepository extends JpaRepository<Pais, String> {
+
+   @Query(value = "SELECT * FROM SimPais", nativeQuery = true)
+   List<Pais> findAllPais();
 
    @Query(value = "SELECT TOP 1 * FROM SidPais sp WHERE sp.sNacionalidad LIKE %:nacionalidad%", nativeQuery = true)
    Optional<Pais> findByNacionalidad(@Param("nacionalidad") String nacionalidad);

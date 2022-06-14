@@ -23,7 +23,7 @@ public class PaisServiceImp implements PaisService {
    @Override
    @Transactional(readOnly = true)
    public List<Pais> findAll() {
-      return this.repository.findAll();
+      return this.repository.findAllPais();
    }
 
 }

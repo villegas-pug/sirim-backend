@@ -16,6 +16,6 @@ public class DependenciaServiceImpl implements DependenciaService{
    @Override
    @Transactional(readOnly = true)
    public List<Dependencia> findAll() {
-      return this.repository.findAll();
+      return this.repository.findAllDependencia();
    }
 }

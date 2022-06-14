@@ -10,7 +10,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Entity
-@Table(name = "SidPais2")
+@Table(name = "SimPais")
 @Data
 @EqualsAndHashCode(of = { "idPais" })
 public class Pais implements Serializable {
@@ -19,10 +19,10 @@ public class Pais implements Serializable {
    @Column(name = "sIdPais")
    private String idPais;
 
-   @Column(name = "sNombre", length = 55, nullable = false)
+   @Column(name = "sNombre", length = 50, nullable = false)
    private String nombre;
 
-   @Column(name = "sNacionalidad", length = 55, nullable = false)
+   @Column(name = "sNacionalidad", length = 30, nullable = false)
    private String nacionalidad;
 
    @Column(name = "bActivo", nullable = false)

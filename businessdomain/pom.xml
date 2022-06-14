@@ -104,18 +104,15 @@
    </dependencies>
 
    <modules>
-      <module>dependencia</module>
-      <module>empresa</module>
       <module>interpol</module>
       <module>nacionalizacion</module>
       <module>operativo</module>
-      <module>pais</module>
       <module>preinscripcion</module>
       <module>produccion</module>
       <module>usuario</module>
       <module>rimextraccion</module>
       <module>rimsim</module>
-      <module>common</module>
+      <module>generic</module>
    </modules>
 
 </project>

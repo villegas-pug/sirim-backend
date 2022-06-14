@@ -1,4 +1,4 @@
-package com.microservicio.rimsim.models.entities;
+package com.commons.utils.models.entities;
 
 import java.io.Serializable;
 import javax.persistence.Column;

@@ -74,6 +74,16 @@
          "projectName": "interpol",
          "args": "",
          "envFile": "${workspaceFolder}/.env"
+      },
+      {
+         "type": "java",
+         "name": "Spring Boot-GenericApplication<generic>",
+         "request": "launch",
+         "cwd": "${workspaceFolder}",
+         "mainClass": "com.microservicio.generic.GenericApplication",
+         "projectName": "generic",
+         "args": "",
+         "envFile": "${workspaceFolder}/.env"
       }
    ]
 }
