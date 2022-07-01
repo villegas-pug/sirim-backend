@@ -4,10 +4,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import javax.persistence.Tuple;
+import com.commons.utils.helpers.DataModelHelper;
 import com.commons.utils.models.dto.QueryClauseDto;
 import com.commons.utils.services.CommonServiceImpl;
 import com.microservicio.rimextraccion.clients.RimsimClientRest;
-import com.microservicio.rimextraccion.helpers.DataModelHelper;
 import com.microservicio.rimextraccion.models.entities.TablaDinamica;
 import com.microservicio.rimextraccion.models.repository.RimextraccionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,8 +34,15 @@ public class RimextraccionServiceImpl extends CommonServiceImpl<TablaDinamica, R
 
    @Override
    @Transactional(readOnly = true)
-   public List<Map<String, String>> findMetaTablaDinamicaByNombre(String nombreTabla) {
-      return DataModelHelper.convertMetaFields(super.repository.findMetaTablaDinamicaByNombre(nombreTabla));
+   public List<Map<String, Object>> findMetaTablaDinamicaByNombre(String nombreTabla) {
+      return DataModelHelper.convertTuplesToJson(super.repository.findMetaTablaDinamicaByNombre(nombreTabla), false);
+   }
+
+   @Override
+   @Transactional(readOnly = true)
+   public List<Map<String, Object>> findTablaDinamicaBySuffixOfField(String nombreTabla, String suffix) {
+      List<Tuple> tablaDinamicaDb = super.repository.findTablaDinamicaBySuffixOfField(nombreTabla, suffix);
+      return DataModelHelper.convertTuplesToJson(tablaDinamicaDb, false);
    }
 
    @Override
@@ -70,5 +77,6 @@ public class RimextraccionServiceImpl extends CommonServiceImpl<TablaDinamica, R
    public List<Tuple> findAllTest() {
       return this.repository.findAllTest();
    }
+
 
 }

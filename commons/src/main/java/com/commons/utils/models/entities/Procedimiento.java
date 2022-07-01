@@ -74,12 +74,6 @@ public class Procedimiento implements Serializable {
       this.rutaPrincipal = rutaPrincipal;
    }
 
-   public static long getSerialversionuid() {
-      return serialVersionUID;
-   }
-
-
-
    /**
    *
    */

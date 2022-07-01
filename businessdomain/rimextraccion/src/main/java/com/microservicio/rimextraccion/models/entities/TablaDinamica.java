@@ -42,7 +42,7 @@ public class TablaDinamica implements Serializable {
    private Usuario usrCreador;
 
    @OneToMany(mappedBy = "tablaDinamica", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-   @JsonIgnoreProperties(value = { "tablaDinamica" })
+   @JsonIgnoreProperties(value = { "tablaDinamica" }, allowSetters = true)
    private List<GrupoCamposAnalisis> lstGrupoCamposAnalisis;
    
    @Temporal(TemporalType.TIMESTAMP)

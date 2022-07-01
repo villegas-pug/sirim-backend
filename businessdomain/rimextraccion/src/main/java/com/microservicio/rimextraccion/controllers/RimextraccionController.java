@@ -171,9 +171,9 @@ public class RimextraccionController extends CommonController<TablaDinamica, Rim
                   .build());
    }
 
-   @PostMapping(path = { "/findMetaTablaDinamicaExtraccion" })
-   public ResponseEntity<?> findMetaTablaDinamicaExtraccion(@RequestBody TablaDinamicaDto tablaDinamicaDto) {
-      List<Map<String, String>> metaFields = this.service.findMetaTablaDinamicaByNombre(tablaDinamicaDto.getNombre());
+   @PostMapping(path = { "/findMetaTablaDinamica" })
+   public ResponseEntity<?> findMetaTablaDinamica(@RequestBody TablaDinamicaDto tablaDinamicaDto) {
+      List<Map<String, Object>> metaFields = this.service.findMetaTablaDinamicaByNombre(tablaDinamicaDto.getNombre());
       if (metaFields.size() == 0)
          throw new DataAccessEmptyWarning();
 
@@ -183,6 +183,18 @@ public class RimextraccionController extends CommonController<TablaDinamica, Rim
                   .message(Messages.MESSAGE_SUCCESS_LIST_ENTITY)
                   .data(metaFields)
                   .build());
+   }
+
+   @PostMapping( path = { "/findTablaDinamicaBySuffixOfField" } )
+   public ResponseEntity<?> findTablaDinamicaBySuffixOfField(@RequestParam String nombreTabla, @RequestParam String suffix){
+      List<Map<String, Object>> tablaDinamicaDb = this.service.findTablaDinamicaBySuffixOfField(nombreTabla, suffix);
+      if(tablaDinamicaDb.size() == 0) throw new DataAccessEmptyWarning();
+      return ResponseEntity.ok().body(
+                                    Response
+                                       .builder()
+                                       .message(Messages.MESSAGE_SUCCESS_LIST_ENTITY)
+                                       .data(tablaDinamicaDb)
+                                       .build());
    }
 
    @PostMapping(path = { "/saveGrupoCamposAnalisis" })
@@ -247,7 +259,7 @@ public class RimextraccionController extends CommonController<TablaDinamica, Rim
          throws IOException {
 
       /* » ... */
-      List<Map<String, String>> metaFields = super.service.findMetaTablaDinamicaByNombre(nombreTabla);
+      List<Map<String, Object>> metaFields = super.service.findMetaTablaDinamicaByNombre(nombreTabla);
       metaFields = this.filterMetaFieldsByExtraccion(metaFields);/* » Actualiza campos de extraccion ... */
       String fieldsNameCsv = this.convertMetaFieldsToCsv(metaFields);/*
                                                                       * » Campos separados por comas, para el select ...
@@ -279,7 +291,7 @@ public class RimextraccionController extends CommonController<TablaDinamica, Rim
             /* » Itera celdas de fila ... */
             for (int c = 0; c < totalFieldsOfTarget; c++) {
                Cell cell = row.getCell(c);
-               String fieldName = metaFields.get(c).get("nombre");
+               String fieldName = metaFields.get(c).get("nombre").toString();
                if (totalFieldsOfTarget == c + 1)/* » Si el cursor, lee el ultimo campo ... */
                   queryString.append(this.getCellValue(cell, fieldName)).append(") ");
                else
@@ -360,6 +372,7 @@ public class RimextraccionController extends CommonController<TablaDinamica, Rim
       List<BaseDatos> baseDatosDb = this.baseDatosService.findAll();
       if (baseDatosDb.size() == 0)
          throw new DataAccessEmptyWarning();
+
       return ResponseEntity.ok().body(
             Response
                   .builder()
@@ -595,17 +608,17 @@ public class RimextraccionController extends CommonController<TablaDinamica, Rim
       }
    }
 
-   private List<Map<String, String>> filterMetaFieldsByExtraccion(List<Map<String, String>> metaFields) {
+   private List<Map<String, Object>> filterMetaFieldsByExtraccion(List<Map<String, Object>> metaFields) {
       return metaFields
             .stream()
-            .filter(field -> field.get("nombre").endsWith("_e"))
+            .filter(field -> field.get("nombre").toString().endsWith("_e"))
             .collect(Collectors.toList());
    }
 
-   private String convertMetaFieldsToCsv(List<Map<String, String>> metaFields) {
+   private String convertMetaFieldsToCsv(List<Map<String, Object>> metaFields) {
       return metaFields
             .stream()
-            .map(field -> field.get("nombre"))
+            .map(field -> field.get("nombre").toString())
             .collect(Collectors.joining(", "));
    }
 
@@ -617,7 +630,7 @@ public class RimextraccionController extends CommonController<TablaDinamica, Rim
       String camposCsv = tablaDinamicaDto.getCamposCsv();
 
       /* » META-TABLE: Nombre y tipo ... */
-      List<Map<String, String>> metaFields = super.service.findMetaTablaDinamicaByNombre(nombreTabla);
+      List<Map<String, Object>> metaFields = super.service.findMetaTablaDinamicaByNombre(nombreTabla);
 
       StringBuilder queryString = new StringBuilder();/* » Query-String ... */
 

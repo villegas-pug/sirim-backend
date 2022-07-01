@@ -54,8 +54,8 @@ public class RimsimController {
       String nacionalidad = Optional.ofNullable(params.getPais().getIdPais()).orElse("%"), 
              dependencia = Optional.ofNullable(params.getDependencia().getIdDependencia()).orElse("%"),
              tipoMov = params.getTipoMov(),
-             fecIniMovMig = params.getFecIni().concat("T00:00:00"), 
-             fecFinMovMig = params.getFecFin().concat("T23:59:59");
+             fecIniMovMig = params.getFecIni().concat("T00:00:00.000"), 
+             fecFinMovMig = params.getFecFin().concat("T23:59:59.999");
 
       List<Tuple> dnvDb = this.service.findDnvByParams(nacionalidad, dependencia, tipoMov, fecIniMovMig, fecFinMovMig);
       if (dnvDb.size() == 0) throw new DataAccessEmptyWarning();

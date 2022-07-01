@@ -44,7 +44,6 @@ public class Usuario implements Serializable{
    @Column(name = "xPassword", columnDefinition = "VARCHAR(MAX)", nullable = false)
    private String password;
 
-
    @ManyToOne(fetch = FetchType.EAGER)
    @JoinColumn(name = "sIdDependencia", nullable = true)
    private Dependencia dependencia;
