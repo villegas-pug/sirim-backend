@@ -10,7 +10,7 @@ public interface RimsimService {
 
    List<Map<String, Object>> findTableMetaByName(String nombreTabla);
    
-   List<Object[]> dynamicJoinStatement(String mod, String fields, String where);
+   List<Map<String, Object>> dynamicJoinStatement(String mod, String fields, String where);
 
    List<Tuple> findDnvByParams(String nacionalidad, String dependencia, String tipoMov, String fecIniMovMig, String fecFinMovMig);
 

@@ -20,12 +20,16 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import com.commons.utils.models.entities.Usuario;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Entity
 @Table(name = "RimTablaDinamica")
 @Data
+@Builder(builderClassName = "TablaDinamicaBuilder", builderMethodName = "of", buildMethodName = "get")
+@AllArgsConstructor
 @EqualsAndHashCode(of = { "idTabla" })
 public class TablaDinamica implements Serializable {
 

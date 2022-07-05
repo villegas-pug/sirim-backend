@@ -24,8 +24,8 @@ public class RimsimServiceImpl implements RimsimService {
 
    @Override
    @Transactional(readOnly = true)
-   public List<Object[]> dynamicJoinStatement(String mod, String fields, String where) {
-      return this.repository.dynamicJoinStatement(mod, fields, where);
+   public List<Map<String, Object>> dynamicJoinStatement(String mod, String fields, String where) {
+      return DataModelHelper.convertTuplesToJson(this.repository.dynamicJoinStatement(mod, fields, where), false);
    }
 
    @Override

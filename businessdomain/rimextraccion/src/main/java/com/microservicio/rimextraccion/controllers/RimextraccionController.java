@@ -5,9 +5,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import com.commons.utils.constants.Messages;
@@ -78,28 +80,16 @@ public class RimextraccionController extends CommonController<TablaDinamica, Rim
    private QueryStringService queryStringService;
 
    @PostMapping(path = { "/createTablaDinamica" })
-   public ResponseEntity<?> createTablaDinamica(@RequestBody TablaDinamicaDto tablaDinamicaDto)
-         throws InterruptedException {
+   public ResponseEntity<?> createTablaDinamica(@RequestBody TablaDinamicaDto tablaDinamicaDto){
 
       String nombreTabla = tablaDinamicaDto.getNombre();
-
-      /* » Valida: Si, existe tabla dinámica... */
-      Optional<TablaDinamica> tablaDinamicaOld = super.service.findByNombre(nombreTabla);
-      if (!tablaDinamicaOld.isEmpty())
-         throw new CreateTableWarning(Messages.WARNING_CREATE_TABLE(nombreTabla));
-
-      /* » Inserta: Nombre de tabla ... */
-      TablaDinamica tablaDinamicaNew = new ModelMapper().map(tablaDinamicaDto, TablaDinamica.class);
-      this.service.save(tablaDinamicaNew);
-
-      /* » Crea: tabla dinámica física ... */
-      super.service.createTable(nombreTabla);
+      List<TablaDinamica> tablaDinamicaDb = this.saveAndCreateTablaDinamica(tablaDinamicaDto);
 
       return ResponseEntity.ok().body(
             Response
                   .builder()
                   .message(Messages.SUCCESS_CREATE_TABLE(nombreTabla))
-                  .data(this.service.findAll())
+                  .data(tablaDinamicaDb)
                   .build());
    }
 
@@ -261,9 +251,7 @@ public class RimextraccionController extends CommonController<TablaDinamica, Rim
       /* » ... */
       List<Map<String, Object>> metaFields = super.service.findMetaTablaDinamicaByNombre(nombreTabla);
       metaFields = this.filterMetaFieldsByExtraccion(metaFields);/* » Actualiza campos de extraccion ... */
-      String fieldsNameCsv = this.convertMetaFieldsToCsv(metaFields);/*
-                                                                      * » Campos separados por comas, para el select ...
-                                                                      */
+      String fieldsNameCsv = this.convertMetaFieldsToCsv(metaFields);/*» Campos separados por comas, para el select ...*/
 
       int totalFieldsOfTarget = metaFields.size();
 
@@ -286,7 +274,7 @@ public class RimextraccionController extends CommonController<TablaDinamica, Rim
             row = sheet.getRow(r);/* » Fila de origen de datos ... */
 
             queryString.append("INSERT INTO ").append(nombreTabla)
-                  .append("(").append(fieldsNameCsv).append(") VALUES(");
+                       .append("(").append(fieldsNameCsv).append(") VALUES(");
 
             /* » Itera celdas de fila ... */
             for (int c = 0; c < totalFieldsOfTarget; c++) {
@@ -392,11 +380,11 @@ public class RimextraccionController extends CommonController<TablaDinamica, Rim
          throw new CreateTableWarning(Messages.WARNING_DUPLICATE_MODEL_DATA(nombreQueryString));
 
       QueryString queryStringNew = QueryString
-            .of()
-            .modulo(Modulo.of().idMod(moduloDto.getIdMod()).get())
-            .nombre(nombreQueryString)
-            .queryString(moduloDto.getQueryString().getQueryString())
-            .get();
+                                       .of()
+                                       .modulo(Modulo.of().idMod(moduloDto.getIdMod()).get())
+                                       .nombre(nombreQueryString)
+                                       .queryString(moduloDto.getQueryString().getQueryString())
+                                       .get();
 
       this.queryStringService.save(queryStringNew);
 
@@ -410,39 +398,75 @@ public class RimextraccionController extends CommonController<TablaDinamica, Rim
 
    /* ► Client-Rest ... */
    @PostMapping(path = { "/dynamicJoinStatement" })
-   public ResponseEntity<?> dynamicJoinStatement(@RequestBody QueryClauseDto queryClauseDto) {
+   public ResponseEntity<?> dynamicJoinStatement(@RequestBody TablaDinamicaDtoJoinQueryClauseDto tablaDinamicaDtoJoinQueryClauseDto) {
 
-      /*► Fields ...  */
-      String[] fieldsCsv = Arrays.stream(queryClauseDto.getFields().split(","))
-                                 .map(String::trim)
-                                 .map(f -> f.split("\\[")[1].replace("]", ""))
-                                 .toArray(s -> new String[s]);
+      TablaDinamicaDto tablaDinamicaDto = tablaDinamicaDtoJoinQueryClauseDto.tablaDinamicaDto;
+      QueryClauseDto queryClauseDto = tablaDinamicaDtoJoinQueryClauseDto.queryClauseDto;
       
-      /*► query-result:  */
-      List<Object[]> queryResult = this.service.dynamicJoinStatementSim(queryClauseDto);
-      if(queryResult.size() == 0) throw new DataAccessEmptyWarning();
+      String nameTable = Optional.ofNullable(queryClauseDto.getNameTable()).orElse("");
 
-      /*► Model-Mapper  */
-      List<Map<String, Object>> mappedQueryResult = new ArrayList<>();
-      
-      for (Object[] record : queryResult) {
-         
-         Map<String, Object> map = new HashMap<>();
+      List<Map<String, Object>> resultSet = this.service.dynamicJoinStatementSim(queryClauseDto);
+      if(resultSet.size() == 0) throw new DataAccessEmptyWarning();
 
-         int i = 0;
-         for (Object item : record) {
-            map.put(fieldsCsv[i], item);
-            i++;
+      if(!nameTable.isEmpty()){/*► Si recibe el argumento, entonces `Insert Into in Select` ...  */
+
+         /*►STEP-01: Regista el nombre y crea tabla dinámica ... */
+         this.saveAndCreateTablaDinamica(tablaDinamicaDto);
+
+         /*►STEP-02: Agregar campos en `Tabla dinámica` ... */
+         List<String> fields = this.getKeysOfMap(resultSet.get(0))
+                                                   .stream()
+                                                   .map(f -> "[".concat(f).concat("_e]"))
+                                                   .collect(Collectors.toList());
+
+         StringBuilder queryStr = new StringBuilder();
+
+         fields
+            .stream()
+            .map(f -> f.concat(" VARCHAR(MAX)"))
+            .forEach(f -> {
+               queryStr.append("ALTER TABLE ").append(nameTable)
+                       .append(" ADD ").append(f).append("NULL ");
+            });
+
+         this.service.alterTablaDinamica(queryStr.toString());
+
+         /*►STEP-03: Insertar registros a `Tabla dinámica` ... */
+         String fieldsCsv = String.join(", ", fields);
+
+         StringBuilder sqlInsertValues = new StringBuilder();
+         for (Map<String, Object> fieldsMap : resultSet) {/*► Iterar `Result-Set` ... */
+
+            String valuesCsv = fieldsMap.values()
+                                             .stream()
+                                             .map(Object::toString)
+                                             .map(v -> v.replaceAll("'", ""))
+                                             .map(v -> "'".concat(v).concat("'"))
+                                             .collect(Collectors.joining(", "));
+
+            sqlInsertValues.append("INSERT INTO ").append(nameTable).append("(")
+                           .append(fieldsCsv).append(") VALUES(").append(valuesCsv)
+                           .append(") ");
+
          }
 
-         mappedQueryResult.add(map);
+         this.service.saveTablaDinamica(nameTable, sqlInsertValues.toString());
+
+         return ResponseEntity.ok().body(
+                                    Response
+                                       .builder()
+                                       .message(Messages.SUCCESS_CREATE_TABLE(nameTable))
+                                       .data(resultSet)
+                                       .build());
+
       }
 
+      /*► Default: Response ...  */
       return ResponseEntity.ok().body(
                                     Response
                                        .builder()
                                        .message(Messages.MESSAGE_SUCCESS_LIST_ENTITY)
-                                       .data(mappedQueryResult)
+                                       .data(resultSet)
                                        .build());
    }
 
@@ -456,7 +480,8 @@ public class RimextraccionController extends CommonController<TablaDinamica, Rim
                                  .toArray(s -> new String[s]);
       
       /*► query-result:  */
-      List<Object[]> queryResult = this.service.dynamicJoinStatementSim(queryClauseDto);
+      /* List<Object[]> queryResult = this.service.dynamicJoinStatementSim(queryClauseDto); */
+      List<Object[]> queryResult = null;
       if(queryResult.size() == 0) {
          return ResponseEntity
                   .status(HttpStatus.NO_CONTENT)
@@ -556,7 +581,6 @@ public class RimextraccionController extends CommonController<TablaDinamica, Rim
        return ResponseEntity.ok().body(DataModelHelper.convertTuplesToJson(this.service.findAllTest(), false));
    }
    
-
    // #region: Métodos privados ...
 
    private int[] generateRangeNumbersToArr(int... params) {/* » (tamaño, rangoIni, rangoFin) */
@@ -590,22 +614,38 @@ public class RimextraccionController extends CommonController<TablaDinamica, Rim
 
    private Integer[] convertStrCsvToIntArray(String strCsv) {
       return Arrays
-            .stream(strCsv.split(","))
-            .map(String::trim)
-            .filter(e -> !e.isEmpty())
-            .map(Integer::parseInt)
-            .toArray(Integer[]::new);
+               .stream(strCsv.split(","))
+               .map(String::trim)
+               .filter(e -> !e.isEmpty())
+               .map(Integer::parseInt)
+               .toArray(Integer[]::new);
    }
 
+   private List<String> getKeysOfMap(Map<String, Object> map){
+
+      List<String> keys = new LinkedList<>();
+
+      for (String key : map.keySet()) 
+         keys.add(key);
+
+      return keys;
+   }
+
+   @SuppressWarnings(value = { "deprecation" })
    private Object getCellValue(Cell cell, String fieldName) {
-      char tipoCampo = fieldName.trim().charAt(0);/* » Prefix de campo ... */
+      char tipoCampo = fieldName.trim().charAt(0);/*» Prefix de campo ... */
+      String fieldValue;
       switch (tipoCampo) {
          case 'd':
-            return "'".concat(cell.getDateCellValue().toString()).concat("'");
+            fieldValue = cell.getDateCellValue().toString();
          default:
             cell.setCellType(CellType.STRING);
-            return "'".concat(cell.getStringCellValue()).concat("'");
+            fieldValue = cell.getStringCellValue();
       }
+
+      fieldValue = fieldValue.replaceAll("'", "");
+
+      return "'".concat(fieldValue).concat("'");
    }
 
    private List<Map<String, Object>> filterMetaFieldsByExtraccion(List<Map<String, Object>> metaFields) {
@@ -640,7 +680,7 @@ public class RimextraccionController extends CommonController<TablaDinamica, Rim
             /* ► camposCsv: `sNumero_Pasaporte_e TEXT` ... */
             String fieldName = camposCsv.trim().split(" ")[0].toString().trim();/* » Nombre de campo ... */
 
-            metaFields.stream().forEach(f -> {/* » Validación: Nombre de campo existe en Tabla-Dinámica... */
+            metaFields.stream().forEach(f -> {/* » Validación: Si, nombre de campo existe en Tabla-Dinámica... */
                if (f.get("nombre").equals(fieldName))
                   throw new CreateTableWarning(Messages.WARNING_ALTER_TABLE_ADD_COLUMN(fieldName));
             });
@@ -716,6 +756,34 @@ public class RimextraccionController extends CommonController<TablaDinamica, Rim
 
       /* » Alter table ... */
       super.service.alterTablaDinamica(queryString.toString());
+   }
+
+   private List<TablaDinamica> saveAndCreateTablaDinamica(TablaDinamicaDto tablaDinamicaDto){
+
+      String nombreTabla = tablaDinamicaDto.getNombre();
+
+      /* » Valida: Si, existe tabla dinámica... */
+      Optional<TablaDinamica> tablaDinamicaOld = super.service.findByNombre(nombreTabla);
+      if (tablaDinamicaOld.isPresent())
+         throw new CreateTableWarning(Messages.WARNING_CREATE_TABLE(nombreTabla));
+
+      /* » Insert: Nombre de tabla ... */
+      TablaDinamica tablaDinamicaNew = new ModelMapper().map(tablaDinamicaDto, TablaDinamica.class);
+      this.service.save(tablaDinamicaNew);
+
+      /* » Create: tabla dinámica física ... */
+      super.service.createTable(nombreTabla);
+
+      return this.service.findAll();
+   }
+
+   // #endregion
+
+   // #region Body-Request ...
+
+   public static class TablaDinamicaDtoJoinQueryClauseDto {
+      public TablaDinamicaDto tablaDinamicaDto;
+      public QueryClauseDto queryClauseDto;
    }
 
    // #endregion

@@ -37,15 +37,15 @@ public class RimsimController {
 
    @PostMapping(path = { "/dynamicJoinStatementSim" })
    @ResponseStatus(code = HttpStatus.OK)
-   public List<Object[]> dynamicJoinStatementSim(@RequestBody QueryClauseDto queryClauseDto) {
+   public List<Map<String, Object>> dynamicJoinStatementSim(@RequestBody QueryClauseDto queryClauseDto) {
 
       String mod = queryClauseDto.getMod(),
              fields = queryClauseDto.getFields(),
              where = queryClauseDto.getWhere();
 
-      List<Object[]> result = this.service.dynamicJoinStatement(mod, fields, where);
+      List<Map<String, Object>> resultSet = this.service.dynamicJoinStatement(mod, fields, where);
 
-      return result;
+      return resultSet;
    }
 
    @PostMapping(path = { "/findDnvByParams" })

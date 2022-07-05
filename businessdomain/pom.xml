@@ -104,6 +104,7 @@
    </dependencies>
 
    <modules>
+      <module>generic</module>
       <module>interpol</module>
       <module>nacionalizacion</module>
       <module>operativo</module>
@@ -112,7 +113,6 @@
       <module>usuario</module>
       <module>rimextraccion</module>
       <module>rimsim</module>
-      <module>generic</module>
    </modules>
 
 </project>

@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class RimextraccionServiceImpl extends CommonServiceImpl<TablaDinamica, RimextraccionRepository> implements RimextraccionService {
 
    @Autowired
-   private RimsimClientRest rimsimClient;
+   private RimsimClientRest rimsimRestClient;
 
    @Override
    @Transactional
@@ -65,12 +65,12 @@ public class RimextraccionServiceImpl extends CommonServiceImpl<TablaDinamica, R
 
    @Override
    public List<Map<String, String>> findTableMetaByNameSim(String nombreTabla) {
-      return this.rimsimClient.findTableMetaByNameSim(nombreTabla);
+      return this.rimsimRestClient.findTableMetaByNameSim(nombreTabla);
    }
 
    @Override
-   public List<Object[]> dynamicJoinStatementSim(QueryClauseDto queryClauseDto) {
-      return this.rimsimClient.dynamicJoinStatementSim(queryClauseDto);
+   public List<Map<String, Object>> dynamicJoinStatementSim(QueryClauseDto queryClauseDto) {
+      return this.rimsimRestClient.dynamicJoinStatementSim(queryClauseDto);
    }
 
    @Override

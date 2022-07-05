@@ -23,5 +23,5 @@ public interface RimextraccionService extends CommonService<TablaDinamica> {
 
    /*► Client-Methods ...  */
    public List<Map<String, String>> findTableMetaByNameSim(String nombreTabla);
-   public List<Object[]> dynamicJoinStatementSim(QueryClauseDto queryClauseDto);
+   public List<Map<String, Object>> dynamicJoinStatementSim(QueryClauseDto queryClauseDto);
 }

@@ -15,6 +15,6 @@ public interface RimsimClientRest {
    public List<Map<String, String>> findTableMetaByNameSim(String nombreTabla);
 
    @PostMapping(path = { "/dynamicJoinStatementSim" })
-   public List<Object[]> dynamicJoinStatementSim(@RequestBody QueryClauseDto queryClauseDto);
+   public List<Map<String, Object>> dynamicJoinStatementSim(@RequestBody QueryClauseDto queryClauseDto);
    
 }
