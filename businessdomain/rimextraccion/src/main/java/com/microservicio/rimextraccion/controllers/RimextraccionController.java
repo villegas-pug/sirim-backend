@@ -299,11 +299,11 @@ public class RimextraccionController extends CommonController<TablaDinamica, Rim
             /* » Itera celdas de fila ... */
             for (int c = 0; c < totalFieldsOfTarget; c++) {
                Cell cell = row.getCell(c);
-               String fieldName = metaFields.get(c).get("nombre").toString();
+               
                if (totalFieldsOfTarget == c + 1)/* » Si el cursor, lee el ultimo campo ... */
-                  queryString.append(this.getCellValue(cell, fieldName)).append(") ");
+                  queryString.append(this.getCellValue(cell)).append(") ");
                else
-                  queryString.append(this.getCellValue(cell, fieldName)).append(", ");
+                  queryString.append(this.getCellValue(cell)).append(", ");
             }
          }
       }
@@ -660,18 +660,19 @@ public class RimextraccionController extends CommonController<TablaDinamica, Rim
    }
 
    @SuppressWarnings(value = { "deprecation" })
-   private Object getCellValue(Cell cell, String fieldName) {
-      char tipoCampo = fieldName.trim().charAt(0);/*» Prefix de campo ... */
+   private Object getCellValue(Cell cell) {
+      /* ► Dep's ... */
       String fieldValue;
-      switch (tipoCampo) {
-         case 'd':
-            fieldValue = cell.getDateCellValue().toString();
-         default:
-            cell.setCellType(CellType.STRING);
-            fieldValue = cell.getStringCellValue();
+      
+      /* ► Validación ...  */
+      if(cell == null) {
+         fieldValue = "-";
+      } else {
+         cell.setCellType(CellType.STRING);
+         fieldValue = !cell.getStringCellValue().trim().isEmpty() 
+                           ? cell.getStringCellValue().replaceAll("['\\/]", "")
+                           : "-";
       }
-
-      fieldValue = fieldValue.replaceAll("'", "");
 
       return "'".concat(fieldValue).concat("'");
    }
