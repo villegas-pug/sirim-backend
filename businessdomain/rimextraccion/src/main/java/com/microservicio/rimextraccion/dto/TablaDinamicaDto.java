@@ -11,13 +11,14 @@ import lombok.Data;
 public class TablaDinamicaDto {
  
    private Long idTabla;
-   private List<GrupoCamposAnalisis> lstGrupoCamposAnalisis;
+   private List<GrupoCamposAnalisisDto> lstGrupoCamposAnalisis;
    private String nombre;
+   private String metaFieldsCsv;
    private Usuario usrCreador;
    private Date fechaCreacion;
    private boolean activo;
 
-   /*» Properties are not a CLASS-POJO ...  */
+   /*» Utility Properties ...  */
    private String camposCsv;
    private String alterTableType;
    private GrupoCamposAnalisis grupoCamposAnalisis;

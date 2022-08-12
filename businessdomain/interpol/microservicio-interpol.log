@@ -1,0 +1,302 @@
+2022-07-26 00:01:15.530  INFO 4056 --- [restartedMain] c.c.c.ConfigServicePropertySourceLocator : Fetching config from server at : http://localhost:8888/
+2022-07-26 00:01:17.448  INFO 4056 --- [restartedMain] c.c.c.ConfigServicePropertySourceLocator : Located environment: name=microservicio-interpol, profiles=[dev], label=null, version=63c70009527c9abb57b3001d5f35f41ddc93628f, state=null
+2022-07-26 00:01:17.451  INFO 4056 --- [restartedMain] b.c.PropertySourceBootstrapConfiguration : Located property source: [BootstrapPropertySource {name='bootstrapProperties-configClient'}, BootstrapPropertySource {name='bootstrapProperties-https://github.com/villegas-pug/config-server/microservicio-interpol-dev.properties'}, BootstrapPropertySource {name='bootstrapProperties-https://github.com/villegas-pug/config-server/application.properties'}]
+2022-07-26 00:01:17.561  INFO 4056 --- [restartedMain] c.m.interpol.InterpolApplication         : The following profiles are active: dev
+2022-07-26 00:01:19.190  INFO 4056 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2022-07-26 00:01:19.398  INFO 4056 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 206ms. Found 2 JPA repository interfaces.
+2022-07-26 00:01:19.585  WARN 4056 --- [restartedMain] o.s.boot.actuate.endpoint.EndpointId     : Endpoint ID 'service-registry' contains invalid characters, please migrate to a valid format.
+2022-07-26 00:01:19.782  INFO 4056 --- [restartedMain] o.s.cloud.context.scope.GenericScope     : BeanFactory id=e7360b25-44a2-32c8-9b8e-04ceadd01b33
+2022-07-26 00:01:20.601  INFO 4056 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 55 (http)
+2022-07-26 00:01:20.627  INFO 4056 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-07-26 00:01:20.628  INFO 4056 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.43]
+2022-07-26 00:01:20.632  INFO 4056 --- [restartedMain] o.a.catalina.core.AprLifecycleListener   : Loaded Apache Tomcat Native library [1.2.24] using APR version [1.7.0].
+2022-07-26 00:01:20.634  INFO 4056 --- [restartedMain] o.a.catalina.core.AprLifecycleListener   : APR capabilities: IPv6 [true], sendfile [true], accept filters [false], random [true].
+2022-07-26 00:01:20.635  INFO 4056 --- [restartedMain] o.a.catalina.core.AprLifecycleListener   : APR/OpenSSL configuration: useAprConnector [false], useOpenSSL [true]
+2022-07-26 00:01:20.642  INFO 4056 --- [restartedMain] o.a.catalina.core.AprLifecycleListener   : OpenSSL successfully initialized [OpenSSL 1.1.1g  21 Apr 2020]
+2022-07-26 00:01:21.438  INFO 4056 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-07-26 00:01:21.440  INFO 4056 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 3844 ms
+2022-07-26 00:01:21.592  WARN 4056 --- [restartedMain] c.n.c.sources.URLConfigurationSource     : No URLs will be polled as dynamic configuration sources.
+2022-07-26 00:01:21.596  INFO 4056 --- [restartedMain] c.n.c.sources.URLConfigurationSource     : To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-07-26 00:01:21.614  INFO 4056 --- [restartedMain] c.netflix.config.DynamicPropertyFactory  : DynamicPropertyFactory is initialized with configuration sources: com.netflix.config.ConcurrentCompositeConfiguration@3b8e9cb
+2022-07-26 00:01:22.801  INFO 4056 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2022-07-26 00:01:23.527  INFO 4056 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2022-07-26 00:01:26.514  INFO 4056 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2022-07-26 00:01:26.611  INFO 4056 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2022-07-26 00:01:27.423  WARN 4056 --- [restartedMain] c.n.c.sources.URLConfigurationSource     : No URLs will be polled as dynamic configuration sources.
+2022-07-26 00:01:27.434  INFO 4056 --- [restartedMain] c.n.c.sources.URLConfigurationSource     : To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-07-26 00:01:27.669  WARN 4056 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2022-07-26 00:01:28.047  INFO 4056 --- [restartedMain] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2022-07-26 00:01:31.082  INFO 4056 --- [restartedMain] o.s.cloud.commons.util.InetUtils         : Cannot determine local hostname
+2022-07-26 00:01:33.105  INFO 4056 --- [restartedMain] o.s.cloud.commons.util.InetUtils         : Cannot determine local hostname
+2022-07-26 00:01:33.115  INFO 4056 --- [restartedMain] DiscoveryClientOptionalArgsConfiguration : Eureka HTTP Client uses Jersey
+2022-07-26 00:01:33.156  WARN 4056 --- [restartedMain] ockingLoadBalancerClientRibbonWarnLogger : You already have RibbonLoadBalancerClient on your classpath. It will be used by default. As Spring Cloud Ribbon is in maintenance mode. We recommend switching to BlockingLoadBalancerClient instead. In order to use it, set the value of `spring.cloud.loadbalancer.ribbon.enabled` to `false` or remove spring-cloud-starter-netflix-ribbon from your project.
+2022-07-26 00:01:33.247  INFO 4056 --- [restartedMain] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 18 endpoint(s) beneath base path '/actuator'
+2022-07-26 00:01:33.446  INFO 4056 --- [restartedMain] o.s.c.n.eureka.InstanceInfoFactory       : Setting initial instance status as: STARTING
+2022-07-26 00:01:33.501  INFO 4056 --- [restartedMain] com.netflix.discovery.DiscoveryClient    : Initializing Eureka in region us-east-1
+2022-07-26 00:01:33.588  INFO 4056 --- [restartedMain] c.n.d.provider.DiscoveryJerseyProvider   : Using JSON encoding codec LegacyJacksonJson
+2022-07-26 00:01:33.588  INFO 4056 --- [restartedMain] c.n.d.provider.DiscoveryJerseyProvider   : Using JSON decoding codec LegacyJacksonJson
+2022-07-26 00:01:33.793  INFO 4056 --- [restartedMain] c.n.d.provider.DiscoveryJerseyProvider   : Using XML encoding codec XStreamXml
+2022-07-26 00:01:33.794  INFO 4056 --- [restartedMain] c.n.d.provider.DiscoveryJerseyProvider   : Using XML decoding codec XStreamXml
+2022-07-26 00:01:34.174  INFO 4056 --- [restartedMain] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2022-07-26 00:01:34.350  INFO 4056 --- [restartedMain] com.netflix.discovery.DiscoveryClient    : Disable delta property : false
+2022-07-26 00:01:34.365  INFO 4056 --- [restartedMain] com.netflix.discovery.DiscoveryClient    : Single vip registry refresh property : null
+2022-07-26 00:01:34.365  INFO 4056 --- [restartedMain] com.netflix.discovery.DiscoveryClient    : Force full registry fetch : false
+2022-07-26 00:01:34.365  INFO 4056 --- [restartedMain] com.netflix.discovery.DiscoveryClient    : Application is null : false
+2022-07-26 00:01:34.365  INFO 4056 --- [restartedMain] com.netflix.discovery.DiscoveryClient    : Registered Applications size is zero : true
+2022-07-26 00:01:34.365  INFO 4056 --- [restartedMain] com.netflix.discovery.DiscoveryClient    : Application version is -1: true
+2022-07-26 00:01:34.365  INFO 4056 --- [restartedMain] com.netflix.discovery.DiscoveryClient    : Getting all instance registry info from the eureka server
+2022-07-26 00:01:34.487  INFO 4056 --- [restartedMain] com.netflix.discovery.DiscoveryClient    : The response status is 200
+2022-07-26 00:01:34.491  INFO 4056 --- [restartedMain] com.netflix.discovery.DiscoveryClient    : Starting heartbeat executor: renew interval is: 30
+2022-07-26 00:01:34.495  INFO 4056 --- [restartedMain] c.n.discovery.InstanceInfoReplicator     : InstanceInfoReplicator onDemand update allowed rate per min is 4
+2022-07-26 00:01:34.501  INFO 4056 --- [restartedMain] com.netflix.discovery.DiscoveryClient    : Discovery Client initialized at timestamp 1658811694500 with initial instances count: 4
+2022-07-26 00:01:34.510  INFO 4056 --- [restartedMain] o.s.c.n.e.s.EurekaServiceRegistry        : Registering application MICROSERVICIO-INTERPOL with eureka with status UP
+2022-07-26 00:01:34.517  INFO 4056 --- [restartedMain] com.netflix.discovery.DiscoveryClient    : Saw local status change event StatusChangeEvent [timestamp=1658811694517, current=UP, previous=STARTING]
+2022-07-26 00:01:34.521  INFO 4056 --- [DiscoveryClient-InstanceInfoReplicator-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_MICROSERVICIO-INTERPOL/microservicio-interpol: registering service...
+2022-07-26 00:01:34.575  INFO 4056 --- [DiscoveryClient-InstanceInfoReplicator-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_MICROSERVICIO-INTERPOL/microservicio-interpol - registration status: 204
+2022-07-26 00:01:34.569  INFO 4056 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 55 (http) with context path ''
+2022-07-26 00:01:34.581  INFO 4056 --- [restartedMain] .s.c.n.e.s.EurekaAutoServiceRegistration : Updating port to 55
+2022-07-26 00:01:35.770  INFO 4056 --- [restartedMain] o.s.cloud.commons.util.InetUtils         : Cannot determine local hostname
+2022-07-26 00:01:35.820  INFO 4056 --- [restartedMain] c.m.interpol.InterpolApplication         : Started InterpolApplication in 24.877 seconds (JVM running for 26.544)
+2022-07-26 00:02:13.576  INFO 4056 --- [http-nio-55-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-07-26 00:02:13.582  INFO 4056 --- [http-nio-55-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2022-07-26 00:02:13.594  INFO 4056 --- [http-nio-55-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 11 ms
+2022-07-26 00:02:25.702  WARN 4056 --- [http-nio-55-exec-1] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.commons.utils.errors.DataAccessEmptyWarning: ¡No hay registros para mostrar!]
+2022-07-26 00:04:02.278  WARN 4056 --- [http-nio-55-exec-4] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [java.lang.IllegalArgumentException: Byte array must not be null]
+2022-07-26 00:06:34.384  INFO 4056 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2022-07-26 00:10:00.445  WARN 4056 --- [http-nio-55-exec-9] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.commons.utils.errors.DataAccessEmptyWarning: ¡No hay registros para mostrar!]
+2022-07-26 00:10:02.990  WARN 4056 --- [http-nio-55-exec-1] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.commons.utils.errors.DataAccessEmptyWarning: ¡No hay registros para mostrar!]
+2022-07-26 00:10:04.443  WARN 4056 --- [http-nio-55-exec-2] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.commons.utils.errors.DataAccessEmptyWarning: ¡No hay registros para mostrar!]
+2022-07-26 00:10:06.492  WARN 4056 --- [http-nio-55-exec-4] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.commons.utils.errors.DataAccessEmptyWarning: ¡No hay registros para mostrar!]
+2022-07-26 00:11:12.030  WARN 4056 --- [http-nio-55-exec-3] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.commons.utils.errors.DataAccessEmptyWarning: ¡No hay registros para mostrar!]
+2022-07-26 00:11:34.406  INFO 4056 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2022-07-26 00:16:34.426  INFO 4056 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2022-07-26 00:21:34.434  INFO 4056 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2022-07-26 00:26:34.442  INFO 4056 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2022-07-26 00:31:34.459  INFO 4056 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2022-07-26 00:36:34.469  INFO 4056 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2022-07-26 00:41:34.481  INFO 4056 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2022-07-26 00:46:34.483  INFO 4056 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2022-07-26 00:51:34.486  INFO 4056 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2022-07-26 00:56:34.494  INFO 4056 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2022-07-26 01:01:34.505  INFO 4056 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2022-07-26 01:06:34.509  INFO 4056 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2022-07-26 01:11:34.518  INFO 4056 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2022-07-26 01:16:34.521  INFO 4056 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2022-07-26 01:20:28.184  INFO 4056 --- [Thread-6] o.s.c.n.e.s.EurekaServiceRegistry        : Unregistering application MICROSERVICIO-INTERPOL with eureka with status DOWN
+2022-07-26 01:20:28.184  INFO 4056 --- [Thread-6] com.netflix.discovery.DiscoveryClient    : Saw local status change event StatusChangeEvent [timestamp=1658816428184, current=DOWN, previous=UP]
+2022-07-26 01:20:28.184  INFO 4056 --- [DiscoveryClient-InstanceInfoReplicator-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_MICROSERVICIO-INTERPOL/microservicio-interpol: registering service...
+2022-07-26 01:20:28.206  INFO 4056 --- [DiscoveryClient-InstanceInfoReplicator-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_MICROSERVICIO-INTERPOL/microservicio-interpol - registration status: 204
+2022-07-26 01:20:28.344  INFO 4056 --- [Thread-6] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2022-07-26 01:20:28.347  INFO 4056 --- [Thread-6] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2022-07-26 01:20:28.353  INFO 4056 --- [Thread-6] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2022-07-26 01:20:28.359  INFO 4056 --- [Thread-6] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2022-07-26 01:20:28.362  INFO 4056 --- [Thread-6] com.netflix.discovery.DiscoveryClient    : Shutting down DiscoveryClient ...
+2022-07-26 01:20:31.370  INFO 4056 --- [Thread-6] com.netflix.discovery.DiscoveryClient    : Unregistering ...
+2022-07-26 01:20:31.386  INFO 4056 --- [Thread-6] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_MICROSERVICIO-INTERPOL/microservicio-interpol - deregister  status: 200
+2022-07-26 01:20:31.399  INFO 4056 --- [Thread-6] com.netflix.discovery.DiscoveryClient    : Completed shut down of DiscoveryClient
+2022-07-26 01:20:34.251  INFO 4056 --- [restartedMain] c.c.c.ConfigServicePropertySourceLocator : Fetching config from server at : http://localhost:8888/
+2022-07-26 01:20:36.114  INFO 4056 --- [restartedMain] c.c.c.ConfigServicePropertySourceLocator : Located environment: name=microservicio-interpol, profiles=[dev], label=null, version=63c70009527c9abb57b3001d5f35f41ddc93628f, state=null
+2022-07-26 01:20:36.118  INFO 4056 --- [restartedMain] b.c.PropertySourceBootstrapConfiguration : Located property source: [BootstrapPropertySource {name='bootstrapProperties-configClient'}, BootstrapPropertySource {name='bootstrapProperties-https://github.com/villegas-pug/config-server/microservicio-interpol-dev.properties'}, BootstrapPropertySource {name='bootstrapProperties-https://github.com/villegas-pug/config-server/application.properties'}]
+2022-07-26 01:20:36.128  INFO 4056 --- [restartedMain] c.m.interpol.InterpolApplication         : The following profiles are active: dev
+2022-07-26 01:20:36.837  INFO 4056 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2022-07-26 01:20:36.927  INFO 4056 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 88ms. Found 2 JPA repository interfaces.
+2022-07-26 01:20:37.098  INFO 4056 --- [restartedMain] o.s.cloud.context.scope.GenericScope     : BeanFactory id=e7360b25-44a2-32c8-9b8e-04ceadd01b33
+2022-07-26 01:20:37.354  INFO 4056 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 55 (http)
+2022-07-26 01:20:37.396  INFO 4056 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-07-26 01:20:37.399  INFO 4056 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.43]
+2022-07-26 01:20:37.402  INFO 4056 --- [restartedMain] o.a.catalina.core.AprLifecycleListener   : Loaded Apache Tomcat Native library [1.2.24] using APR version [1.7.0].
+2022-07-26 01:20:37.407  INFO 4056 --- [restartedMain] o.a.catalina.core.AprLifecycleListener   : APR capabilities: IPv6 [true], sendfile [true], accept filters [false], random [true].
+2022-07-26 01:20:37.410  INFO 4056 --- [restartedMain] o.a.catalina.core.AprLifecycleListener   : APR/OpenSSL configuration: useAprConnector [false], useOpenSSL [true]
+2022-07-26 01:20:37.414  INFO 4056 --- [restartedMain] o.a.catalina.core.AprLifecycleListener   : OpenSSL successfully initialized [OpenSSL 1.1.1g  21 Apr 2020]
+2022-07-26 01:20:37.501  INFO 4056 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-07-26 01:20:37.503  INFO 4056 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1369 ms
+2022-07-26 01:20:37.671  INFO 4056 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Starting...
+2022-07-26 01:20:37.692  INFO 4056 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Start completed.
+2022-07-26 01:20:39.020  INFO 4056 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2022-07-26 01:20:39.037  INFO 4056 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2022-07-26 01:20:39.137  WARN 4056 --- [restartedMain] c.n.c.sources.URLConfigurationSource     : No URLs will be polled as dynamic configuration sources.
+2022-07-26 01:20:39.139  INFO 4056 --- [restartedMain] c.n.c.sources.URLConfigurationSource     : To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-07-26 01:20:39.166  WARN 4056 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2022-07-26 01:20:39.228  INFO 4056 --- [restartedMain] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2022-07-26 01:20:40.543  INFO 4056 --- [restartedMain] o.s.cloud.commons.util.InetUtils         : Cannot determine local hostname
+2022-07-26 01:20:41.875  INFO 4056 --- [restartedMain] o.s.cloud.commons.util.InetUtils         : Cannot determine local hostname
+2022-07-26 01:20:41.882  INFO 4056 --- [restartedMain] DiscoveryClientOptionalArgsConfiguration : Eureka HTTP Client uses Jersey
+2022-07-26 01:20:41.898  WARN 4056 --- [restartedMain] ockingLoadBalancerClientRibbonWarnLogger : You already have RibbonLoadBalancerClient on your classpath. It will be used by default. As Spring Cloud Ribbon is in maintenance mode. We recommend switching to BlockingLoadBalancerClient instead. In order to use it, set the value of `spring.cloud.loadbalancer.ribbon.enabled` to `false` or remove spring-cloud-starter-netflix-ribbon from your project.
+2022-07-26 01:20:41.933  INFO 4056 --- [restartedMain] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 18 endpoint(s) beneath base path '/actuator'
+2022-07-26 01:20:41.982  INFO 4056 --- [restartedMain] o.s.c.n.eureka.InstanceInfoFactory       : Setting initial instance status as: STARTING
+2022-07-26 01:20:41.989  INFO 4056 --- [restartedMain] com.netflix.discovery.DiscoveryClient    : Initializing Eureka in region us-east-1
+2022-07-26 01:20:41.991  INFO 4056 --- [restartedMain] c.n.d.provider.DiscoveryJerseyProvider   : Using JSON encoding codec LegacyJacksonJson
+2022-07-26 01:20:41.993  INFO 4056 --- [restartedMain] c.n.d.provider.DiscoveryJerseyProvider   : Using JSON decoding codec LegacyJacksonJson
+2022-07-26 01:20:41.994  INFO 4056 --- [restartedMain] c.n.d.provider.DiscoveryJerseyProvider   : Using XML encoding codec XStreamXml
+2022-07-26 01:20:41.995  INFO 4056 --- [restartedMain] c.n.d.provider.DiscoveryJerseyProvider   : Using XML decoding codec XStreamXml
+2022-07-26 01:20:42.147  INFO 4056 --- [restartedMain] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2022-07-26 01:20:42.147  INFO 4056 --- [restartedMain] com.netflix.discovery.DiscoveryClient    : Disable delta property : false
+2022-07-26 01:20:42.147  INFO 4056 --- [restartedMain] com.netflix.discovery.DiscoveryClient    : Single vip registry refresh property : null
+2022-07-26 01:20:42.147  INFO 4056 --- [restartedMain] com.netflix.discovery.DiscoveryClient    : Force full registry fetch : false
+2022-07-26 01:20:42.147  INFO 4056 --- [restartedMain] com.netflix.discovery.DiscoveryClient    : Application is null : false
+2022-07-26 01:20:42.147  INFO 4056 --- [restartedMain] com.netflix.discovery.DiscoveryClient    : Registered Applications size is zero : true
+2022-07-26 01:20:42.147  INFO 4056 --- [restartedMain] com.netflix.discovery.DiscoveryClient    : Application version is -1: true
+2022-07-26 01:20:42.147  INFO 4056 --- [restartedMain] com.netflix.discovery.DiscoveryClient    : Getting all instance registry info from the eureka server
+2022-07-26 01:20:42.163  INFO 4056 --- [restartedMain] com.netflix.discovery.DiscoveryClient    : The response status is 200
+2022-07-26 01:20:42.163  INFO 4056 --- [restartedMain] com.netflix.discovery.DiscoveryClient    : Starting heartbeat executor: renew interval is: 30
+2022-07-26 01:20:42.163  INFO 4056 --- [restartedMain] c.n.discovery.InstanceInfoReplicator     : InstanceInfoReplicator onDemand update allowed rate per min is 4
+2022-07-26 01:20:42.163  INFO 4056 --- [restartedMain] com.netflix.discovery.DiscoveryClient    : Discovery Client initialized at timestamp 1658816442163 with initial instances count: 5
+2022-07-26 01:20:42.163  INFO 4056 --- [restartedMain] o.s.c.n.e.s.EurekaServiceRegistry        : Registering application MICROSERVICIO-INTERPOL with eureka with status UP
+2022-07-26 01:20:42.163  INFO 4056 --- [restartedMain] com.netflix.discovery.DiscoveryClient    : Saw local status change event StatusChangeEvent [timestamp=1658816442163, current=UP, previous=STARTING]
+2022-07-26 01:20:42.178  INFO 4056 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 55 (http) with context path ''
+2022-07-26 01:20:42.178  INFO 4056 --- [restartedMain] .s.c.n.e.s.EurekaAutoServiceRegistration : Updating port to 55
+2022-07-26 01:20:42.188  INFO 4056 --- [DiscoveryClient-InstanceInfoReplicator-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_MICROSERVICIO-INTERPOL/microservicio-interpol: registering service...
+2022-07-26 01:20:42.220  INFO 4056 --- [DiscoveryClient-InstanceInfoReplicator-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_MICROSERVICIO-INTERPOL/microservicio-interpol - registration status: 204
+2022-07-26 01:20:43.490  INFO 4056 --- [restartedMain] o.s.cloud.commons.util.InetUtils         : Cannot determine local hostname
+2022-07-26 01:20:43.494  INFO 4056 --- [restartedMain] c.m.interpol.InterpolApplication         : Started InterpolApplication in 11.98 seconds (JVM running for 4774.216)
+2022-07-26 01:20:43.504  INFO 4056 --- [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2022-07-26 01:20:44.065  INFO 4056 --- [http-nio-55-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-07-26 01:20:44.065  INFO 4056 --- [http-nio-55-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2022-07-26 01:20:44.070  INFO 4056 --- [http-nio-55-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
+2022-07-26 01:21:05.090  INFO 4056 --- [Thread-11] o.s.c.n.e.s.EurekaServiceRegistry        : Unregistering application MICROSERVICIO-INTERPOL with eureka with status DOWN
+2022-07-26 01:21:05.090  INFO 4056 --- [Thread-11] com.netflix.discovery.DiscoveryClient    : Saw local status change event StatusChangeEvent [timestamp=1658816465090, current=DOWN, previous=UP]
+2022-07-26 01:21:05.090  INFO 4056 --- [DiscoveryClient-InstanceInfoReplicator-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_MICROSERVICIO-INTERPOL/microservicio-interpol: registering service...
+2022-07-26 01:21:05.117  INFO 4056 --- [DiscoveryClient-InstanceInfoReplicator-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_MICROSERVICIO-INTERPOL/microservicio-interpol - registration status: 204
+2022-07-26 01:21:05.206  INFO 4056 --- [Thread-11] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2022-07-26 01:21:05.206  INFO 4056 --- [Thread-11] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2022-07-26 01:21:05.206  INFO 4056 --- [Thread-11] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Shutdown initiated...
+2022-07-26 01:21:05.222  INFO 4056 --- [Thread-11] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Shutdown completed.
+2022-07-26 01:21:05.222  INFO 4056 --- [Thread-11] com.netflix.discovery.DiscoveryClient    : Shutting down DiscoveryClient ...
+2022-07-26 01:21:08.244  INFO 4056 --- [Thread-11] com.netflix.discovery.DiscoveryClient    : Unregistering ...
+2022-07-26 01:21:08.256  INFO 4056 --- [Thread-11] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_MICROSERVICIO-INTERPOL/microservicio-interpol - deregister  status: 200
+2022-07-26 01:21:08.284  INFO 4056 --- [Thread-11] com.netflix.discovery.DiscoveryClient    : Completed shut down of DiscoveryClient
+2022-07-26 01:21:10.969  INFO 4056 --- [restartedMain] c.c.c.ConfigServicePropertySourceLocator : Fetching config from server at : http://localhost:8888/
+2022-07-26 01:21:12.797  INFO 4056 --- [restartedMain] c.c.c.ConfigServicePropertySourceLocator : Located environment: name=microservicio-interpol, profiles=[dev], label=null, version=63c70009527c9abb57b3001d5f35f41ddc93628f, state=null
+2022-07-26 01:21:12.798  INFO 4056 --- [restartedMain] b.c.PropertySourceBootstrapConfiguration : Located property source: [BootstrapPropertySource {name='bootstrapProperties-configClient'}, BootstrapPropertySource {name='bootstrapProperties-https://github.com/villegas-pug/config-server/microservicio-interpol-dev.properties'}, BootstrapPropertySource {name='bootstrapProperties-https://github.com/villegas-pug/config-server/application.properties'}]
+2022-07-26 01:21:12.809  INFO 4056 --- [restartedMain] c.m.interpol.InterpolApplication         : The following profiles are active: dev
+2022-07-26 01:21:13.397  INFO 4056 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2022-07-26 01:21:13.431  INFO 4056 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 32ms. Found 2 JPA repository interfaces.
+2022-07-26 01:21:13.542  INFO 4056 --- [restartedMain] o.s.cloud.context.scope.GenericScope     : BeanFactory id=e7360b25-44a2-32c8-9b8e-04ceadd01b33
+2022-07-26 01:21:13.642  INFO 4056 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 55 (http)
+2022-07-26 01:21:13.645  INFO 4056 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-07-26 01:21:13.646  INFO 4056 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.43]
+2022-07-26 01:21:13.647  INFO 4056 --- [restartedMain] o.a.catalina.core.AprLifecycleListener   : Loaded Apache Tomcat Native library [1.2.24] using APR version [1.7.0].
+2022-07-26 01:21:13.648  INFO 4056 --- [restartedMain] o.a.catalina.core.AprLifecycleListener   : APR capabilities: IPv6 [true], sendfile [true], accept filters [false], random [true].
+2022-07-26 01:21:13.649  INFO 4056 --- [restartedMain] o.a.catalina.core.AprLifecycleListener   : APR/OpenSSL configuration: useAprConnector [false], useOpenSSL [true]
+2022-07-26 01:21:13.650  INFO 4056 --- [restartedMain] o.a.catalina.core.AprLifecycleListener   : OpenSSL successfully initialized [OpenSSL 1.1.1g  21 Apr 2020]
+2022-07-26 01:21:13.714  INFO 4056 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-07-26 01:21:13.715  INFO 4056 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 899 ms
+2022-07-26 01:21:13.855  INFO 4056 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Starting...
+2022-07-26 01:21:13.876  INFO 4056 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Start completed.
+2022-07-26 01:21:14.207  INFO 4056 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2022-07-26 01:21:14.226  INFO 4056 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2022-07-26 01:21:14.381  WARN 4056 --- [restartedMain] c.n.c.sources.URLConfigurationSource     : No URLs will be polled as dynamic configuration sources.
+2022-07-26 01:21:14.382  INFO 4056 --- [restartedMain] c.n.c.sources.URLConfigurationSource     : To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-07-26 01:21:14.415  WARN 4056 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2022-07-26 01:21:14.467  INFO 4056 --- [restartedMain] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2022-07-26 01:21:15.780  INFO 4056 --- [restartedMain] o.s.cloud.commons.util.InetUtils         : Cannot determine local hostname
+2022-07-26 01:21:17.175  INFO 4056 --- [restartedMain] o.s.cloud.commons.util.InetUtils         : Cannot determine local hostname
+2022-07-26 01:21:17.180  INFO 4056 --- [restartedMain] DiscoveryClientOptionalArgsConfiguration : Eureka HTTP Client uses Jersey
+2022-07-26 01:21:17.199  WARN 4056 --- [restartedMain] ockingLoadBalancerClientRibbonWarnLogger : You already have RibbonLoadBalancerClient on your classpath. It will be used by default. As Spring Cloud Ribbon is in maintenance mode. We recommend switching to BlockingLoadBalancerClient instead. In order to use it, set the value of `spring.cloud.loadbalancer.ribbon.enabled` to `false` or remove spring-cloud-starter-netflix-ribbon from your project.
+2022-07-26 01:21:17.240  INFO 4056 --- [restartedMain] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 18 endpoint(s) beneath base path '/actuator'
+2022-07-26 01:21:17.284  INFO 4056 --- [restartedMain] o.s.c.n.eureka.InstanceInfoFactory       : Setting initial instance status as: STARTING
+2022-07-26 01:21:17.289  INFO 4056 --- [restartedMain] com.netflix.discovery.DiscoveryClient    : Initializing Eureka in region us-east-1
+2022-07-26 01:21:17.298  INFO 4056 --- [restartedMain] c.n.d.provider.DiscoveryJerseyProvider   : Using JSON encoding codec LegacyJacksonJson
+2022-07-26 01:21:17.299  INFO 4056 --- [restartedMain] c.n.d.provider.DiscoveryJerseyProvider   : Using JSON decoding codec LegacyJacksonJson
+2022-07-26 01:21:17.300  INFO 4056 --- [restartedMain] c.n.d.provider.DiscoveryJerseyProvider   : Using XML encoding codec XStreamXml
+2022-07-26 01:21:17.301  INFO 4056 --- [restartedMain] c.n.d.provider.DiscoveryJerseyProvider   : Using XML decoding codec XStreamXml
+2022-07-26 01:21:17.470  INFO 4056 --- [restartedMain] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2022-07-26 01:21:17.477  INFO 4056 --- [restartedMain] com.netflix.discovery.DiscoveryClient    : Disable delta property : false
+2022-07-26 01:21:17.479  INFO 4056 --- [restartedMain] com.netflix.discovery.DiscoveryClient    : Single vip registry refresh property : null
+2022-07-26 01:21:17.480  INFO 4056 --- [restartedMain] com.netflix.discovery.DiscoveryClient    : Force full registry fetch : false
+2022-07-26 01:21:17.480  INFO 4056 --- [restartedMain] com.netflix.discovery.DiscoveryClient    : Application is null : false
+2022-07-26 01:21:17.481  INFO 4056 --- [restartedMain] com.netflix.discovery.DiscoveryClient    : Registered Applications size is zero : true
+2022-07-26 01:21:17.483  INFO 4056 --- [restartedMain] com.netflix.discovery.DiscoveryClient    : Application version is -1: true
+2022-07-26 01:21:17.485  INFO 4056 --- [restartedMain] com.netflix.discovery.DiscoveryClient    : Getting all instance registry info from the eureka server
+2022-07-26 01:21:17.495  INFO 4056 --- [restartedMain] com.netflix.discovery.DiscoveryClient    : The response status is 200
+2022-07-26 01:21:17.497  INFO 4056 --- [restartedMain] com.netflix.discovery.DiscoveryClient    : Starting heartbeat executor: renew interval is: 30
+2022-07-26 01:21:17.498  INFO 4056 --- [restartedMain] c.n.discovery.InstanceInfoReplicator     : InstanceInfoReplicator onDemand update allowed rate per min is 4
+2022-07-26 01:21:17.499  INFO 4056 --- [restartedMain] com.netflix.discovery.DiscoveryClient    : Discovery Client initialized at timestamp 1658816477499 with initial instances count: 6
+2022-07-26 01:21:17.501  INFO 4056 --- [restartedMain] o.s.c.n.e.s.EurekaServiceRegistry        : Registering application MICROSERVICIO-INTERPOL with eureka with status UP
+2022-07-26 01:21:17.502  INFO 4056 --- [restartedMain] com.netflix.discovery.DiscoveryClient    : Saw local status change event StatusChangeEvent [timestamp=1658816477502, current=UP, previous=STARTING]
+2022-07-26 01:21:17.512  INFO 4056 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 55 (http) with context path ''
+2022-07-26 01:21:17.513  INFO 4056 --- [restartedMain] .s.c.n.e.s.EurekaAutoServiceRegistration : Updating port to 55
+2022-07-26 01:21:17.549  INFO 4056 --- [DiscoveryClient-InstanceInfoReplicator-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_MICROSERVICIO-INTERPOL/microservicio-interpol: registering service...
+2022-07-26 01:21:17.572  INFO 4056 --- [DiscoveryClient-InstanceInfoReplicator-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_MICROSERVICIO-INTERPOL/microservicio-interpol - registration status: 204
+2022-07-26 01:21:18.837  INFO 4056 --- [restartedMain] o.s.cloud.commons.util.InetUtils         : Cannot determine local hostname
+2022-07-26 01:21:18.876  INFO 4056 --- [restartedMain] c.m.interpol.InterpolApplication         : Started InterpolApplication in 10.473 seconds (JVM running for 4809.591)
+2022-07-26 01:21:18.883  INFO 4056 --- [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2022-07-26 01:21:57.838  INFO 4056 --- [http-nio-55-exec-8] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-07-26 01:21:57.839  INFO 4056 --- [http-nio-55-exec-8] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2022-07-26 01:21:57.842  INFO 4056 --- [http-nio-55-exec-8] o.s.web.servlet.DispatcherServlet        : Completed initialization in 3 ms
+2022-07-26 01:24:37.222  INFO 4056 --- [Thread-19] o.s.c.n.e.s.EurekaServiceRegistry        : Unregistering application MICROSERVICIO-INTERPOL with eureka with status DOWN
+2022-07-26 01:24:37.223  INFO 4056 --- [Thread-19] com.netflix.discovery.DiscoveryClient    : Saw local status change event StatusChangeEvent [timestamp=1658816677223, current=DOWN, previous=UP]
+2022-07-26 01:24:37.224  INFO 4056 --- [DiscoveryClient-InstanceInfoReplicator-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_MICROSERVICIO-INTERPOL/microservicio-interpol: registering service...
+2022-07-26 01:24:37.235  INFO 4056 --- [DiscoveryClient-InstanceInfoReplicator-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_MICROSERVICIO-INTERPOL/microservicio-interpol - registration status: 204
+2022-07-26 01:24:37.364  INFO 4056 --- [Thread-19] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2022-07-26 01:24:37.368  INFO 4056 --- [Thread-19] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2022-07-26 01:24:37.373  INFO 4056 --- [Thread-19] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Shutdown initiated...
+2022-07-26 01:24:37.378  INFO 4056 --- [Thread-19] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Shutdown completed.
+2022-07-26 01:24:37.382  INFO 4056 --- [Thread-19] com.netflix.discovery.DiscoveryClient    : Shutting down DiscoveryClient ...
+2022-07-26 01:24:40.400  INFO 4056 --- [Thread-19] com.netflix.discovery.DiscoveryClient    : Unregistering ...
+2022-07-26 01:24:40.415  INFO 4056 --- [Thread-19] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_MICROSERVICIO-INTERPOL/microservicio-interpol - deregister  status: 200
+2022-07-26 01:24:40.423  INFO 4056 --- [Thread-19] com.netflix.discovery.DiscoveryClient    : Completed shut down of DiscoveryClient
+2022-07-26 01:24:43.103  INFO 4056 --- [restartedMain] c.c.c.ConfigServicePropertySourceLocator : Fetching config from server at : http://localhost:8888/
+2022-07-26 01:24:45.022  INFO 4056 --- [restartedMain] c.c.c.ConfigServicePropertySourceLocator : Located environment: name=microservicio-interpol, profiles=[dev], label=null, version=63c70009527c9abb57b3001d5f35f41ddc93628f, state=null
+2022-07-26 01:24:45.024  INFO 4056 --- [restartedMain] b.c.PropertySourceBootstrapConfiguration : Located property source: [BootstrapPropertySource {name='bootstrapProperties-configClient'}, BootstrapPropertySource {name='bootstrapProperties-https://github.com/villegas-pug/config-server/microservicio-interpol-dev.properties'}, BootstrapPropertySource {name='bootstrapProperties-https://github.com/villegas-pug/config-server/application.properties'}]
+2022-07-26 01:24:45.032  INFO 4056 --- [restartedMain] c.m.interpol.InterpolApplication         : The following profiles are active: dev
+2022-07-26 01:24:45.493  INFO 4056 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2022-07-26 01:24:45.528  INFO 4056 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 32ms. Found 2 JPA repository interfaces.
+2022-07-26 01:24:45.644  INFO 4056 --- [restartedMain] o.s.cloud.context.scope.GenericScope     : BeanFactory id=e7360b25-44a2-32c8-9b8e-04ceadd01b33
+2022-07-26 01:24:45.799  INFO 4056 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 55 (http)
+2022-07-26 01:24:45.814  INFO 4056 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-07-26 01:24:45.816  INFO 4056 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.43]
+2022-07-26 01:24:45.818  INFO 4056 --- [restartedMain] o.a.catalina.core.AprLifecycleListener   : Loaded Apache Tomcat Native library [1.2.24] using APR version [1.7.0].
+2022-07-26 01:24:45.820  INFO 4056 --- [restartedMain] o.a.catalina.core.AprLifecycleListener   : APR capabilities: IPv6 [true], sendfile [true], accept filters [false], random [true].
+2022-07-26 01:24:45.821  INFO 4056 --- [restartedMain] o.a.catalina.core.AprLifecycleListener   : APR/OpenSSL configuration: useAprConnector [false], useOpenSSL [true]
+2022-07-26 01:24:45.822  INFO 4056 --- [restartedMain] o.a.catalina.core.AprLifecycleListener   : OpenSSL successfully initialized [OpenSSL 1.1.1g  21 Apr 2020]
+2022-07-26 01:24:45.887  INFO 4056 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-07-26 01:24:45.888  INFO 4056 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 852 ms
+2022-07-26 01:24:46.022  INFO 4056 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-4 - Starting...
+2022-07-26 01:24:46.046  INFO 4056 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-4 - Start completed.
+2022-07-26 01:24:46.348  INFO 4056 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2022-07-26 01:24:46.383  INFO 4056 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2022-07-26 01:24:46.486  WARN 4056 --- [restartedMain] c.n.c.sources.URLConfigurationSource     : No URLs will be polled as dynamic configuration sources.
+2022-07-26 01:24:46.486  INFO 4056 --- [restartedMain] c.n.c.sources.URLConfigurationSource     : To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2022-07-26 01:24:46.525  WARN 4056 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2022-07-26 01:24:46.596  INFO 4056 --- [restartedMain] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2022-07-26 01:24:47.938  INFO 4056 --- [restartedMain] o.s.cloud.commons.util.InetUtils         : Cannot determine local hostname
+2022-07-26 01:24:49.272  INFO 4056 --- [restartedMain] o.s.cloud.commons.util.InetUtils         : Cannot determine local hostname
+2022-07-26 01:24:49.286  INFO 4056 --- [restartedMain] DiscoveryClientOptionalArgsConfiguration : Eureka HTTP Client uses Jersey
+2022-07-26 01:24:49.319  WARN 4056 --- [restartedMain] ockingLoadBalancerClientRibbonWarnLogger : You already have RibbonLoadBalancerClient on your classpath. It will be used by default. As Spring Cloud Ribbon is in maintenance mode. We recommend switching to BlockingLoadBalancerClient instead. In order to use it, set the value of `spring.cloud.loadbalancer.ribbon.enabled` to `false` or remove spring-cloud-starter-netflix-ribbon from your project.
+2022-07-26 01:24:49.356  INFO 4056 --- [restartedMain] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 18 endpoint(s) beneath base path '/actuator'
+2022-07-26 01:24:49.407  INFO 4056 --- [restartedMain] o.s.c.n.eureka.InstanceInfoFactory       : Setting initial instance status as: STARTING
+2022-07-26 01:24:49.410  INFO 4056 --- [restartedMain] com.netflix.discovery.DiscoveryClient    : Initializing Eureka in region us-east-1
+2022-07-26 01:24:49.412  INFO 4056 --- [restartedMain] c.n.d.provider.DiscoveryJerseyProvider   : Using JSON encoding codec LegacyJacksonJson
+2022-07-26 01:24:49.413  INFO 4056 --- [restartedMain] c.n.d.provider.DiscoveryJerseyProvider   : Using JSON decoding codec LegacyJacksonJson
+2022-07-26 01:24:49.413  INFO 4056 --- [restartedMain] c.n.d.provider.DiscoveryJerseyProvider   : Using XML encoding codec XStreamXml
+2022-07-26 01:24:49.414  INFO 4056 --- [restartedMain] c.n.d.provider.DiscoveryJerseyProvider   : Using XML decoding codec XStreamXml
+2022-07-26 01:24:49.510  INFO 4056 --- [restartedMain] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2022-07-26 01:24:49.511  INFO 4056 --- [restartedMain] com.netflix.discovery.DiscoveryClient    : Disable delta property : false
+2022-07-26 01:24:49.512  INFO 4056 --- [restartedMain] com.netflix.discovery.DiscoveryClient    : Single vip registry refresh property : null
+2022-07-26 01:24:49.512  INFO 4056 --- [restartedMain] com.netflix.discovery.DiscoveryClient    : Force full registry fetch : false
+2022-07-26 01:24:49.512  INFO 4056 --- [restartedMain] com.netflix.discovery.DiscoveryClient    : Application is null : false
+2022-07-26 01:24:49.513  INFO 4056 --- [restartedMain] com.netflix.discovery.DiscoveryClient    : Registered Applications size is zero : true
+2022-07-26 01:24:49.513  INFO 4056 --- [restartedMain] com.netflix.discovery.DiscoveryClient    : Application version is -1: true
+2022-07-26 01:24:49.513  INFO 4056 --- [restartedMain] com.netflix.discovery.DiscoveryClient    : Getting all instance registry info from the eureka server
+2022-07-26 01:24:49.517  INFO 4056 --- [restartedMain] com.netflix.discovery.DiscoveryClient    : The response status is 200
+2022-07-26 01:24:49.518  INFO 4056 --- [restartedMain] com.netflix.discovery.DiscoveryClient    : Starting heartbeat executor: renew interval is: 30
+2022-07-26 01:24:49.519  INFO 4056 --- [restartedMain] c.n.discovery.InstanceInfoReplicator     : InstanceInfoReplicator onDemand update allowed rate per min is 4
+2022-07-26 01:24:49.520  INFO 4056 --- [restartedMain] com.netflix.discovery.DiscoveryClient    : Discovery Client initialized at timestamp 1658816689520 with initial instances count: 6
+2022-07-26 01:24:49.522  INFO 4056 --- [restartedMain] o.s.c.n.e.s.EurekaServiceRegistry        : Registering application MICROSERVICIO-INTERPOL with eureka with status UP
+2022-07-26 01:24:49.522  INFO 4056 --- [restartedMain] com.netflix.discovery.DiscoveryClient    : Saw local status change event StatusChangeEvent [timestamp=1658816689522, current=UP, previous=STARTING]
+2022-07-26 01:24:49.523  INFO 4056 --- [DiscoveryClient-InstanceInfoReplicator-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_MICROSERVICIO-INTERPOL/microservicio-interpol: registering service...
+2022-07-26 01:24:49.528  INFO 4056 --- [DiscoveryClient-InstanceInfoReplicator-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_MICROSERVICIO-INTERPOL/microservicio-interpol - registration status: 204
+2022-07-26 01:24:49.529  INFO 4056 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 55 (http) with context path ''
+2022-07-26 01:24:49.530  INFO 4056 --- [restartedMain] .s.c.n.e.s.EurekaAutoServiceRegistration : Updating port to 55
+2022-07-26 01:24:50.705  INFO 4056 --- [restartedMain] o.s.cloud.commons.util.InetUtils         : Cannot determine local hostname
+2022-07-26 01:24:50.716  INFO 4056 --- [restartedMain] c.m.interpol.InterpolApplication         : Started InterpolApplication in 10.176 seconds (JVM running for 5021.431)
+2022-07-26 01:24:50.718  INFO 4056 --- [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2022-07-26 01:25:05.518  INFO 4056 --- [http-nio-55-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-07-26 01:25:05.519  INFO 4056 --- [http-nio-55-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2022-07-26 01:25:05.523  INFO 4056 --- [http-nio-55-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 3 ms
+2022-07-26 01:26:59.094  WARN 4056 --- [http-nio-55-exec-4] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.commons.utils.errors.DataAccessEmptyWarning: ¡No hay registros para mostrar!]
+2022-07-26 01:29:49.547  INFO 4056 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2022-07-26 01:34:49.554  INFO 4056 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2022-07-26 01:39:49.563  INFO 4056 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2022-07-26 01:44:49.567  INFO 4056 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration

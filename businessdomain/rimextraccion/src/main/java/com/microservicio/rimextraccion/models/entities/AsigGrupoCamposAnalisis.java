@@ -18,16 +18,13 @@ import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
 import com.commons.utils.models.entities.Usuario;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-
 @Entity
 @Table(name = "RimAsigGrupoCamposAnalisis")
 @Data
@@ -52,6 +49,7 @@ public class AsigGrupoCamposAnalisis implements Serializable {
    
    @ManyToOne(fetch = FetchType.EAGER)
    @JoinColumn(name = "uIdUsrAnalista", nullable = false)
+   @JsonIgnoreProperties(value = { "usrProcedimiento" })
    private Usuario usrAnalista;
    
    @Column(name = "nRegAnalisisIni", nullable = false)
@@ -67,6 +65,11 @@ public class AsigGrupoCamposAnalisis implements Serializable {
    @PrePersist
    private void prePersist(){
       this.fechaAsignacion = new Date();
+   }
+
+   public void addProduccionAnalisis(ProduccionAnalisis prod){
+      prod.setAsigGrupo(this);
+      this.produccionAnalisis.add(prod);
    }
 
    /*

@@ -5,11 +5,10 @@ spring:
         enabled: true
         service-id: config-server
       fail-fast: true
-      name: microservicio-rimextraccion
-      profile: prod
+      name: microservicio-interpol
+      profile: dev
       username: rguevarav
       password: Cd1526a2a8
       retry:
         max-attempts: 1
-        max-interval: 1000
-  
+        initial-interval: 1000

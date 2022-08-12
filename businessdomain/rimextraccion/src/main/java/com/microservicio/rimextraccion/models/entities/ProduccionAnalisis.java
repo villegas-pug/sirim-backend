@@ -2,7 +2,6 @@ package com.microservicio.rimextraccion.models.entities;
 
 import java.io.Serializable;
 import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,9 +11,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonFormat.Shape;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -45,7 +49,8 @@ public class ProduccionAnalisis implements Serializable {
    @Column(name = "bCompleto",  nullable = false)
    private boolean completo;
    
-   @Temporal(TemporalType.TIMESTAMP)
+   @Temporal(TemporalType.DATE)
+   @JsonFormat(shape = Shape.STRING, pattern = "yyyy-MM-dd", timezone = "America/Lima")
    @Column(name = "dFechaFin", nullable = false)
    private Date fechaFin;
 
@@ -54,10 +59,16 @@ public class ProduccionAnalisis implements Serializable {
       this.completo = true;
       this.fechaFin = new Date();
    }
+   
+   @PreUpdate
+   private void preUpdate(){
+      this.completo = true;
+      this.fechaFin = new Date();
+   }
 
    /*
    *
    */
-  private static final long serialVersionUID = 1L;
+   private static final long serialVersionUID = 1L;
    
 }

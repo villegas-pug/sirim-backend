@@ -59,8 +59,8 @@ public class RimextraccionServiceImpl extends CommonServiceImpl<TablaDinamica, R
 
    @Override
    @Transactional(readOnly = true)
-   public Long countRegistrosExtraccion(String nombreTabla) {
-      return super.repository.countRegistrosExtraccion(nombreTabla);
+   public Long countTablaByNombre(String nombreTabla) {
+      return super.repository.countTablaByNombre(nombreTabla);
    }
 
    @Override

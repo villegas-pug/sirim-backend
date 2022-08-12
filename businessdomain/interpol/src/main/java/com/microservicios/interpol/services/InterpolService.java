@@ -8,7 +8,7 @@ import com.microservicios.interpol.models.entity.Interpol;
 
 public interface InterpolService extends CommonService<Interpol> {
 
-   List<Interpol> findByAppox(String nombres, String apellidos, String cedula, String pasaporte);
+   List<Interpol> findByAppox(String nombres, String apellidos);
    List<InterpolDto> testFindAll();
    List<Interpol> saveAll(List<Interpol> interpol);
 }

@@ -32,6 +32,8 @@ public class Messages {
    public static final String SUCCESS_SAVE_DILIGENCIA = "¡Diligencia guardada exitosamente!";
    public static final String SUCCESS_SAVE_OPINION = "¡Opinión guardada exitosamente!";
    public static final String SUCCESS_SAVE_DATA_MODEL = "¡Model de datos: %s, guardada exitosamente!";
+   public static final String SUCCESS_SAVE_ANALISIS_EXTRACCION = "¡Registro analizado exitosamente!";
+   public static final String SUCCESS_DELETE_GRUPO_ANALISIS = "¡Grupo eliminado existosamente!";
 
    /*-> WARNING: */
    public static final String MESSAGGE_WARNING_EMPTY = "¡No hay registros para mostrar!";
@@ -46,6 +48,7 @@ public class Messages {
    public static final String WARNING_ASIGN_REG_ANALISIS = "¡Los rangos ingresados, ya fueron asignados!";
    public static final String WARNING_ADD_GROUP_ANALISIS = "¡Nombre de grupo: %s, en uso!";
    public static final String WARNING_DUPLICATE_MODEL_DATA = "¡Nombre de modelo de datos: %s, en uso!";
+   public static final String WARNING_RECORDS_NOT_FOUND_TO_SEGMENT = "¡No existen registros, para segmentar!";
 
    /*-> ERROR: */
    public final static String MESSAGGE_ERROR_DATA_ACCESS = "¡Ocurrió un error, contacte a sitemas y proporcione este código %s!";

@@ -41,6 +41,9 @@ public class TablaDinamica implements Serializable {
    @Column(name = "sNombre", length = 55, nullable = false)
    private String nombre;
    
+   @Column(name = "sMetaFieldsCsv", columnDefinition = "VARCHAR(MAX) NULL")
+   private String metaFieldsCsv;
+
    @ManyToOne(fetch = FetchType.EAGER)
    @JoinColumn(name = "uIdUsrCreador", nullable = false)
    private Usuario usrCreador;

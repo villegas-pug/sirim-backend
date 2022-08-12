@@ -18,7 +18,7 @@ public interface RimextraccionRepository extends JpaRepository<TablaDinamica, Lo
    
    @Query(value = "SELECT COLUMN_NAME nombre, DATA_TYPE tipo FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = ?", nativeQuery = true)
    List<Tuple> findMetaTablaDinamicaByNombre(String nombreTabla);
-
+   
    @Query(value = "{CALL dbo.usp_Rim_Procedimiento_ListarTablaDinamicaPorSufijoDeCampo(?, ?)}", nativeQuery = true)
    List<Tuple> findTablaDinamicaBySuffixOfField(String nombreTabla, String suffix);
 
@@ -29,7 +29,7 @@ public interface RimextraccionRepository extends JpaRepository<TablaDinamica, Lo
    Long alterTablaDinamica(String queryString);
 
    @Query(value = "{CALL dbo.usp_Rim_Procedimiento_ContarRegistrosTabla(?)}", nativeQuery = true)
-   Long countRegistrosExtraccion(String nombreTabla);
+   Long countTablaByNombre(String nombreTabla);
 
    @Query(value = "SELECT * FROM SidDependencia", nativeQuery = true)
    List<Tuple> findAllTest();

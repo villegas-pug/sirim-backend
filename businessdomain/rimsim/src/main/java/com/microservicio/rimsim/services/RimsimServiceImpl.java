@@ -1,12 +1,12 @@
 package com.microservicio.rimsim.services;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import javax.persistence.Tuple;
 import com.commons.utils.helpers.DataModelHelper;
 import com.microservicio.rimsim.models.repositories.RimsimRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +24,7 @@ public class RimsimServiceImpl implements RimsimService {
 
    @Override
    @Transactional(readOnly = true)
+   @Cacheable(cacheNames = { "extraccion" })
    public List<Map<String, Object>> dynamicJoinStatement(String mod, String fields, String where) {
       return DataModelHelper.convertTuplesToJson(this.repository.dynamicJoinStatement(mod, fields, where), false);
    }

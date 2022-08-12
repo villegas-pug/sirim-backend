@@ -2,6 +2,20 @@
    "configurations": [
       {
          "type": "java",
+         "name": "Launch RimcommonHelper",
+         "request": "launch",
+         "mainClass": "com.microservicio.rimextraccion.helpers.RimcommonHelper",
+         "projectName": "rimextraccion"
+      },
+      {
+         "type": "java",
+         "name": "Launch RimanalisisController",
+         "request": "launch",
+         "mainClass": "com.microservicio.rimextraccion.controllers.RimanalisisController",
+         "projectName": "rimextraccion"
+      },
+      {
+         "type": "java",
          "name": "Spring Boot-RimsimApplication<rimsim>",
          "request": "launch",
          "cwd": "${workspaceFolder}",

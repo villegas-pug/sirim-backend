@@ -37,11 +37,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Log4j2
 public class InterpolController extends CommonController<Interpol, InterpolService> {
 
-   @PostMapping(path = "/findByApprox")
-   public ResponseEntity<?> findByApprox(@RequestBody Interpol interpol) {
+   @PostMapping(path = "/findInterpolByApprox")
+   public ResponseEntity<?> findInterpolByApprox(@RequestBody Interpol interpol) throws InterruptedException {
 
-      List<Interpol> interpoDb = super.service.findByAppox(interpol.getNombres(), interpol.getApellidos(),
-            interpol.getCedula(), interpol.getPasaporte());
+      List<Interpol> interpoDb = super.service.findByAppox(interpol.getNombres(), interpol.getApellidos());
+      Thread.sleep(1000);
 
       if (interpoDb.size() == 0)
          throw new DataAccessEmptyWarning();
@@ -55,9 +55,9 @@ public class InterpolController extends CommonController<Interpol, InterpolServi
                .build());
    }
 
-   @PostMapping(path = "/saveByOnlyOne", consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
-   public ResponseEntity<?> saveByOnlyOne(@RequestPart Interpol interpol, 
-                                          @RequestPart MultipartFile file) throws IOException {
+   @PostMapping(path = "/saveInterpol", consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
+   public ResponseEntity<?> saveInterpol(@RequestPart Interpol interpol, 
+                                         @RequestPart MultipartFile file) throws IOException {
       
       interpol.setScreenShot(file.getBytes());
       this.service.save(interpol);
@@ -70,8 +70,8 @@ public class InterpolController extends CommonController<Interpol, InterpolServi
                                        .build());
    }
    
-   @GetMapping(path = "/downloadScreenshot", produces = { MediaType.IMAGE_PNG_VALUE })
-   public ResponseEntity<?> downloadScreenshot(@RequestParam Long idInterpol) throws IOException {
+   @GetMapping(path = "/findInterpolScreenshotById", produces = { MediaType.IMAGE_PNG_VALUE })
+   public ResponseEntity<?> findInterpolScreenshotById(@RequestParam Long idInterpol) throws IOException {
 
       Interpol interpol = this.service.findById(idInterpol).orElseThrow(() -> 
                               new EntityFindByIdWarning(idInterpol));
@@ -91,8 +91,8 @@ public class InterpolController extends CommonController<Interpol, InterpolServi
                .body(screeShot);
    }
 
-   @PostMapping(path = "/saveAll", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
-   public ResponseEntity<?> saveAll(@RequestPart MultipartFile file) {
+   @PostMapping(path = "/saveAllInterpol", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+   public ResponseEntity<?> saveAllInterpol(@RequestPart MultipartFile file) {
 
       try (XSSFWorkbook book = new XSSFWorkbook(file.getInputStream())) {
          

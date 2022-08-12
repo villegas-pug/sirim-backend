@@ -18,7 +18,7 @@ public interface RimextraccionService extends CommonService<TablaDinamica> {
    List<Map<String, Object>> findTablaDinamicaBySuffixOfField(String nombreTabla, String suffix);
    Long saveTablaDinamica(String nombreTabla, String sqlInsertValues);
    Long alterTablaDinamica(String queryString);
-   Long countRegistrosExtraccion(String nombreTabla);
+   Long countTablaByNombre(String nombreTabla);
    List<Tuple> findAllTest();
 
    /*► Client-Methods ...  */

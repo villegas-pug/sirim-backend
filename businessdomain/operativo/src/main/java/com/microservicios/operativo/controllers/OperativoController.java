@@ -61,7 +61,7 @@ public class OperativoController extends CommonController<Operativo, OperativoSe
    public ResponseEntity<?> save(@RequestPart Operativo operativo, @RequestPart(required = false) MultipartFile file) {
       /* » Validar: xls-file ... */
       if (file != null)
-         operativo.setDetOperativo(this.convertObjXlsxToList(file));
+            operativo.setDetOperativo(this.convertObjXlsxToList(file));
 
       return ResponseEntity.ok().body(
             Response

@@ -57,6 +57,9 @@ public class Procedimiento implements Serializable {
    @Column(name = "sDisposicion", length = 15)
    private String disposicion;
 
+   @Column(name = "nSecuencia", nullable = true)
+   private int secuencia;
+
    @Transient
    private String rutaPrincipal;
 

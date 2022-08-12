@@ -11,9 +11,9 @@ import org.springframework.data.repository.query.Param;
 public interface InterpolRepository extends JpaRepository<Interpol, Long> {
 
    @Query(
-      value = "SELECT TOP 9 * FROM SidInterpol WHERE sNombres LIKE %:nombres% AND sApellidos LIKE %:apellidos% AND ISNULL(sCedula, '') LIKE %:cedula% AND ISNULL(sPasaporte, '') LIKE %:pasaporte% ORDER BY dFechaEmision DESC", 
+      value = "SELECT * FROM SidInterpol WHERE sNombres LIKE %:nombres% AND sApellidos LIKE %:apellidos% ORDER BY dFechaEmision DESC",
       nativeQuery = true)
-   List<Interpol> findByAppox(@Param("nombres") String nombres, @Param("apellidos") String apellidos, @Param("cedula") String cedula, @Param("pasaporte") String pasaporte);
+   List<Interpol> findByAppox(@Param("nombres") String nombres, @Param("apellidos") String apellidos);
 
    @Query(value = "SELECT (i.sNombres)nombres, (i.dFechaEmision)fechaEmision FROM SidInterpol i", nativeQuery = true)
    List<InterpolDto> testFindAll();

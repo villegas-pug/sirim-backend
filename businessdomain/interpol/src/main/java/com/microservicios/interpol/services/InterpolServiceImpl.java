@@ -12,10 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class InterpolServiceImpl extends CommonServiceImpl<Interpol, InterpolRepository> implements InterpolService {
 
-   @Transactional(readOnly = true)
    @Override
-   public List<Interpol> findByAppox(String nombres, String apellidos, String cedula, String pasaporte) {
-      return super.repository.findByAppox(nombres, apellidos, cedula, pasaporte);
+   @Transactional(readOnly = true)
+   public List<Interpol> findByAppox(String nombres, String apellidos) {
+      return super.repository.findByAppox(nombres, apellidos);
    }
 
    @Override
