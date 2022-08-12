@@ -80,9 +80,4 @@ public class RimcommonHelper {
       return metaFieldName.replaceAll("^[snbd]|_a$|_e$|[._]", " ").trim();
    }
 
-   public static void main(String[] args) {
-      String undecorated = undecoratedMetaFieldName("dFecha_Control_e");
-      System.out.println(undecorated);
-   }
-
 }
