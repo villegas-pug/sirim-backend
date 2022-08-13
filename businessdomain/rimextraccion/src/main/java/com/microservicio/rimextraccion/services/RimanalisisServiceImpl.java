@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
-
 import com.microservicio.rimextraccion.dto.AnalizadosDto;
 import com.microservicio.rimextraccion.errors.NotFoundDownloadException;
 import com.microservicio.rimextraccion.helpers.RimanalisisPoiHelper;
@@ -43,7 +42,7 @@ public class RimanalisisServiceImpl implements RimanalisisService {
    @Override
    public ByteArrayResource convertProduccionAnalisisToByteArrResource(AnalizadosDto analizadosDto) throws IOException{
 
-      /*► DEP'S ... */
+      /*► GLOBAL - DEP'S ... */
       AsigGrupoCamposAnalisis asigGrupoCamposAnalisis = this.rimasigAnalisisService.findById(analizadosDto.getIdAsigGrupo());
       if(asigGrupoCamposAnalisis == null)
          throw new NotFoundDownloadException();
@@ -234,7 +233,7 @@ public class RimanalisisServiceImpl implements RimanalisisService {
          cellPorcErr.setCellStyle(RimanalisisPoiHelper.createCellStyle(wb, RimanalisisPoiHelper.CellType.HEADER_CELL_INFO));
          //------------------------------------------------------------------------------------------------------------------------------------------------------
 
-         /*► BODY: Registros de analisis ... */
+         /*► BODY: Registros de `Extracción`, `Analisis` y `Control Calidad` ... */
          //------------------------------------------------------------------------------------------------------------------------------------------------------
          // Dep's ...
          int iR = 0,
@@ -251,7 +250,7 @@ public class RimanalisisServiceImpl implements RimanalisisService {
             cellAnalisis.setCellStyle(RimanalisisPoiHelper.createCellStyle(wb, RimanalisisPoiHelper.CellType.BODY_CELL_ANALISIS));
             cellAnalisis.setCellValue(String.valueOf(iR));
 
-            /*► Dynamic-Cell ... */
+            /*► Dynamic-Cell: `E` y `A` ... */
             for (Entry<String, Object> item : record.entrySet()) {
                iI++;
                cellAnalisis = rowAnalisis.createCell(iI);
@@ -259,7 +258,7 @@ public class RimanalisisServiceImpl implements RimanalisisService {
                cellAnalisis.setCellValue(Optional.ofNullable(item.getValue()).orElse("-").toString());
             }
 
-            /*► Static-Cell ... */
+            /*► Static-Cell: `Control de Calidad` ... */
             for (int sc = 1; sc <= 4; sc++) {
                iI++;
                cellAnalisis = rowAnalisis.createCell(iI);
