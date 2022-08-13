@@ -341,22 +341,16 @@ public class RimextraccionController extends CommonController<TablaDinamica, Rim
       for (AsigGrupoCamposAnalisis asign : grupoAnalisis.getAsigGrupoCamposAnalisis()) {
 
          /*► Rangos asignados ...  */
-         String rangosExtraccionAsign = this.convertArrIntToStr(
-               this.generateRangeNumbersToArr(asign.getRegAnalisisIni(), asign.getRegAnalisisFin()));
+         String rangoAsignedBefore = this.convertArrIntToStr(
+                                                      this.generateRangeNumbersToArr(asign.getRegAnalisisIni(), asign.getRegAnalisisFin()));
 
          /*► Reemplaza `Rangos asignados` en `rangeExtraccionStr` ... */
-         rangesAvailables = rangesAvailables.replace(rangosExtraccionAsign, "");
+         rangesAvailables = rangesAvailables.replace(rangoAsignedBefore, "").replace(", ,", ",");
       }
 
       /*► Validar: Si el rango enviado está disponible ... */
-      Integer[] currentRangesAvailables = this.convertStrCsvToIntArr(rangesAvailables);
-      boolean isAvailableRange = Arrays
-                                    .stream(this.generateRangeNumbersToArr(rangeIni, rangeFin))
-                                    .allMatch(newRange -> {
-                                       return Stream
-                                             .of(currentRangesAvailables)
-                                             .anyMatch(currentRange -> currentRange.equals(newRange));
-                                    });
+      String rangeAssigned = this.convertArrIntToStr(this.generateRangeNumbersToArr(rangeIni, rangeFin));
+      boolean isAvailableRange = rangesAvailables.contains(rangeAssigned);
 
       /*► Save: ... */
       if (isAvailableRange) this.asigService.save(asigGrupoCamposAnalisis);
@@ -371,6 +365,7 @@ public class RimextraccionController extends CommonController<TablaDinamica, Rim
                                  .data(tablaDinamicaDb)
                                  .build());
    }
+
 
    @DeleteMapping(path = { "/deleteAssignedToGrupoAById/{idAsign}" })
    public ResponseEntity<?> deleteAssignedToGrupoAById(@PathVariable Long idAsign) {
