@@ -2,7 +2,8 @@ package com.microservicio.rimextraccion.services;
 
 import java.util.Optional;
 import com.microservicio.rimextraccion.models.entities.GrupoCamposAnalisis;
-import com.microservicio.rimextraccion.models.repository.GrupoCamposAnalisisRepository;
+import com.microservicio.rimextraccion.repository.GrupoCamposAnalisisRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

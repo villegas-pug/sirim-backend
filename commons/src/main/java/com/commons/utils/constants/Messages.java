@@ -34,6 +34,9 @@ public class Messages {
    public static final String SUCCESS_SAVE_DATA_MODEL = "¡Model de datos: %s, guardada exitosamente!";
    public static final String SUCCESS_SAVE_ANALISIS_EXTRACCION = "¡Registro analizado exitosamente!";
    public static final String SUCCESS_DELETE_GRUPO_ANALISIS = "¡Grupo eliminado existosamente!";
+   public static final String SUCCESS_CREATE_RECORDS_FOR_CTRLCAL = "¡Registros para control de calidad generedos exitosamente!";
+   public static final String SUCCESS_RESULT_CONFORMITY_CTRLCAL = "¡Resultado de la conformidad del control de calidad, fué registrado exitosamente!";
+   public static final String SUCCESS_VALIDATE_RECORD_CTRLCAL = "¡Validación registrada exitosamente!";
 
    /*-> WARNING: */
    public static final String MESSAGGE_WARNING_EMPTY = "¡No hay registros para mostrar!";
@@ -49,6 +52,8 @@ public class Messages {
    public static final String WARNING_ADD_GROUP_ANALISIS = "¡Nombre de grupo: %s, en uso!";
    public static final String WARNING_DUPLICATE_MODEL_DATA = "¡Nombre de modelo de datos: %s, en uso!";
    public static final String WARNING_RECORDS_NOT_FOUND_TO_SEGMENT = "¡No existen registros, para segmentar!";
+   public static final String WARNING_IS_IN_CTRLCAL = "¡Asignación actualmente se encuentra en control de calidad!";
+   public static final String WARNING_USER_NOT_EXISTS = "¡Usuario ingresado no existe!";
 
    /*-> ERROR: */
    public final static String MESSAGGE_ERROR_DATA_ACCESS = "¡Ocurrió un error, contacte a sitemas y proporcione este código %s!";

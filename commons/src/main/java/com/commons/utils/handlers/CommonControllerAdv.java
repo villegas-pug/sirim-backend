@@ -37,7 +37,7 @@ public class CommonControllerAdv extends ResponseEntityExceptionHandler {
       return new ResponseEntity<>(handleInternalResponseException(status, ex), status);
    }
 
-   private Response handleInternalResponseException(HttpStatus status, Exception ex) {
+   private Response<Object> handleInternalResponseException(HttpStatus status, Exception ex) {
       return LogAndResponse.handleLogAndResponse(
                   Messages.MESSAGGE_ERROR_DATA_ACCESS(), 
                   ex.getMessage(),
@@ -49,34 +49,34 @@ public class CommonControllerAdv extends ResponseEntityExceptionHandler {
 
    @ResponseStatus(HttpStatus.OK)
    @ExceptionHandler({ DataAccessEmptyWarning.class })
-   public Response handlerNotFound(DataAccessEmptyWarning e) {
+   public Response<Object> handlerNotFound(DataAccessEmptyWarning e) {
       String msjResponse = e.getMessage();
       return LogAndResponse.handleLogAndResponse(msjResponse, msjResponse, null);
    }
 
    @ResponseStatus(HttpStatus.OK)
    @ExceptionHandler({ EntityFindByIdWarning.class, UserNotFoundWarning.class })
-   public Response handleDataAccessError(Exception e) {
+   public Response<Object> handleDataAccessError(Exception e) {
       String msjResponse = e.getMessage();
       return LogAndResponse.handleLogAndResponse(msjResponse, msjResponse, null);
    }
 
    @ResponseStatus(HttpStatus.OK)
    @ExceptionHandler({Exception.class, DataAccessException.class, NullPointerException.class })
-   public Response handleDataAccessException(Exception e) {
+   public Response<Object> handleDataAccessException(Exception e) {
       String msjResponse = Messages.MESSAGGE_ERROR_DATA_ACCESS();
       return LogAndResponse.handleLogAndResponse(msjResponse, e.getMessage(), e.toString());
    }
 
    @ResponseStatus(HttpStatus.OK)
    @ExceptionHandler({ FileSaveWarnning.class })
-   public Response handleSaveException(Exception e){
+   public Response<Object> handleSaveException(Exception e){
       return LogAndResponse.handleLogAndResponse(e.getMessage(), e.getMessage(), null);
    }
    
    @ResponseStatus(code = HttpStatus.OK)
    @ExceptionHandler({ CreateTableWarning.class, AsignWarning.class })
-   public Response handleCreateTableException(Exception e){
+   public Response<Object> handleCreateTableException(Exception e){
       return LogAndResponse.handleLogAndResponse(e.getMessage(), e.getMessage(), null);
    }
 

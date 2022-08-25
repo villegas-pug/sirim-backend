@@ -1,4 +1,4 @@
-package com.microservicio.rimextraccion.models.repository;
+package com.microservicio.rimextraccion.repository;
 
 import java.util.List;
 import javax.persistence.Tuple;

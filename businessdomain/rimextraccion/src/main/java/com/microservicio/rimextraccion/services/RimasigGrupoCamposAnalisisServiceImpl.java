@@ -3,9 +3,10 @@ package com.microservicio.rimextraccion.services;
 import java.util.List;
 import java.util.stream.Collectors;
 import com.commons.utils.models.entities.Usuario;
-import com.microservicio.rimextraccion.dto.AsigGrupoCamposAnalisisDto;
+import com.microservicio.rimextraccion.models.dto.AsigGrupoCamposAnalisisDto;
 import com.microservicio.rimextraccion.models.entities.AsigGrupoCamposAnalisis;
-import com.microservicio.rimextraccion.models.repository.RimasigGrupoCamposAnalisisRepository;
+import com.microservicio.rimextraccion.repository.RimasigGrupoCamposAnalisisRepository;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

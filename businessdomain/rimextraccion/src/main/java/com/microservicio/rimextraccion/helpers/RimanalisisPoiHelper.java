@@ -1,8 +1,6 @@
 package com.microservicio.rimextraccion.helpers;
 
 import java.util.List;
-
-import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.hssf.util.HSSFColor.HSSFColorPredefined;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -17,6 +15,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class RimanalisisPoiHelper {
 
+   /* // ► ...
    public static final String HEADER_CELL_TITULO = "HEADER_CELL_TITULO";
    public static final String HEADER_CELL_TAG = "HEADER_CELL_TAG";
    public static final String HEADER_CELL_TAG_VALUE = "HEADER_CELL_TAG_VALUE";
@@ -29,6 +28,10 @@ public class RimanalisisPoiHelper {
    public static final String FOOTER_CELL_LEYENDA_2 = "FOOTER_CELL_LEYENDA_2";
    public static final String FOOTER_CELL_COPYRIGHT = "FOOTER_CELL_COPYRIGHT";
 
+   // ► `ReporteMensualProduccion` ...
+   public static final String HEADER_TABLE_CELL_RESUMEN_SEMANA = "HEADER_TABLE_CELL_RESUMEN_SEMANA";
+   public static final String BODY_TABLE_CELL = "BODY_TABLE_CELL"; */
+
    public enum CellType {
       HEADER_CELL_TITULO,
       HEADER_CELL_TAG,
@@ -40,26 +43,31 @@ public class RimanalisisPoiHelper {
       BODY_CELL_ANALISIS,
       FOOTER_CELL_OBS,
       FOOTER_CELL_COPYRIGHT,
-      FOOTER_CELL_LEYENDA_2
+      FOOTER_CELL_LEYENDA_2,
+
+      // ► `ReporteMensualProduccion` ...
+      HEADER_TABLE_CELL_RESUMEN_SEMANA,
+      BODY_TABLE_CELL,
+      FOOTER_TABLE_CELL_RESUMEN_MES
    }
 
    public static CellStyle createCellStyle(XSSFWorkbook wb, CellType type){
 
-      /*► DEP'S ... */
+      // ► DEP'S ...
       CellStyle cellStyle = wb.createCellStyle();
       Font font = wb.createFont();
 
-      /*► Apply-Style: `Font` ... */
+      // ► Apply-Style: `Font` ...
       font.setFontName("Arial");
       font.setFontHeightInPoints((short) 11);
       font.setColor(HSSFColorPredefined.WHITE.getIndex());
       cellStyle.setFont(font);
 
-      /*► Apply-Style: `Align` ... */
+      // ► Apply-Style: `Align` ...
       cellStyle.setAlignment(HorizontalAlignment.CENTER);
       cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
 
-      /*► Apply-Style: `Border` ... */
+      // ► Apply-Style: `Border` ...
       cellStyle.setBorderLeft(BorderStyle.THIN);
       cellStyle.setBorderTop(BorderStyle.THIN);
       cellStyle.setBorderRight(BorderStyle.THIN);
@@ -70,10 +78,10 @@ public class RimanalisisPoiHelper {
       cellStyle.setRightBorderColor(HSSFColorPredefined.BLACK.getIndex());
       cellStyle.setBottomBorderColor(HSSFColorPredefined.BLACK.getIndex());
 
-      /*► Apply-Style: `Text` ... */
+      // ► Apply-Style: `Text` ...
       cellStyle.setWrapText(true);
 
-      /*► Apply-Style: `Color` ... */
+      // ► Apply-Style: `Color` ...
       cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
       switch (type) {
          case HEADER_CELL_TITULO:
@@ -127,6 +135,24 @@ public class RimanalisisPoiHelper {
             cellStyle.setAlignment(HorizontalAlignment.LEFT);
             cellStyle.setFillForegroundColor(HSSFColorPredefined.WHITE.getIndex());
             break;
+         case HEADER_TABLE_CELL_RESUMEN_SEMANA:
+            font.setBold(true);
+            font.setFontHeightInPoints((short) 10);
+            cellStyle.setFillForegroundColor(HSSFColorPredefined.AQUA.getIndex());
+            break;
+         case BODY_TABLE_CELL:
+            font.setColor(HSSFColorPredefined.BLACK.getIndex());
+            font.setFontHeightInPoints((short) 8);
+            cellStyle.setFillForegroundColor(HSSFColorPredefined.WHITE.getIndex());
+            break;
+         case FOOTER_TABLE_CELL_RESUMEN_MES:
+            font.setColor(HSSFColorPredefined.WHITE.getIndex());
+            font.setBold(true);
+            font.setFontHeightInPoints((short) 10);
+            cellStyle.setFillForegroundColor(HSSFColorPredefined.CORAL.getIndex());
+            break;
+         default:
+            break;
       }
 
       return cellStyle;
@@ -135,7 +161,7 @@ public class RimanalisisPoiHelper {
 
    public static void setBordersToMergedCells(XSSFSheet ws){
 
-      /*► Dep's ... */
+      // ► Dep's ...
       List<CellRangeAddress> mergeRegions =  ws.getMergedRegions();
 
       /*► Apply-Style ... */

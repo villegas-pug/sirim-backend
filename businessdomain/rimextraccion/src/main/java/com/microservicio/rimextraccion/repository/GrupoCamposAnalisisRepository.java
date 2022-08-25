@@ -1,4 +1,4 @@
-package com.microservicio.rimextraccion.models.repository;
+package com.microservicio.rimextraccion.repository;
 
 import com.microservicio.rimextraccion.models.entities.GrupoCamposAnalisis;
 import org.springframework.data.jpa.repository.JpaRepository;

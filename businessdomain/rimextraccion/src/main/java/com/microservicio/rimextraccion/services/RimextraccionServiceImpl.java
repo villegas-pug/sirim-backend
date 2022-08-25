@@ -9,7 +9,8 @@ import com.commons.utils.models.dto.QueryClauseDto;
 import com.commons.utils.services.CommonServiceImpl;
 import com.microservicio.rimextraccion.clients.RimsimClientRest;
 import com.microservicio.rimextraccion.models.entities.TablaDinamica;
-import com.microservicio.rimextraccion.models.repository.RimextraccionRepository;
+import com.microservicio.rimextraccion.repository.RimextraccionRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

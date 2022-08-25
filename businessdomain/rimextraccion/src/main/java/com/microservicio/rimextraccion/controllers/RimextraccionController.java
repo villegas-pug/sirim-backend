@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import com.commons.utils.constants.Messages;
 import com.commons.utils.controllers.CommonController;
 import com.commons.utils.errors.AsignWarning;
@@ -17,9 +16,10 @@ import com.commons.utils.errors.DataAccessEmptyWarning;
 import com.commons.utils.helpers.DataModelHelper;
 import com.commons.utils.models.dto.QueryClauseDto;
 import com.commons.utils.utils.Response;
-import com.microservicio.rimextraccion.dto.TablaDinamicaDto;
+import com.microservicio.rimextraccion.errors.RimcommonWarningException;
 import com.microservicio.rimextraccion.models.constants.AlterTableType;
 import com.microservicio.rimextraccion.models.dto.ModuloDto;
+import com.microservicio.rimextraccion.models.dto.TablaDinamicaDto;
 import com.microservicio.rimextraccion.models.entities.AsigGrupoCamposAnalisis;
 import com.microservicio.rimextraccion.models.entities.BaseDatos;
 import com.microservicio.rimextraccion.models.entities.GrupoCamposAnalisis;
@@ -321,10 +321,15 @@ public class RimextraccionController extends CommonController<TablaDinamica, Rim
    @PostMapping(path = { "/assignedToGrupoAnalisis" })
    public ResponseEntity<?> assignedToGrupoAnalisis(@RequestBody(required = false) AsigGrupoCamposAnalisis asigGrupoCamposAnalisis) {
 
-      /*► Rangos asignados ... */
+      // ► Dep's ...
       int rangeIni = asigGrupoCamposAnalisis.getRegAnalisisIni(),
           rangeFin = asigGrupoCamposAnalisis.getRegAnalisisFin();
+      
+      // ► Validación: Si no existe usuario ...
+      if(asigGrupoCamposAnalisis.getUsrAnalista().getIdUsuario() == null)
+         throw new RimcommonWarningException(Messages.WARNING_USER_NOT_EXISTS);
 
+      // ► Repo dep's ...
       GrupoCamposAnalisis grupoAnalisis = this.grupoService
                                                    .findById(asigGrupoCamposAnalisis.getGrupo().getIdGrupo())
                                                    .orElseThrow(DataAccessEmptyWarning::new);
@@ -365,7 +370,6 @@ public class RimextraccionController extends CommonController<TablaDinamica, Rim
                                  .data(tablaDinamicaDb)
                                  .build());
    }
-
 
    @DeleteMapping(path = { "/deleteAssignedToGrupoAById/{idAsign}" })
    public ResponseEntity<?> deleteAssignedToGrupoAById(@PathVariable Long idAsign) {
@@ -504,7 +508,7 @@ public class RimextraccionController extends CommonController<TablaDinamica, Rim
       
       /*► query-result:  */
       /* List<Object[]> queryResult = this.service.dynamicJoinStatementSim(queryClauseDto); */
-      List<Object[]> queryResult = null;
+      List<Object[]> queryResult = List.of();
       if(queryResult.size() == 0) {
          return ResponseEntity
                   .status(HttpStatus.NO_CONTENT)
@@ -635,14 +639,14 @@ public class RimextraccionController extends CommonController<TablaDinamica, Rim
       return arrStr.substring(1, arrStr.length() - 1);
    }
 
-   private Integer[] convertStrCsvToIntArr(String strCsv) {
+   /* private Integer[] convertStrCsvToIntArr(String strCsv) {
       return Arrays
                .stream(strCsv.split(","))
                .map(String::trim)
                .filter(e -> !e.isEmpty())
                .map(Integer::parseInt)
                .toArray(Integer[]::new);
-   }
+   } */
 
    private List<String> getKeysOfMap(Map<String, Object> map){
 

@@ -2,6 +2,20 @@
    "configurations": [
       {
          "type": "java",
+         "name": "Launch RimctrlCalCamposAnalisisController",
+         "request": "launch",
+         "mainClass": "com.microservicio.rimextraccion.controllers.RimctrlCalCamposAnalisisController",
+         "projectName": "rimextraccion"
+      },
+      {
+         "type": "java",
+         "name": "Launch AsigGrupoCamposAnalisis",
+         "request": "launch",
+         "mainClass": "com.microservicio.rimextraccion.models.entities.AsigGrupoCamposAnalisis",
+         "projectName": "rimextraccion"
+      },
+      {
+         "type": "java",
          "name": "Launch RimcommonHelper",
          "request": "launch",
          "mainClass": "com.microservicio.rimextraccion.helpers.RimcommonHelper",

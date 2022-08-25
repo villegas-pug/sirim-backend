@@ -4,14 +4,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import javax.persistence.Tuple;
-
 import com.commons.utils.errors.DataAccessEmptyWarning;
 import com.commons.utils.helpers.DataModelHelper;
-import com.microservicio.rimextraccion.dto.AsigGrupoCamposAnalisisDto;
-import com.microservicio.rimextraccion.dto.TablaDinamicaDto;
-import com.microservicio.rimextraccion.models.repository.RimasigGrupoCamposAnalisisRepository;
-import com.microservicio.rimextraccion.models.repository.RimcommonRepository;
-import com.microservicio.rimextraccion.models.repository.RimextraccionRepository;
+import com.microservicio.rimextraccion.models.dto.AsigGrupoCamposAnalisisDto;
+import com.microservicio.rimextraccion.models.dto.TablaDinamicaDto;
+import com.microservicio.rimextraccion.repository.RimasigGrupoCamposAnalisisRepository;
+import com.microservicio.rimextraccion.repository.RimcommonRepository;
+import com.microservicio.rimextraccion.repository.RimextraccionRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -57,7 +56,6 @@ public class RimcommonServiceImpl implements RimcommonService {
                      g.setAsigGrupoCamposAnalisis(assigsNew);
                   });
             });
-            
       return tablaDinamicaDto;
    }
 
@@ -78,15 +76,15 @@ public class RimcommonServiceImpl implements RimcommonService {
 
    public AsigGrupoCamposAnalisisDto setTotalsPropsToAsigGrupoCamposAnalisis (AsigGrupoCamposAnalisisDto assig){
       /*► Payload ...  */
-      String nombreTabla = assig.getGrupo().getTablaDinamica().getNombre();
+      /* String nombreTabla = assig.getGrupo().getTablaDinamica().getNombre(); */
       Long rIni = (long) assig.getRegAnalisisIni();
       Long rFin = (long) assig.getRegAnalisisFin();
 
       /*► Data-Set ... */
-      List<Map<String, Object>> tdByRangoFromIds = this.findTablaDinamicaByRangoFromIds(nombreTabla, rIni, rFin);
+      /* List<Map<String, Object>> recordsAnalisados = this.findTablaDinamicaByRangoFromIds(nombreTabla, rIni, rFin); */
 
       /*► Final ...  */
-      Long totalAsignados = (long) tdByRangoFromIds.size();
+      Long totalAsignados = (long) ((rFin - rIni) + 1);
       Long totalAnalizados = (long) assig.getProduccionAnalisis().size();
       Long totalPendientes = totalAsignados - totalAnalizados;
 

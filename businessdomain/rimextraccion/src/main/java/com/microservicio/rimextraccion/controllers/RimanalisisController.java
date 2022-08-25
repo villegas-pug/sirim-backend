@@ -2,31 +2,29 @@ package com.microservicio.rimextraccion.controllers;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.Optional;
+
 import com.commons.utils.constants.LevelLog;
 import com.commons.utils.constants.Messages;
 import com.commons.utils.errors.DataAccessEmptyWarning;
 import com.commons.utils.models.entities.Usuario;
 import com.commons.utils.utils.Response;
 import com.microservicio.rimextraccion.constants.RimHttpHeaders;
-import com.microservicio.rimextraccion.dto.AnalizadosDto;
-import com.microservicio.rimextraccion.dto.AsigGrupoCamposAnalisisDto;
+import com.microservicio.rimextraccion.models.dto.AsigGrupoCamposAnalisisDto;
 import com.microservicio.rimextraccion.models.dto.RecordAssignedDto;
-import com.microservicio.rimextraccion.models.entities.AsigGrupoCamposAnalisis;
-import com.microservicio.rimextraccion.models.entities.ProduccionAnalisis;
+import com.microservicio.rimextraccion.models.dto.RecordsBetweenDatesDto;
 import com.microservicio.rimextraccion.services.RimasigGrupoCamposAnalisisService;
 import com.microservicio.rimextraccion.services.RimanalisisService;
 import com.microservicio.rimextraccion.services.RimcommonService;
-import com.microservicio.rimextraccion.services.RimextraccionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -36,6 +34,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 @CrossOrigin(origins = { "*" })
 @RestController
@@ -45,16 +44,16 @@ public class RimanalisisController {
    private RimcommonService rimcommonService;
 
    @Autowired
-   private RimextraccionService rimextraccionService;
-
-   @Autowired
    private RimasigGrupoCamposAnalisisService asigAnalisisService;
 
    @Autowired
    private RimanalisisService rimanalisisService;
 
    @Value("classpath:static/S10.DRCM.FR.001-Registro de depuracion de datos_V02.xlsx")
-   private Resource prodAnalisisXlsx;
+   private Resource rptProdAnalisisDiariaXlsx;
+   
+   @Value("classpatch:static/Ficha de reporte de producción v1.0.xlsx")
+   private Resource rptProdAnalisisMensualXlsx;
 
    @PostMapping( path = { "/findAsigAnalisisByUsr" } )
    public ResponseEntity<?> findAsigAnalisisByUsr(@RequestBody Usuario usrAnalista) {
@@ -88,55 +87,10 @@ public class RimanalisisController {
    @PutMapping( path = { "/saveRecordAssigned" } )
    public ResponseEntity<?> saveRecordAssigned(@RequestBody RecordAssignedDto recordAssignedDto){
 
-      /*► Payload ...  */
-      String cleanJsonValues = recordAssignedDto.getValues().replaceAll("[{}]", ""),
-             csvFields = Arrays.stream(cleanJsonValues.split(","))
-                                 .map(i -> { 
-                                    String[] field = i.split(":");
-                                    return 
-                                       field[0].replaceAll("[\"\']", "").concat("=").concat(field[1].replaceAll("\"", "'"));
-                                 })
-                                 .collect(Collectors.joining(", "));
-         
-      /*► Query-String ... */
-      StringBuilder queryString = new StringBuilder("UPDATE ");
-      queryString
-         .append(recordAssignedDto.getNombreTable()).append(" SET ").append(csvFields)
-         .append(" WHERE nId = ").append(recordAssignedDto.getId());
+      // ► Save ...
+      this.rimanalisisService.saveRecordAssigned(recordAssignedDto);
 
-      /*► Save: Registro en tabla dinámica ... */
-      this.rimextraccionService.alterTablaDinamica(queryString.toString());
-
-      /*► Save: ... */
-      /*► Search: Grupo asignado ...  */
-      /*-------------------------------------------------------------------------------------------------------*/
-      Long idAsigGrupo = recordAssignedDto.getAsigGrupo().getIdAsigGrupo();
-      AsigGrupoCamposAnalisis asigGrupoCamposAnalisis = this.asigAnalisisService.findById(idAsigGrupo);
-
-      /*► Si producción está registrada ... */
-      Long idRegistro = recordAssignedDto.getId();
-      boolean isRegistered = asigGrupoCamposAnalisis
-                                 .getProduccionAnalisis()
-                                 .stream()
-                                 .anyMatch(prod -> prod.getAsigGrupo().getIdAsigGrupo().equals(idAsigGrupo) 
-                                                            && prod.getIdRegistroAnalisis().equals(idRegistro));
-
-      if (isRegistered) {
-         asigGrupoCamposAnalisis.getProduccionAnalisis()
-                                    .stream()
-                                    .filter(prod -> prod.getAsigGrupo().getIdAsigGrupo().equals(idAsigGrupo) 
-                                                         && prod.getIdRegistroAnalisis().equals(idRegistro))
-                                    .forEach(prod -> prod.setFechaFin(new Date()));
-      } else {
-         asigGrupoCamposAnalisis.addProduccionAnalisis(ProduccionAnalisis.of().idRegistroAnalisis(recordAssignedDto.getId()).get());
-      }
-
-      /*► Save ... */
-      this.asigAnalisisService.save(asigGrupoCamposAnalisis);
-
-      /*-------------------------------------------------------------------------------------------------------*/
-
-      /*► Record-Set ... */
+      // ► Record-Set ...
       List<Map<String, Object>> tdByRangoFromIds = this.rimcommonService.findTablaDinamicaByRangoFromIds(
                                                                      recordAssignedDto.getNombreTable(),
                                                                      recordAssignedDto.getRegAnalisisIni(),
@@ -151,13 +105,13 @@ public class RimanalisisController {
    }
 
    @PostMapping( path = { "/downloadAnalisadosByDates" } )
-   public ResponseEntity<?> downloadAnalisadosByDates(@RequestBody AnalizadosDto analizadosDto) throws IOException {
+   public ResponseEntity<?> downloadAnalisadosByDates(@RequestBody RecordsBetweenDatesDto recordsBetweenDatesDto) throws IOException {
          
       /* ► Dep's ... */
       SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
       ByteArrayResource byteArrResource = null;
-      String fileName = prodAnalisisXlsx.getFilename(),
-             usrAnalista = this.asigAnalisisService.findById(analizadosDto.getIdAsigGrupo()).getUsrAnalista().getNombres();
+      String fileName = rptProdAnalisisDiariaXlsx.getFilename(),
+             usrAnalista = this.asigAnalisisService.findById(recordsBetweenDatesDto.getIdAsigGrupo()).getUsrAnalista().getNombres();
 
       /* ► Header's ... */
       HttpHeaders headers = new HttpHeaders();
@@ -166,7 +120,7 @@ public class RimanalisisController {
       headers.add(RimHttpHeaders.RESPONSE_STATUS, LevelLog.SUCCESS);
       headers.add(RimHttpHeaders.MESSAGE, Messages.MESSAGE_SUCCESS_DOWNLOAD);
 
-      byteArrResource = this.rimanalisisService.convertProduccionAnalisisToByteArrResource(analizadosDto);
+      byteArrResource = this.rimanalisisService.convertProduccionAnalisisToByteArrResource(recordsBetweenDatesDto);
 
       return ResponseEntity
             .ok()
@@ -175,6 +129,33 @@ public class RimanalisisController {
             .body(byteArrResource);
 
    }
-   
-   
+ 
+   @GetMapping( path = { "/downloadReporteMensualProduccionByParams" } )
+   public ResponseEntity<?> downloadReporteMensualProduccionByParams(@RequestParam String login, @RequestParam int month, @RequestParam int year) throws IOException {
+
+      // Dep's ...
+      String fileName = rptProdAnalisisMensualXlsx.getFilename().split("\\.")[0];
+      String contentDisposition = "attachment; filename=\"%s\"";
+      
+      // Repo dep's ...
+      Usuario usrAnalista = this.rimanalisisService.findUsuarioByLogin(login).getData();
+      ByteArrayResource byteArrResourceRptMensualProduccion = this.rimanalisisService.convertReporteMensualProduccionToByteArrResource(login, month, year);
+      
+      
+      // Header dep's ...
+      HttpHeaders headers = new HttpHeaders();
+      headers.add(HttpHeaders.CONTENT_DISPOSITION, String.format(contentDisposition, fileName.concat(" - ")
+                                                                                             .concat(usrAnalista.getNombres())
+                                                                                             .concat(".xlsx")));
+
+      headers.add(RimHttpHeaders.RESPONSE_STATUS, LevelLog.SUCCESS);
+      headers.add(RimHttpHeaders.MESSAGE, Messages.MESSAGE_SUCCESS_DOWNLOAD);
+
+      return ResponseEntity
+               .ok()
+               .headers(headers)
+               .contentType(MediaType.APPLICATION_OCTET_STREAM)
+               .body(byteArrResourceRptMensualProduccion);
+   }
+  
 }

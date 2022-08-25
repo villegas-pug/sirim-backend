@@ -2,7 +2,7 @@ package com.microservicio.rimextraccion.services;
 
 import java.util.List;
 import com.commons.utils.models.entities.Usuario;
-import com.microservicio.rimextraccion.dto.AsigGrupoCamposAnalisisDto;
+import com.microservicio.rimextraccion.models.dto.AsigGrupoCamposAnalisisDto;
 import com.microservicio.rimextraccion.models.entities.AsigGrupoCamposAnalisis;
 
 public interface RimasigGrupoCamposAnalisisService{

@@ -1,7 +1,7 @@
 package com.microservicio.rimextraccion.models.dto;
 
 import com.commons.utils.models.entities.Usuario;
-import com.microservicio.rimextraccion.models.entities.AsigGrupoCamposAnalisis;
+
 import lombok.Data;
 
 @Data
@@ -12,5 +12,10 @@ public class RecordAssignedDto {
    private Usuario usrAnalista;
    private Long regAnalisisIni;
    private Long regAnalisisFin;
-   private AsigGrupoCamposAnalisis asigGrupo;
+   // ► New ...
+   private AsigGrupoCamposAnalisisDto asigGrupo;
+   private Long idCtrlCal;
+   private boolean revisado;
+   private String observacionesCtrlCal;
+   private String metaFieldIdErrorCsv;
 }

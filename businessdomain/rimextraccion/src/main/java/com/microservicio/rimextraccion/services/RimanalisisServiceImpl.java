@@ -3,21 +3,39 @@ package com.microservicio.rimextraccion.services;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.time.YearMonth;
+import java.time.format.TextStyle;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
+import java.util.TreeMap;
+import java.util.UUID;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
-import com.microservicio.rimextraccion.dto.AnalizadosDto;
+import com.commons.utils.constants.Messages;
+import com.commons.utils.errors.DataAccessEmptyWarning;
+import com.commons.utils.models.entities.Usuario;
+import com.commons.utils.utils.Response;
+import com.microservicio.rimextraccion.clients.UsuarioClientRest;
 import com.microservicio.rimextraccion.errors.NotFoundDownloadException;
+import com.microservicio.rimextraccion.errors.RimcommonWarningException;
 import com.microservicio.rimextraccion.helpers.RimanalisisPoiHelper;
 import com.microservicio.rimextraccion.helpers.RimcommonHelper;
+import com.microservicio.rimextraccion.helpers.RimanalisisPoiHelper.CellType;
+import com.microservicio.rimextraccion.models.dto.RecordAssignedDto;
+import com.microservicio.rimextraccion.models.dto.RecordsBetweenDatesDto;
+import com.microservicio.rimextraccion.models.dto.ReporteMensualProduccionDto;
 import com.microservicio.rimextraccion.models.entities.AsigGrupoCamposAnalisis;
+import com.microservicio.rimextraccion.models.entities.ProduccionAnalisis;
+import com.microservicio.rimextraccion.repository.RimproduccionRepository;
 import org.apache.commons.collections4.map.LinkedMap;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -26,24 +44,122 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import lombok.extern.log4j.Log4j2;
 
 @Service
+@Log4j2
 public class RimanalisisServiceImpl implements RimanalisisService {
 
    @Value("classpath:static/S10.DRCM.FR.001-Registro de depuracion de datos_V02.xlsx")
-   private Resource prodAnalisisXlsx;
+   private Resource rptProduccionDiarioXlsx;
+
+   @Value("classpath:static/Ficha de reporte de produccion v1.0.xlsx")
+   private Resource rptProduccionMensualXlsx;
+
+   @Autowired
+   private RimproduccionRepository rimproduccionRepository;
 
    @Autowired
    private RimcommonService rimcommonService;
 
+   @Autowired
+   private RimextraccionService rimextraccionService;
+
    @Autowired 
    private RimasigGrupoCamposAnalisisService rimasigAnalisisService;
 
+   @Autowired
+   private UsuarioClientRest usuarioClient;
+
+   //#region Repo - Method's ...
+
    @Override
-   public ByteArrayResource convertProduccionAnalisisToByteArrResource(AnalizadosDto analizadosDto) throws IOException{
+   @Transactional
+   public void saveRecordAssigned(RecordAssignedDto recordAssignedDto) {
+      
+      // ► Dep's: Convert `JSON` to `CSV` ...
+      String cleanJsonValues = recordAssignedDto.getValues().replaceAll("[{}]", ""),
+             csvFields = Arrays.stream(cleanJsonValues.split(","))
+                                 .map(i -> { 
+                                    String[] field = i.split(":");
+                                    return 
+                                       field[0].replaceAll("[\"\']", "")
+                                               .concat("=")
+                                               .concat(field[1].replaceAll("\"", "'"));
+                                 })
+                                 .collect(Collectors.joining(", "));
+         
+      // ► Query-String ...
+      StringBuilder queryString = new StringBuilder("UPDATE ");
+      queryString
+         .append(recordAssignedDto.getNombreTable()).append(" SET ").append(csvFields)
+         .append(" WHERE nId = ").append(recordAssignedDto.getId());
+
+      // ► Save: Registro en tabla físisca ...
+      this.rimextraccionService.alterTablaDinamica(queryString.toString());
+
+      // ► Grupo asignado ...
+      /*-------------------------------------------------------------------------------------------------------*/
+      Long idAsigGrupo = recordAssignedDto.getAsigGrupo().getIdAsigGrupo();
+      AsigGrupoCamposAnalisis asigGrupoCamposAnalisis = this.rimasigAnalisisService.findById(idAsigGrupo);
+
+      // ► Si producción está registrada ...
+      Long idRegistro = recordAssignedDto.getId();
+      boolean isRegistered = asigGrupoCamposAnalisis
+                                 .getProduccionAnalisis()
+                                 .stream()
+                                 .anyMatch(prod -> prod.getIdRegistroAnalisis().equals(idRegistro));
+
+      if (isRegistered) {
+         asigGrupoCamposAnalisis.getProduccionAnalisis()
+                                    .stream()
+                                    .filter(prod -> prod.getIdRegistroAnalisis().equals(idRegistro))
+                                    .forEach(prod -> prod.setFechaFin(new Date()));
+      } else {
+         asigGrupoCamposAnalisis.addProduccionAnalisis(ProduccionAnalisis.of().idRegistroAnalisis(idRegistro).get());
+      }
+
+      /*► Save ... */
+      this.rimasigAnalisisService.save(asigGrupoCamposAnalisis);
+
+   }
+
+   @Override
+   @Transactional(readOnly = true)
+   public List<Map<String, Object>> findRecordsAnalisadosByDates(String queryString) {
+      List<Map<String, Object>> recordsAnalisados = this.rimcommonService.findDynamicSelectStatement(queryString);
+      return recordsAnalisados;
+   }
+
+   @Override
+   @Transactional(readOnly = true)
+   public LinkedList<ReporteMensualProduccionDto> findReporteMensualProduccionByParams(UUID idUsrAnalista, int month, int year) {
+      return this.rimproduccionRepository.findReporteMensualProduccionByParams(idUsrAnalista, month, year);
+   }
+
+   //#endregion
+
+   //#region Client method's ...
+
+   @Override
+   @Transactional(readOnly = true)
+   public Response<Usuario> findUsuarioByLogin(String login) {
+      return Optional
+               .ofNullable(this.usuarioClient.findByLogin(login))
+               .orElseThrow(() -> new RimcommonWarningException(Messages.WARNING_USER_NOT_EXISTS));
+   }
+
+   //#endregion
+
+   //#region: Custom method's ...
+
+   @Override
+   public ByteArrayResource convertProduccionAnalisisToByteArrResource(RecordsBetweenDatesDto recordsBetweenDatesDto) throws IOException{
 
       /*► GLOBAL - DEP'S ... */
-      AsigGrupoCamposAnalisis asigGrupoCamposAnalisis = this.rimasigAnalisisService.findById(analizadosDto.getIdAsigGrupo());
+      AsigGrupoCamposAnalisis asigGrupoCamposAnalisis = this.rimasigAnalisisService.findById(recordsBetweenDatesDto.getIdAsigGrupo());
       if(asigGrupoCamposAnalisis == null)
          throw new NotFoundDownloadException();
 
@@ -58,8 +174,8 @@ public class RimanalisisServiceImpl implements RimanalisisService {
              idsProdCsv = asigGrupoCamposAnalisis
                               .getProduccionAnalisis()
                               .stream()
-                              .filter(prod -> prod.getFechaFin().compareTo(analizadosDto.getFecIni()) >= 0 
-                                              && prod.getFechaFin().compareTo(analizadosDto.getFecFin()) <= 0 )
+                              .filter(prod -> prod.getFechaFin().compareTo(recordsBetweenDatesDto.getFecIni()) >= 0 
+                                              && prod.getFechaFin().compareTo(recordsBetweenDatesDto.getFecFin()) <= 0 )
                               .map(prod -> prod.getIdRegistroAnalisis().toString())
                               .collect(Collectors.joining(","));
       
@@ -83,7 +199,7 @@ public class RimanalisisServiceImpl implements RimanalisisService {
 
       ByteArrayOutputStream op = new ByteArrayOutputStream();
 
-      try (XSSFWorkbook wb = new XSSFWorkbook(prodAnalisisXlsx.getInputStream())) {
+      try (XSSFWorkbook wb = new XSSFWorkbook(rptProduccionDiarioXlsx.getInputStream())) {
 
          XSSFSheet ws = wb.getSheetAt(0);
          
@@ -393,8 +509,138 @@ public class RimanalisisServiceImpl implements RimanalisisService {
 
       return new ByteArrayResource(op.toByteArray());
    }
+
+   @Override
+   public ByteArrayResource convertReporteMensualProduccionToByteArrResource(String login, int month, int year)throws IOException {
+
+      // ► Dep's ...
+      ByteArrayOutputStream oStream = new ByteArrayOutputStream();
+      SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+      String monthName = YearMonth.of(year, month)
+                                  .getMonth()
+                                  .getDisplayName(TextStyle.FULL, new Locale("es", "ES"))
+                                  .toUpperCase();
+
+      // ► Repo dep's ...
+      // ------------------------------------------------------------------------------------------------------------------------------
+      Usuario usrAnalista = Optional.ofNullable(this.usuarioClient.findByLogin(login).getData())
+                                    .orElseThrow(() -> new RimcommonWarningException(Messages.WARNING_USER_NOT_EXISTS));
+
+      UUID idUsrAnalista = usrAnalista.getIdUsuario();
+
+      // ►
+      List<ReporteMensualProduccionDto> rptMensualProduccionDb = this.rimproduccionRepository
+                                                                                 .findReporteMensualProduccionByParams(idUsrAnalista, month, year);
+
+      if(rptMensualProduccionDb.size() == 0) throw new DataAccessEmptyWarning();
+
+      Integer totalAnalizados = this.getTotalAnalisadosFromReporteMensualProduccionDb(rptMensualProduccionDb);
+
+      // ► ...
+      Map<String, List<ReporteMensualProduccionDto>> rptMensualProduccionMap = this.convertReporteMensualProduccionToMap(rptMensualProduccionDb);
+
+      // ------------------------------------------------------------------------------------------------------------------------------
+      
+      // ► ...
+      try (XSSFWorkbook wb = new XSSFWorkbook(rptProduccionMensualXlsx.getInputStream())) {
+         
+         // ► ...
+         XSSFSheet ws = wb.getSheetAt(0);
+
+         /* ► Header-Sheet ... */
+         //---------------------------------------------------------------------------------------
+         XSSFRow rHeaderAnalista = ws.getRow(3);
+         rHeaderAnalista.getCell(2).setCellValue(usrAnalista.getNombres());
+
+         XSSFRow rHeaderMes = ws.getRow(4);
+         rHeaderMes.getCell(2).setCellValue(monthName);
+
+         XSSFRow rHeaderTotalAnalizados = ws.getRow(7);
+         rHeaderTotalAnalizados.getCell(2).setCellValue(totalAnalizados);
+         //---------------------------------------------------------------------------------------
+
+         /* ► Table ... */
+         //---------------------------------------------------------------------------------------
+
+         int iRowTable = 11;
+         for (Entry<String, List<ReporteMensualProduccionDto>> eRpt : rptMensualProduccionMap.entrySet()) {
+            
+            // ► ...
+            XSSFRow rHeaderTResumen = ws.createRow(iRowTable);
+
+            XSSFCell cHeaderTResumenTitulo = rHeaderTResumen.createCell(1);
+            cHeaderTResumenTitulo.setCellValue("TOTAL REPORTE ".concat(eRpt.getKey().toString()));
+            cHeaderTResumenTitulo.setCellStyle(RimanalisisPoiHelper.createCellStyle(wb, CellType.HEADER_TABLE_CELL_RESUMEN_SEMANA));
+
+            XSSFCell cHeaderTResumenBlank = rHeaderTResumen.createCell(2);
+            cHeaderTResumenBlank.setCellStyle(RimanalisisPoiHelper.createCellStyle(wb, CellType.HEADER_TABLE_CELL_RESUMEN_SEMANA));
+            cHeaderTResumenBlank = rHeaderTResumen.createCell(4);
+            cHeaderTResumenBlank.setCellStyle(RimanalisisPoiHelper.createCellStyle(wb, CellType.HEADER_TABLE_CELL_RESUMEN_SEMANA));
+
+            XSSFCell cHeaderTResumenTotal = rHeaderTResumen.createCell(3);
+            cHeaderTResumenTotal.setCellValue(this.getTotalAnalisadosFromReporteMensualProduccionDb(eRpt.getValue()));
+            cHeaderTResumenTotal.setCellStyle(RimanalisisPoiHelper.createCellStyle(wb, CellType.HEADER_TABLE_CELL_RESUMEN_SEMANA));
+            
+            // ► ...
+            for (ReporteMensualProduccionDto record : eRpt.getValue()) {
+               log.info(record.getFechaProd());
+               iRowTable++;
+               XSSFRow rBodyTable = ws.createRow(iRowTable);
+
+               XSSFCell cBodyTFecha = rBodyTable.createCell(1);
+               cBodyTFecha.setCellValue(dateFormat.format(record.getFechaProd()));
+               cBodyTFecha.setCellStyle(RimanalisisPoiHelper.createCellStyle(wb, CellType.BODY_TABLE_CELL));
+
+               XSSFCell cBodyTBase = rBodyTable.createCell(2);
+               cBodyTBase.setCellValue(Optional.ofNullable(record.getNombreBase()).orElse("-"));
+               cBodyTBase.setCellStyle(RimanalisisPoiHelper.createCellStyle(wb, CellType.BODY_TABLE_CELL));
+
+               XSSFCell cBodyTProdDia = rBodyTable.createCell(3);
+               cBodyTProdDia.setCellValue(Optional.ofNullable(record.getTotalProd()).orElse(0));
+               cBodyTProdDia.setCellStyle(RimanalisisPoiHelper.createCellStyle(wb, CellType.BODY_TABLE_CELL));
+
+               XSSFCell cBodyTObs = rBodyTable.createCell(4);
+               cBodyTObs.setCellValue(Optional.ofNullable(record.getObservaciones()).orElse("-"));
+               cBodyTObs.setCellStyle(RimanalisisPoiHelper.createCellStyle(wb, CellType.BODY_TABLE_CELL));
    
-   //#region: Private method's ...
+            }
+
+            iRowTable++;
+
+         }
+
+         //---------------------------------------------------------------------------------------
+
+         // ► TABLE - FOOTER ...
+         //------------------------------------------------------------------------------------------------------------------
+         XSSFRow rFooterTTotalProd = ws.createRow(iRowTable);
+
+         XSSFCell cFooterTTitulo = rFooterTTotalProd.createCell(1);
+         cFooterTTitulo.setCellValue("PRODUCCIÓN DEL MES");
+         cFooterTTitulo.setCellStyle(RimanalisisPoiHelper.createCellStyle(wb, CellType.FOOTER_TABLE_CELL_RESUMEN_MES));
+
+         XSSFCell cFooterTTotalProd = rFooterTTotalProd.createCell(3);
+         cFooterTTotalProd.setCellValue(totalAnalizados);
+         cFooterTTotalProd.setCellStyle(RimanalisisPoiHelper.createCellStyle(wb, CellType.FOOTER_TABLE_CELL_RESUMEN_MES));
+
+         XSSFCell cFooterTResumenBlank =rFooterTTotalProd.createCell(2);
+         cFooterTResumenBlank.setCellStyle(RimanalisisPoiHelper.createCellStyle(wb, CellType.FOOTER_TABLE_CELL_RESUMEN_MES));
+
+         cFooterTResumenBlank = rFooterTTotalProd.createCell(4);
+         cFooterTResumenBlank.setCellStyle(RimanalisisPoiHelper.createCellStyle(wb, CellType.FOOTER_TABLE_CELL_RESUMEN_MES));
+
+         wb.setSheetName(0, "»".concat(monthName).concat("_").concat(String.valueOf(year)));
+         //------------------------------------------------------------------------------------------------------------------
+         
+         // ► Output ...
+         wb.write(oStream);
+      } catch (Exception e) {
+         log.error(e.getMessage());  
+         throw new NotFoundDownloadException();
+      }
+
+      return new ByteArrayResource(oStream.toByteArray());
+   }
 
    private List<Map<String, Object>> purgeProduccionAnalisisDb(List<Map<String, Object>> produccionAnalisisDb, String fieldsAssignedCsv){
 
@@ -407,18 +653,27 @@ public class RimanalisisServiceImpl implements RimanalisisService {
                .stream()
                .map(prod -> {
                   Map<String, Object> record = new LinkedMap<>();
+
+                  // ► Filtro: Solo campos `Extracción` e `nId` ...
                   for (Entry<String, Object> meta: prod.entrySet()) {
-                     /*► Si suffix del campo es `_a` y no es un campo asignado: Interrumpe actual interacción  ... */
-                     if(meta.getKey().endsWith("_a") && !fieldsAssignedCsv.contains(meta.getKey())){
-                        continue;
-                     }
                      
-                     /*► Si nombre de campo es ...: Interrumpe actual interacción  ... */
-                     if(fieldsAux.contains(meta.getKey())){
-                        continue;
+                     /*► Si nombre de campo es `fieldAux`: Interrumpe interacción  ... */
+                     if(fieldsAux.contains(meta.getKey())) continue;
+
+                     /*► Si suffix del campo es `_a` y no es un campo asignado: Interrumpe actual interacción  ... */
+                     if(meta.getKey().endsWith("_e") || meta.getKey().equals("nId")){
+                        record.put(meta.getKey(), Optional.ofNullable(meta.getValue()).orElse("-"));
+                     }
+                  }
+
+                  // ► Filtro: Solo campos `Analisis` ...
+                  for (Entry<String, Object> meta: prod.entrySet()) {
+
+                     /*► Si suffix del campo es `_a` y es un campo asignado: Interrumpe actual interacción  ... */
+                     if(meta.getKey().endsWith("_a") && fieldsAssignedCsv.contains(meta.getKey())){
+                        record.put(meta.getKey(), Optional.ofNullable(meta.getValue()).orElse("-"));
                      }
 
-                     record.put(meta.getKey(), Optional.ofNullable(meta.getValue()).orElse("-"));
                   }
                   
                   return record;
@@ -428,6 +683,26 @@ public class RimanalisisServiceImpl implements RimanalisisService {
                });
 
       return produccionAnalisisDbNew;
+   }
+
+   private Map<String, List<ReporteMensualProduccionDto>> convertReporteMensualProduccionToMap(List<ReporteMensualProduccionDto> rptMensualProduccionDb){
+
+      TreeMap<String, List<ReporteMensualProduccionDto>> sortMap = new TreeMap<>();
+
+      sortMap.putAll(rptMensualProduccionDb
+                        .stream()
+                        .collect(Collectors.groupingBy(ReporteMensualProduccionDto::getSemanaProd)));
+      
+      
+      return sortMap;
+      
+   }
+
+   private Integer getTotalAnalisadosFromReporteMensualProduccionDb(List<ReporteMensualProduccionDto> rptMensualProduccion){
+      return rptMensualProduccion
+                     .stream()
+                     .map(prod -> prod.getTotalProd())
+                     .reduce(0, (acc, next) -> acc + Optional.ofNullable(next).orElse(0));
    }
 
    //#endregion

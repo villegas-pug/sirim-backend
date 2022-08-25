@@ -49,6 +49,15 @@ public class ProduccionAnalisis implements Serializable {
    @Column(name = "bCompleto",  nullable = false)
    private boolean completo;
    
+   @Column(name = "bRevisado", columnDefinition = "VARCHAR(MAX) NULL")
+   private @Builder.Default boolean revisado = false;
+   
+   @Column(name = "sObservacionesCtrlCal", columnDefinition = "VARCHAR(MAX) NULL")
+   private String observacionesCtrlCal;
+   
+   @Column(name = "sMetaFieldIdErrorCsv", columnDefinition = "VARCHAR(MAX) NULL")
+   private String metaFieldIdErrorCsv;
+
    @Temporal(TemporalType.DATE)
    @JsonFormat(shape = Shape.STRING, pattern = "yyyy-MM-dd", timezone = "America/Lima")
    @Column(name = "dFechaFin", nullable = false)
@@ -62,7 +71,6 @@ public class ProduccionAnalisis implements Serializable {
    
    @PreUpdate
    private void preUpdate(){
-      this.completo = true;
       this.fechaFin = new Date();
    }
 

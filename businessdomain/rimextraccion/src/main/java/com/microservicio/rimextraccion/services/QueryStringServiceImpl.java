@@ -2,7 +2,8 @@ package com.microservicio.rimextraccion.services;
 
 import java.util.Optional;
 import com.microservicio.rimextraccion.models.entities.QueryString;
-import com.microservicio.rimextraccion.models.repository.QueryStringRepository;
+import com.microservicio.rimextraccion.repository.QueryStringRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

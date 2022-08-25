@@ -1,4 +1,4 @@
-package com.microservicio.rimextraccion.dto;
+package com.microservicio.rimextraccion.models.dto;
 
 import java.util.Date;
 
@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 import lombok.Data;
 
 @Data
-public class AnalizadosDto {
+public class RecordsBetweenDatesDto {
    
    private Long idAsigGrupo;
 

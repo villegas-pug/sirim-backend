@@ -3,7 +3,6 @@ package com.microservicio.usuario.controllers;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.Arrays;
 import java.util.List;
-
 import com.commons.utils.constants.Messages;
 import com.commons.utils.errors.DataAccessEmptyWarning;
 import com.commons.utils.errors.UserNotFoundWarning;
@@ -81,7 +80,7 @@ public class UsuarioController {
    public ResponseEntity<?> findByLogin(@PathVariable String login) {
       Usuario usuario = service.findByLogin(login).orElseThrow(() -> new UserNotFoundWarning(login));
 
-      return ResponseEntity.ok().body(
+      return ResponseEntity.ok(
          Response
             .builder()
             .message(Messages.MESSAGE_SUCCESS_LIST_ENTITY)

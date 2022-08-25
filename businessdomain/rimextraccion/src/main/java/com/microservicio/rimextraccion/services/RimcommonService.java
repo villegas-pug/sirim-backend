@@ -3,8 +3,8 @@ package com.microservicio.rimextraccion.services;
 import java.util.List;
 import java.util.Map;
 
-import com.microservicio.rimextraccion.dto.AsigGrupoCamposAnalisisDto;
-import com.microservicio.rimextraccion.dto.TablaDinamicaDto;
+import com.microservicio.rimextraccion.models.dto.AsigGrupoCamposAnalisisDto;
+import com.microservicio.rimextraccion.models.dto.TablaDinamicaDto;
 
 public interface RimcommonService {
    

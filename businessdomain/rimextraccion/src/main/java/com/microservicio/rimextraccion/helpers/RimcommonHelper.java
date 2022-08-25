@@ -1,10 +1,14 @@
 package com.microservicio.rimextraccion.helpers;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.Month;
+import java.time.YearMonth;
 import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -70,7 +74,6 @@ public class RimcommonHelper {
          default:
             sqlDateTimeStr.append(" 23:59:59.999").append("'");
       }
-
 
       return sqlDateTimeStr.toString();
 

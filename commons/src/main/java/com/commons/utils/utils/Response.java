@@ -2,14 +2,12 @@ package com.commons.utils.utils;
 
 import com.commons.utils.constants.LevelLog;
 import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 @Builder
-@Getter
-@Setter
-public class Response {
+@Data
+public class Response<T> {
    private @Builder.Default String levelLog = LevelLog.SUCCESS;
    private String message;
-   private @Builder.Default Object data = null;
+   private @Builder.Default T data = null;
 }

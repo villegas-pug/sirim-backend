@@ -52,18 +52,27 @@ public class AsigGrupoCamposAnalisis implements Serializable {
    @JsonIgnoreProperties(value = { "usrProcedimiento" })
    private Usuario usrAnalista;
    
+   @Builder.Default
+   @OneToMany(mappedBy = "asigGrupoCamposAnalisis", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+   @JsonIgnoreProperties(value = { "asigGrupoCamposAnalisis" })
+   private List<CtrlCalCamposAnalisis> ctrlsCalCamposAnalisis = new ArrayList<>();
+
    @Column(name = "nRegAnalisisIni", nullable = false)
    private int regAnalisisIni;
    
    @Column(name = "nRegAnalisisFin", nullable = false)
    private int regAnalisisFin;
    
+   @Column(name = "bCtrlCalConforme", nullable = true)
+   private boolean ctrlCalConforme;
+
    @Temporal(TemporalType.TIMESTAMP)
    @Column(name = "dFechaAsignacion", length = 55, nullable = false)
    private Date fechaAsignacion;
 
    @PrePersist
    private void prePersist(){
+      this.ctrlCalConforme = false;
       this.fechaAsignacion = new Date();
    }
 
@@ -72,9 +81,14 @@ public class AsigGrupoCamposAnalisis implements Serializable {
       this.produccionAnalisis.add(prod);
    }
 
+   public void addCtrlsCalCamposAnalisis(CtrlCalCamposAnalisis ctrlCalCA){
+      ctrlCalCA.setAsigGrupoCamposAnalisis(this);
+      this.ctrlsCalCamposAnalisis.add(ctrlCalCA);
+   }
+
    /*
    *
    */
    private static final long serialVersionUID = 1L;
-
+   
 }
