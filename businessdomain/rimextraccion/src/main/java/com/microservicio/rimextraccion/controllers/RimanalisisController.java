@@ -11,6 +11,7 @@ import com.commons.utils.constants.LevelLog;
 import com.commons.utils.constants.Messages;
 import com.commons.utils.errors.DataAccessEmptyWarning;
 import com.commons.utils.models.entities.Usuario;
+import com.commons.utils.models.enums.RimGrupo;
 import com.commons.utils.utils.Response;
 import com.microservicio.rimextraccion.constants.RimHttpHeaders;
 import com.microservicio.rimextraccion.models.dto.AsigGrupoCamposAnalisisDto;
@@ -48,9 +49,6 @@ public class RimanalisisController {
 
    @Autowired
    private RimanalisisService rimanalisisService;
-
-   @Value("classpath:static/S10.DRCM.FR.001-Registro de depuracion de datos_V02.xlsx")
-   private Resource rptProdAnalisisDiariaXlsx;
    
    @Value("classpatch:static/Ficha de reporte de producción v1.0.xlsx")
    private Resource rptProdAnalisisMensualXlsx;
@@ -110,12 +108,19 @@ public class RimanalisisController {
       /* ► Dep's ... */
       SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
       ByteArrayResource byteArrResource = null;
-      String fileName = rptProdAnalisisDiariaXlsx.getFilename(),
-             usrAnalista = this.asigAnalisisService.findById(recordsBetweenDatesDto.getIdAsigGrupo()).getUsrAnalista().getNombres();
+
+      // ► Repo dep's ...
+      Usuario usrAnalista = this.asigAnalisisService
+                                          .findById(recordsBetweenDatesDto.getIdAsigGrupo())
+                                          .getUsrAnalista();
+
+      String fileName = usrAnalista.getGrupo() == RimGrupo.DEPURACION 
+                           ? "S10.DRCM.FR.001-Registro de depuracion de datos_V02"
+                           : "S10.DRCM.FR.002-Registro para el analisis de informacion_V02";
 
       /* ► Header's ... */
       HttpHeaders headers = new HttpHeaders();
-      String contentDisposition = String.format("attachment; filename=\"%s - %s(%s).xlsx\"", fileName, usrAnalista, df.format(new Date()));
+      String contentDisposition = String.format("attachment; filename=\"%s_%s_%s.xlsx\"", fileName, usrAnalista.getNombres(), df.format(new Date()));
       headers.add(HttpHeaders.CONTENT_DISPOSITION, contentDisposition);
       headers.add(RimHttpHeaders.RESPONSE_STATUS, LevelLog.SUCCESS);
       headers.add(RimHttpHeaders.MESSAGE, Messages.MESSAGE_SUCCESS_DOWNLOAD);
@@ -127,7 +132,6 @@ public class RimanalisisController {
             .contentType(MediaType.APPLICATION_OCTET_STREAM)
             .headers(headers)
             .body(byteArrResource);
-
    }
  
    @GetMapping( path = { "/downloadReporteMensualProduccionByParams" } )

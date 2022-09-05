@@ -1,5 +1,6 @@
 package com.microservicio.rimextraccion.controllers;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import com.commons.utils.constants.Messages;
@@ -9,6 +10,7 @@ import com.microservicio.rimextraccion.models.dto.TablaDinamicaDto;
 import com.microservicio.rimextraccion.services.RimcommonService;
 import com.microservicio.rimextraccion.services.RimextraccionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +27,9 @@ public class RimcommonController {
 
    @Autowired
    private RimcommonService rimcommonService;
+
+   @Autowired
+   private Environment ev;
 
    @GetMapping( path = { "/findAllTablaDinamica" } )
    @ResponseStatus(value = HttpStatus.OK)
@@ -52,4 +57,12 @@ public class RimcommonController {
                .build();
    }
 
+
+   @GetMapping(path = { "/testLoadBalancing" })
+   public Map<String, String> testLoadBalancing() {
+      Map<String, String> json = new HashMap<>();
+      json.put("port", ev.getProperty("local.server.port"));
+      return json;
+   }
+   
 }

@@ -36,7 +36,7 @@ public class CtrlCalCamposAnalisis {
    @Column(name = "nIdCtrlCal")
    private Long idCtrlCal;
    
-   @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+   @ManyToOne(fetch = FetchType.EAGER)
    @JoinColumn(name = "nIdAsigGrupo")
    private AsigGrupoCamposAnalisis asigGrupoCamposAnalisis;
    

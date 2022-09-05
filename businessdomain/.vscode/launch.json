@@ -2,6 +2,13 @@
    "configurations": [
       {
          "type": "java",
+         "name": "Launch RimdepurarExtraccionServiceImpl",
+         "request": "launch",
+         "mainClass": "com.microservicio.rimextraccion.services.RimdepurarExtraccionServiceImpl",
+         "projectName": "rimextraccion"
+      },
+      {
+         "type": "java",
          "name": "Launch RimctrlCalCamposAnalisisController",
          "request": "launch",
          "mainClass": "com.microservicio.rimextraccion.controllers.RimctrlCalCamposAnalisisController",

@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 import com.commons.utils.constants.Messages;
 import com.commons.utils.errors.DataAccessEmptyWarning;
 import com.commons.utils.models.entities.Usuario;
+import com.commons.utils.models.enums.RimGrupo;
 import com.commons.utils.utils.Response;
 import com.microservicio.rimextraccion.clients.UsuarioClientRest;
 import com.microservicio.rimextraccion.errors.NotFoundDownloadException;
@@ -163,6 +164,7 @@ public class RimanalisisServiceImpl implements RimanalisisService {
       if(asigGrupoCamposAnalisis == null)
          throw new NotFoundDownloadException();
 
+      RimGrupo usrGrupo = asigGrupoCamposAnalisis.getUsrAnalista().getGrupo();
       String nombreTabla = asigGrupoCamposAnalisis.getGrupo().getTablaDinamica().getNombre(),
              usrAnalista = asigGrupoCamposAnalisis.getUsrAnalista().getNombres(),
              usrAnalistaCargo = asigGrupoCamposAnalisis.getUsrAnalista().getCargo(),
@@ -191,8 +193,7 @@ public class RimanalisisServiceImpl implements RimanalisisService {
       /*► Data-Set ... */
       //------------------------------------------------------------------------------------------------------
       List<Map<String, Object>> ds = this.rimcommonService.findDynamicSelectStatement(queryString.toString());
-      if(ds.size() == 0)
-         throw new NotFoundDownloadException();
+      if(ds.size() == 0) throw new NotFoundDownloadException();
 
       List<Map<String, Object>> dsNew = this.purgeProduccionAnalisisDb(ds, metaNameAssignedCsv);
       //------------------------------------------------------------------------------------------------------
@@ -211,6 +212,15 @@ public class RimanalisisServiceImpl implements RimanalisisService {
          /*► HEADER: Tag's Static's ... */
          //------------------------------------------------------------------------------------------------------------------------------------------------------
          /*► Dep's: ... */
+         XSSFRow rowCodigo = ws.getRow(3);
+         rowCodigo.getCell(1).setCellValue(
+                                          usrGrupo == RimGrupo.DEPURACION
+                                             ? "S10.DRCM.FR.001"
+                                             : "S10.DRCM.FR.002");
+
+         XSSFRow rowVersion = ws.getRow(3);
+         rowVersion.getCell(4).setCellValue(usrGrupo == RimGrupo.DEPURACION ? "'01" : "'02");
+
          XSSFRow rowServidorCargo = ws.getRow(5);
          Cell cellServidorCargo = rowServidorCargo.getCell(5);
          cellServidorCargo.setCellValue(usrAnalistaCargo);
@@ -458,7 +468,9 @@ public class RimanalisisServiceImpl implements RimanalisisService {
          /*► Static-Cell's ... */
          // CHunk-01
          Cell cellTitulo = rowTitulo.createCell(5);
-         cellTitulo.setCellValue("REGISTRO DE DEPURACIÓN DE DATOS");
+         cellTitulo.setCellValue(usrGrupo == RimGrupo.DEPURACION
+                                                ? "REGISTRO DE DEPURACIÓN DE DATOS"
+                                                : "REGISTRO DE ANALISIS DE DATOS");
          cellTitulo.setCellStyle(RimanalisisPoiHelper.createCellStyle(wb, RimanalisisPoiHelper.CellType.HEADER_CELL_TITULO));
          ws.addMergedRegion(new CellRangeAddress(iRowTitulo, iRowTitulo + 1, 5, iCellHeader));
 

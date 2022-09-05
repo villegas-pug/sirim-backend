@@ -21,3 +21,4 @@ public class GrupoCamposAnalisisDto {
    private Date fechaCreacion;
    private boolean activo;
 }
+

@@ -2,6 +2,7 @@ package com.microservicio.rimextraccion.controllers;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,6 +18,7 @@ import com.commons.utils.helpers.DataModelHelper;
 import com.commons.utils.models.dto.QueryClauseDto;
 import com.commons.utils.utils.Response;
 import com.microservicio.rimextraccion.errors.RimcommonWarningException;
+import com.microservicio.rimextraccion.errors.RimdepurarExtraccionWarningException;
 import com.microservicio.rimextraccion.models.constants.AlterTableType;
 import com.microservicio.rimextraccion.models.dto.ModuloDto;
 import com.microservicio.rimextraccion.models.dto.TablaDinamicaDto;
@@ -32,8 +34,11 @@ import com.microservicio.rimextraccion.services.BaseDatosService;
 import com.microservicio.rimextraccion.services.GrupoCamposAnalisisService;
 import com.microservicio.rimextraccion.services.QueryStringService;
 import com.microservicio.rimextraccion.services.RimextraccionService;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -140,26 +145,31 @@ public class RimextraccionController extends CommonController<TablaDinamica, Rim
       queryString.append(tablaDinamica.getNombre());
       super.service.alterTablaDinamica(queryString.toString());
 
-      return ResponseEntity.ok().body(
-            Response
-                  .builder()
-                  .message(Messages.SUCCESS_DELETE_TABLA(tablaDinamica.getNombre()))
-                  .data(this.commonService.findAllTablaDinamica())
-                  .build());
+      return ResponseEntity.ok(
+                              Response
+                              .builder()
+                              .message(Messages.SUCCESS_DELETE_TABLA(tablaDinamica.getNombre()))
+                              .data(this.commonService.findAllTablaDinamica())
+                              .build());
    }
 
    @PutMapping(path = { "/alterTablaDinamica" })
    public ResponseEntity<?> alterTablaDinamica(@RequestBody TablaDinamicaDto tablaDinamicaDto) {
 
-      /* » Modifica: Tabla-Dinámica ... */
+      // ► Modifica: Tabla-Dinámica ...
       this.alterMetadataOfTablaDinamica(tablaDinamicaDto);
 
-      return ResponseEntity.ok().body(
-            Response
-                  .builder()
-                  .message(Messages.SUCCESS_ALTER_TABLE(tablaDinamicaDto.getNombre()))
-                  .data(super.service.findMetaTablaDinamicaByNombre(tablaDinamicaDto.getNombre()))
-                  .build());
+      // ► Date-Set ...
+      List<Map<String, Object>> ds = super.service.findMetaTablaDinamicaByNombre(tablaDinamicaDto.getNombre());
+      if(ds.size() == 0)
+         throw new DataAccessEmptyWarning();
+
+      return ResponseEntity.ok(
+                              Response
+                                 .builder()
+                                 .message(Messages.SUCCESS_ALTER_TABLE(tablaDinamicaDto.getNombre()))
+                                 .data(ds)
+                                 .build());
    }
 
    @PostMapping(path = { "/findMetaTablaDinamica" })
@@ -187,7 +197,7 @@ public class RimextraccionController extends CommonController<TablaDinamica, Rim
    }
 
    @PostMapping(path = { "/saveGrupoCamposAnalisis" })
-   public ResponseEntity<?> saveGrupoCamposAnalisis(@RequestBody TablaDinamicaDto tablaDinamicaDto) {
+   public Response<List<TablaDinamicaDto>> saveGrupoCamposAnalisis(@RequestBody TablaDinamicaDto tablaDinamicaDto) {
 
       TablaDinamica tablaDinamica = super.service
                                              .findById(tablaDinamicaDto.getIdTabla())
@@ -203,7 +213,7 @@ public class RimextraccionController extends CommonController<TablaDinamica, Rim
                                           .stream()
                                           .anyMatch(g -> g.getNombre().trim().equals(newGroupName));
          if (isExistingGroup)
-            throw new CreateTableWarning(Messages.WARNING_ADD_GROUP_ANALISIS(newGroupName));
+            throw new RimdepurarExtraccionWarningException(Messages.WARNING_ADD_GROUP_ANALISIS(newGroupName));
 
          GrupoCamposAnalisis grupoCamposAnalisis = GrupoCamposAnalisis
                                                          .of()
@@ -239,12 +249,11 @@ public class RimextraccionController extends CommonController<TablaDinamica, Rim
 
       super.service.save(tablaDinamica);
 
-      return ResponseEntity.ok().body(
-            Response
-                  .builder()
+      return Response
+                  .<List<TablaDinamicaDto>>builder()
                   .message(Messages.MESSAGE_SUCCESS_CREATE)
                   .data(this.commonService.findAllTablaDinamica())
-                  .build());
+                  .build();
    }
 
    @DeleteMapping(path = { "/deleteGrupoCamposAnalisisbyId/{idGrupo}" })
@@ -327,7 +336,7 @@ public class RimextraccionController extends CommonController<TablaDinamica, Rim
       
       // ► Validación: Si no existe usuario ...
       if(asigGrupoCamposAnalisis.getUsrAnalista().getIdUsuario() == null)
-         throw new RimcommonWarningException(Messages.WARNING_USER_NOT_EXISTS);
+         throw new RimdepurarExtraccionWarningException(Messages.WARNING_USER_NOT_EXISTS);
 
       // ► Repo dep's ...
       GrupoCamposAnalisis grupoAnalisis = this.grupoService
@@ -359,7 +368,7 @@ public class RimextraccionController extends CommonController<TablaDinamica, Rim
 
       /*► Save: ... */
       if (isAvailableRange) this.asigService.save(asigGrupoCamposAnalisis);
-      else throw new AsignWarning(Messages.WARNING_ASIGN_REG_ANALISIS);
+      else throw new RimdepurarExtraccionWarningException(Messages.WARNING_ASIGN_REG_ANALISIS);
 
       /*► Response ... */
       List<TablaDinamicaDto> tablaDinamicaDb = this.commonService.findAllTablaDinamica();
@@ -661,19 +670,35 @@ public class RimextraccionController extends CommonController<TablaDinamica, Rim
    @SuppressWarnings(value = { "deprecation" })
    private Object getCellValue(Cell cell) {
       /* ► Dep's ... */
-      String fieldValue;
+      SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+      String fieldValue = "";
       
       /* ► Validación ...  */
       if(cell == null) {
          fieldValue = "-";
       } else {
-         cell.setCellType(CellType.STRING);
-         fieldValue = !cell.getStringCellValue().trim().isEmpty() 
-                           ? cell.getStringCellValue().replaceAll("['\\/]", "")
-                           : "-";
+         
+         try {
+            // ► Si `cell` no es `date` o `numeric`, dispara una excepción ...
+            if(DateUtil.isCellDateFormatted(cell)) // ► El formato es `date` ...
+               fieldValue = df.format(cell.getDateCellValue());
+            else // ► El formato es `number` ...
+               fieldValue = String.valueOf((int) cell.getNumericCellValue());
+
+         } catch(Exception e) {
+
+               cell.setCellType(CellType.STRING);
+               fieldValue = !cell.getStringCellValue().trim().isEmpty() 
+                              ? cell.getStringCellValue().replaceAll("['\\/]", "")
+                              : "-";
+
+         }
+
+         
       }
 
-      return "'".concat(fieldValue).concat("'");
+      return "'".concat(fieldValue).concat("'"); 
+
    }
 
    private List<Map<String, Object>> filterMetaFieldsByExtraccion(List<Map<String, Object>> metaFields) {
@@ -716,7 +741,7 @@ public class RimextraccionController extends CommonController<TablaDinamica, Rim
 
             metaFields.stream().forEach(f -> {/* » Validación: Si, nombre de campo existe en Tabla-Dinámica... */
                if (f.get("nombre").equals(fieldName))
-                  throw new CreateTableWarning(Messages.WARNING_ALTER_TABLE_ADD_COLUMN(fieldName));
+                  throw new RimdepurarExtraccionWarningException(Messages.WARNING_ALTER_TABLE_ADD_COLUMN(fieldName));
             });
 
             /* ► Inserta: Nombre de campo en tabla física ... */
@@ -887,7 +912,7 @@ public class RimextraccionController extends CommonController<TablaDinamica, Rim
       /* » Valida: Si, existe tabla dinámica... */
       Optional<TablaDinamica> tablaDinamicaOld = super.service.findByNombre(nombreTabla);
       if (tablaDinamicaOld.isPresent())
-         throw new CreateTableWarning(Messages.WARNING_CREATE_TABLE(nombreTabla));
+         throw new RimdepurarExtraccionWarningException(Messages.WARNING_CREATE_TABLE(nombreTabla));
 
       /* » Insert: Nombre de tabla ... */
       TablaDinamica tablaDinamicaNew = new ModelMapper().map(tablaDinamicaDto, TablaDinamica.class);
@@ -900,6 +925,18 @@ public class RimextraccionController extends CommonController<TablaDinamica, Rim
    }
 
    // #endregion
+
+   //#region Fallback methods ...
+
+   private Response<List<TablaDinamicaDto>> findAllTablaDinamica(TablaDinamicaDto tablaDinamicaDto){
+      return Response
+               .<List<TablaDinamicaDto>>builder()
+               .message(Messages.MESSAGE_SUCCESS_CREATE)
+               .data(this.commonService.findAllTablaDinamica())
+               .build();
+   }
+
+   //#endregion
 
    // #region Body-Request ...
 
