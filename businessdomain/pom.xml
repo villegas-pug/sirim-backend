@@ -73,13 +73,13 @@
       <dependency>
          <groupId>org.springframework.cloud</groupId>
          <artifactId>spring-cloud-starter-openfeign</artifactId>
-      </dependency>
+     </dependency>
 
       <!-- Hystrix -->
-      <dependency>
+      <!-- <dependency>
          <groupId>org.springframework.cloud</groupId>
          <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
-      </dependency>
+      </dependency> -->
 
       <!-- Cache  -->
       <dependency>
@@ -109,14 +109,16 @@
 
    <modules>
       <module>generic</module>
-      <module>interpol</module>
-      <module>nacionalizacion</module>
-      <module>operativo</module>
-      <module>preinscripcion</module>
-      <module>produccion</module>
-      <module>usuario</module>
-      <module>rimextraccion</module>
       <module>rimsim</module>
+      <module>usuario</module>
+      <module>interpol</module>
+      <module>rimcommon</module>
+      <module>rimextraccion</module>
+      <module>rimasignacion</module>
+      <module>rimanalisis</module>
+      <module>rimctrlcalidad</module>
+      <module>rimmantenimiento</module>
+      <module>rimreportes</module>
    </modules>
 
 </project>

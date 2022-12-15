@@ -1,0 +1,14 @@
+spring:
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: config-server
+      fail-fast: true
+      name: microservicio-rimctrlcalidad
+      profile: dev
+      username: rguevarav
+      password: Cd1526a2a8
+      retry:
+        max-attempts: 1
+        max-interval: 1000

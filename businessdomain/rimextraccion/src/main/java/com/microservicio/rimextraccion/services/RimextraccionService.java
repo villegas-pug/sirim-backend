@@ -7,21 +7,25 @@ import java.util.Optional;
 import javax.persistence.Tuple;
 
 import com.commons.utils.models.dto.QueryClauseDto;
+import com.commons.utils.models.dto.TablaDinamicaDto;
+import com.commons.utils.models.entities.TablaDinamica;
+import com.commons.utils.models.entities.Usuario;
 import com.commons.utils.services.CommonService;
-import com.microservicio.rimextraccion.models.entities.TablaDinamica;
 
 public interface RimextraccionService extends CommonService<TablaDinamica> {
    
+   // ► Repo method's ...
    List<Tuple> createTable(String nombreTabla);
    Optional<TablaDinamica> findByNombre(String nombre);
    List<Map<String, Object>> findMetaTablaDinamicaByNombre(String nombreTabla);
-   List<Map<String, Object>> findTablaDinamicaBySuffixOfField(String nombreTabla, String suffix);
    Long saveTablaDinamica(String nombreTabla, String sqlInsertValues);
    Long alterTablaDinamica(String queryString);
-   Long countTablaByNombre(String nombreTabla);
    List<Tuple> findAllTest();
 
-   /*► Client-Methods ...  */
-   public List<Map<String, String>> findTableMetaByNameSim(String nombreTabla);
-   public List<Map<String, Object>> dynamicJoinStatementSim(QueryClauseDto queryClauseDto);
+   // ► Client-Methods ...
+   List<Map<String, String>> findTableMetaByNameSim(String nombreTabla);
+   List<Map<String, Object>> dynamicJoinStatementSim(QueryClauseDto queryClauseDto);
+   List<TablaDinamicaDto> findAllTablaDinamica();
+   List<TablaDinamicaDto> findTablaDinamicaByUsrCreador(Usuario usrCreador);
+
 }

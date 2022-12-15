@@ -11,31 +11,21 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import com.commons.utils.constants.Messages;
 import com.commons.utils.controllers.CommonController;
-import com.commons.utils.errors.AsignWarning;
-import com.commons.utils.errors.CreateTableWarning;
 import com.commons.utils.errors.DataAccessEmptyWarning;
-import com.commons.utils.helpers.DataModelHelper;
+import com.commons.utils.models.dto.ModuloDto;
 import com.commons.utils.models.dto.QueryClauseDto;
+import com.commons.utils.models.dto.TablaDinamicaDto;
+import com.commons.utils.models.entities.BaseDatos;
+import com.commons.utils.models.entities.GrupoCamposAnalisis;
+import com.commons.utils.models.entities.Modulo;
+import com.commons.utils.models.entities.QueryString;
+import com.commons.utils.models.entities.TablaDinamica;
 import com.commons.utils.utils.Response;
-import com.microservicio.rimextraccion.errors.RimcommonWarningException;
 import com.microservicio.rimextraccion.errors.RimdepurarExtraccionWarningException;
 import com.microservicio.rimextraccion.models.constants.AlterTableType;
-import com.microservicio.rimextraccion.models.dto.ModuloDto;
-import com.microservicio.rimextraccion.models.dto.TablaDinamicaDto;
-import com.microservicio.rimextraccion.models.entities.AsigGrupoCamposAnalisis;
-import com.microservicio.rimextraccion.models.entities.BaseDatos;
-import com.microservicio.rimextraccion.models.entities.GrupoCamposAnalisis;
-import com.microservicio.rimextraccion.models.entities.Modulo;
-import com.microservicio.rimextraccion.models.entities.QueryString;
-import com.microservicio.rimextraccion.models.entities.TablaDinamica;
-import com.microservicio.rimextraccion.services.RimasigGrupoCamposAnalisisService;
-import com.microservicio.rimextraccion.services.RimcommonService;
 import com.microservicio.rimextraccion.services.BaseDatosService;
-import com.microservicio.rimextraccion.services.GrupoCamposAnalisisService;
 import com.microservicio.rimextraccion.services.QueryStringService;
 import com.microservicio.rimextraccion.services.RimextraccionService;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
-
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.DateUtil;
@@ -71,10 +61,7 @@ public class RimextraccionController extends CommonController<TablaDinamica, Rim
    private Resource e_template_sim;
 
    @Autowired
-   private GrupoCamposAnalisisService grupoService;
-
-   @Autowired
-   private RimasigGrupoCamposAnalisisService asigService;
+   private RimextraccionService rimextraccionService;
 
    @Autowired
    private BaseDatosService baseDatosService;
@@ -82,14 +69,11 @@ public class RimextraccionController extends CommonController<TablaDinamica, Rim
    @Autowired
    private QueryStringService queryStringService;
 
-   @Autowired
-   private RimcommonService commonService;
-
    @PostMapping(path = { "/createTablaDinamica" })
    public ResponseEntity<?> createTablaDinamica(@RequestBody TablaDinamicaDto tablaDinamicaDto){
 
       String nombreTabla = tablaDinamicaDto.getNombre();
-      List<TablaDinamica> tablaDinamicaDb = this.saveAndCreateTablaDinamica(tablaDinamicaDto);
+      List<TablaDinamicaDto> tablaDinamicaDb = this.saveAndCreateTablaDinamica(tablaDinamicaDto);
 
       return ResponseEntity.ok().body(
             Response
@@ -102,18 +86,24 @@ public class RimextraccionController extends CommonController<TablaDinamica, Rim
    @PutMapping(path = { "/updateNameTablaDinamica" })
    public ResponseEntity<?> updateNameTablaDinamica(@RequestBody TablaDinamica tablaDinamica) {
 
+      // Dep's ...
       String nombreTablaNew = tablaDinamica.getNombre();
+      int porcentajeQCNew = tablaDinamica.getPorcentajeQC();
       Long idTablaOld = tablaDinamica.getIdTabla();
-
-      /* » Valida: Si, el nuevo nombre existe ... */
-      Optional<TablaDinamica> tablaDinamicaNew = super.service.findByNombre(nombreTablaNew);
-      if (!tablaDinamicaNew.isEmpty())
-         throw new CreateTableWarning(Messages.WARNING_CREATE_TABLE(nombreTablaNew));
 
       /* » Obtiene: Tabla dinámica por `id` */
       TablaDinamica tablaDinamicaOld = super.service
-            .findById(idTablaOld)
-            .orElseThrow(() -> new CreateTableWarning(Messages.MESSAGE_WARNING_DATA_SAVE));
+                                                .findById(idTablaOld)
+                                                .orElseThrow(() -> new RimdepurarExtraccionWarningException(Messages.MESSAGE_WARNING_DATA_SAVE));
+
+      /* » Valida: Si, el nuevo nombre existe ... */
+      if (!tablaDinamicaOld.getNombre().equalsIgnoreCase(nombreTablaNew)) {
+
+         Optional<TablaDinamica> tablaDinamicaNew = super.service.findByNombre(nombreTablaNew);
+         if (!tablaDinamicaNew.isEmpty())
+            throw new RimdepurarExtraccionWarningException(Messages.WARNING_CREATE_TABLE(nombreTablaNew));
+         
+      }
 
       /* » Actualiza: Nuevo nombre de tabla dinámica ... */
       StringBuilder queryString = new StringBuilder();
@@ -122,35 +112,35 @@ public class RimextraccionController extends CommonController<TablaDinamica, Rim
             .append(nombreTablaNew).append("';");
       super.service.alterTablaDinamica(queryString.toString());
 
-      /* » Actualiza: Nuevo nombre de tabla dinámica en RimTablaDinamica ... */
+      /* » Actualiza: Nuevo nombre y porcentajeQC de tabla dinámica en RimTablaDinamica ... */
       tablaDinamicaOld.setNombre(nombreTablaNew);
+      tablaDinamicaOld.setPorcentajeQC(porcentajeQCNew);
       this.service.save(tablaDinamicaOld);
 
       return ResponseEntity.ok().body(
             Response
                   .builder()
                   .message(Messages.SUCCESS_ALTER_TABLE(nombreTablaNew))
-                  .data(this.commonService.findAllTablaDinamica())
+                  .data(this.rimextraccionService.findTablaDinamicaByUsrCreador(tablaDinamica.getUsrCreador()))
                   .build());
    }
 
    @DeleteMapping(path = { "/deleteTablaDinamica" })
-   public ResponseEntity<?> deleteTablaDinamica(@RequestBody TablaDinamica tablaDinamica) {
+   public Response<List<TablaDinamicaDto>> deleteTablaDinamica(@RequestBody TablaDinamica tablaDinamica) {
 
-      /* » Delete: Nombre en `RimTablaDinamica` ... */
+      // » Delete: Tabla lógica ...
       super.service.deleteById(tablaDinamica.getIdTabla());
 
-      /* » Delete tabla dinámica ... */
+      // » Delete: Tabla física ...
       StringBuilder queryString = new StringBuilder("DROP TABLE ");
       queryString.append(tablaDinamica.getNombre());
       super.service.alterTablaDinamica(queryString.toString());
 
-      return ResponseEntity.ok(
-                              Response
-                              .builder()
-                              .message(Messages.SUCCESS_DELETE_TABLA(tablaDinamica.getNombre()))
-                              .data(this.commonService.findAllTablaDinamica())
-                              .build());
+      return Response
+                  .<List<TablaDinamicaDto>>builder()
+                  .message(Messages.SUCCESS_DELETE_TABLA(tablaDinamica.getNombre()))
+                  .data(this.rimextraccionService.findTablaDinamicaByUsrCreador(tablaDinamica.getUsrCreador()))
+                  .build();
    }
 
    @PutMapping(path = { "/alterTablaDinamica" })
@@ -186,38 +176,33 @@ public class RimextraccionController extends CommonController<TablaDinamica, Rim
                   .build());
    }
 
-   @GetMapping( path = { "/countTablaByNombre" } )
-   public ResponseEntity<?> countTablaByNombre(@RequestParam String nombreTabla) {
-      return ResponseEntity.ok(
-                              Response
-                                 .builder()
-                                 .message(HttpStatus.OK.name())
-                                 .data(this.service.countTablaByNombre(nombreTabla))
-                                 .build());
-   }
-
    @PostMapping(path = { "/saveGrupoCamposAnalisis" })
    public Response<List<TablaDinamicaDto>> saveGrupoCamposAnalisis(@RequestBody TablaDinamicaDto tablaDinamicaDto) {
+
+      // ► Dep's ...
+      long idGrupo = Optional.ofNullable(tablaDinamicaDto.getGrupoCamposAnalisis().getIdGrupo())
+                             .orElse(-1L);
+      String nombreGrupo = tablaDinamicaDto.getGrupoCamposAnalisis().getNombre();
+      boolean obligatorio = tablaDinamicaDto.getGrupoCamposAnalisis().isObligatorio();
 
       TablaDinamica tablaDinamica = super.service
                                              .findById(tablaDinamicaDto.getIdTabla())
                                              .orElseThrow(DataAccessEmptyWarning::new);
 
       /* ► Nuevo: Grupo... */
-      if (tablaDinamicaDto.getGrupoCamposAnalisis().getIdGrupo() == null) {
+      if (idGrupo == -1L) {
 
-         String newGroupName = tablaDinamicaDto.getGrupoCamposAnalisis().getNombre();
-
-         Boolean isExistingGroup = tablaDinamica
-                                          .getLstGrupoCamposAnalisis()
-                                          .stream()
-                                          .anyMatch(g -> g.getNombre().trim().equals(newGroupName));
-         if (isExistingGroup)
-            throw new RimdepurarExtraccionWarningException(Messages.WARNING_ADD_GROUP_ANALISIS(newGroupName));
+         Boolean existsGroup = tablaDinamica
+                                    .getLstGrupoCamposAnalisis()
+                                    .stream()
+                                    .anyMatch(g -> g.getNombre().trim().equals(nombreGrupo));
+         if (existsGroup)
+            throw new RimdepurarExtraccionWarningException(Messages.WARNING_ADD_GROUP_ANALISIS(nombreGrupo));
 
          GrupoCamposAnalisis grupoCamposAnalisis = GrupoCamposAnalisis
                                                          .of()
-                                                         .nombre(tablaDinamicaDto.getGrupoCamposAnalisis().getNombre())
+                                                         .nombre(nombreGrupo)
+                                                         .obligatorio(obligatorio)
                                                          .get();
 
          /* » Insertar: Grupo ... */
@@ -226,15 +211,13 @@ public class RimextraccionController extends CommonController<TablaDinamica, Rim
       /* ► Actualiza: Grupo... */
       } else {
 
-         long idGrupo = tablaDinamicaDto.getGrupoCamposAnalisis().getIdGrupo();
-         String newGroupName = tablaDinamicaDto.getGrupoCamposAnalisis().getNombre();
-
          tablaDinamica
                   .getLstGrupoCamposAnalisis()
                   .stream()
                   .filter(grupo -> grupo.getIdGrupo().equals(idGrupo))
                   .forEach(grupo -> {
-                     grupo.setNombre(newGroupName);
+                     grupo.setNombre(nombreGrupo);
+                     grupo.setObligatorio(obligatorio);
                   });
 
          /*
@@ -250,21 +233,10 @@ public class RimextraccionController extends CommonController<TablaDinamica, Rim
       super.service.save(tablaDinamica);
 
       return Response
-                  .<List<TablaDinamicaDto>>builder()
-                  .message(Messages.MESSAGE_SUCCESS_CREATE)
-                  .data(this.commonService.findAllTablaDinamica())
-                  .build();
-   }
-
-   @DeleteMapping(path = { "/deleteGrupoCamposAnalisisbyId/{idGrupo}" })
-   public ResponseEntity<?> deleteGrupoCamposAnalisisbyId(@PathVariable Long idGrupo){
-      this.grupoService.deleteGrupoCamposAnalisisbyId(idGrupo);
-      return ResponseEntity.ok(
-                              Response
-                                 .builder()
-                                 .message(Messages.SUCCESS_DELETE_GRUPO_ANALISIS)
-                                 .data(this.commonService.findAllTablaDinamica())
-                                 .build());
+               .<List<TablaDinamicaDto>>builder()
+               .message(Messages.MESSAGE_SUCCESS_CREATE)
+               .data(this.rimextraccionService.findTablaDinamicaByUsrCreador(tablaDinamica.getUsrCreador()))
+               .build();
    }
 
    @PostMapping(path = { "/uploadExtraccion" })
@@ -294,7 +266,7 @@ public class RimextraccionController extends CommonController<TablaDinamica, Rim
          XSSFRow row = sheet.getRow(0);
          int totalFieldsOfSource = row.getPhysicalNumberOfCells();
          if (totalFieldsOfTarget != totalFieldsOfSource)
-            throw new CreateTableWarning(Messages.WARNING_UPLOAD_TABLE(file.getOriginalFilename()));
+            throw new RimdepurarExtraccionWarningException(Messages.WARNING_UPLOAD_TABLE(file.getOriginalFilename()));
 
          /* » QUERY-STRING ... */
          // ---------------------------------------------------------------------------------------------------------
@@ -327,70 +299,6 @@ public class RimextraccionController extends CommonController<TablaDinamica, Rim
                   .build());
    }
 
-   @PostMapping(path = { "/assignedToGrupoAnalisis" })
-   public ResponseEntity<?> assignedToGrupoAnalisis(@RequestBody(required = false) AsigGrupoCamposAnalisis asigGrupoCamposAnalisis) {
-
-      // ► Dep's ...
-      int rangeIni = asigGrupoCamposAnalisis.getRegAnalisisIni(),
-          rangeFin = asigGrupoCamposAnalisis.getRegAnalisisFin();
-      
-      // ► Validación: Si no existe usuario ...
-      if(asigGrupoCamposAnalisis.getUsrAnalista().getIdUsuario() == null)
-         throw new RimdepurarExtraccionWarningException(Messages.WARNING_USER_NOT_EXISTS);
-
-      // ► Repo dep's ...
-      GrupoCamposAnalisis grupoAnalisis = this.grupoService
-                                                   .findById(asigGrupoCamposAnalisis.getGrupo().getIdGrupo())
-                                                   .orElseThrow(DataAccessEmptyWarning::new);
-
-      String nombreTabla = grupoAnalisis.getTablaDinamica().getNombre();
-
-      int totalRegExtraccion = super.service.countTablaByNombre(nombreTabla).intValue();
-      if(totalRegExtraccion == 0) throw new AsignWarning(Messages.WARNING_RECORDS_NOT_FOUND_TO_SEGMENT);
-
-      /*► Correlativo iniciado en 0 e incrementado en 1, a partir de un valor máximo ...  */
-      String rangesAvailables = this.convertArrIntToStr(this.generateRangeNumbersToArr(totalRegExtraccion));
-
-      /*► Rangos asigandos en el grupo ... */
-      for (AsigGrupoCamposAnalisis asign : grupoAnalisis.getAsigGrupoCamposAnalisis()) {
-
-         /*► Rangos asignados ...  */
-         String rangoAsignedBefore = this.convertArrIntToStr(
-                                                      this.generateRangeNumbersToArr(asign.getRegAnalisisIni(), asign.getRegAnalisisFin()));
-
-         /*► Reemplaza `Rangos asignados` en `rangeExtraccionStr` ... */
-         rangesAvailables = rangesAvailables.replace(rangoAsignedBefore, "").replace(", ,", ",");
-      }
-
-      /*► Validar: Si el rango enviado está disponible ... */
-      String rangeAssigned = this.convertArrIntToStr(this.generateRangeNumbersToArr(rangeIni, rangeFin));
-      boolean isAvailableRange = rangesAvailables.contains(rangeAssigned);
-
-      /*► Save: ... */
-      if (isAvailableRange) this.asigService.save(asigGrupoCamposAnalisis);
-      else throw new RimdepurarExtraccionWarningException(Messages.WARNING_ASIGN_REG_ANALISIS);
-
-      /*► Response ... */
-      List<TablaDinamicaDto> tablaDinamicaDb = this.commonService.findAllTablaDinamica();
-      return ResponseEntity.ok(
-                              Response
-                                 .builder()
-                                 .message(Messages.SUCCESS_ASIGN_REG_ANALISIS)
-                                 .data(tablaDinamicaDb)
-                                 .build());
-   }
-
-   @DeleteMapping(path = { "/deleteAssignedToGrupoAById/{idAsign}" })
-   public ResponseEntity<?> deleteAssignedToGrupoAById(@PathVariable Long idAsign) {
-      this.asigService.deleteById(idAsign);
-      return ResponseEntity.ok().body(
-            Response
-                  .builder()
-                  .message(Messages.MESSAGE_SUCCESS_DELETE_BY_ID(idAsign))
-                  .data(this.commonService.findAllTablaDinamica())
-                  .build());
-   }
-
    @GetMapping(path = { "/findAllBasesDatos" })
    public ResponseEntity<?> findAllBasesDatos() {
       List<BaseDatos> baseDatosDb = this.baseDatosService.findAll();
@@ -413,7 +321,7 @@ public class RimextraccionController extends CommonController<TablaDinamica, Rim
       /* ► Validación: Si existe el nombre de Modelo de Datos → `QueryString` */
       Optional<QueryString> queryString = this.queryStringService.findByNombre(nombreQueryString);
       if (queryString.isPresent())
-         throw new CreateTableWarning(Messages.WARNING_DUPLICATE_MODEL_DATA(nombreQueryString));
+         throw new RimdepurarExtraccionWarningException(Messages.WARNING_DUPLICATE_MODEL_DATA(nombreQueryString));
 
       QueryString queryStringNew = QueryString
                                        .of()
@@ -424,12 +332,12 @@ public class RimextraccionController extends CommonController<TablaDinamica, Rim
 
       this.queryStringService.save(queryStringNew);
 
-      return ResponseEntity.ok().body(
-            Response
-                  .builder()
-                  .message(Messages.SUCCESS_SAVE_DATA_MODEL(nombreQueryString))
-                  .data(this.baseDatosService.findAll())
-                  .build());
+      return ResponseEntity.ok(
+                              Response
+                              .builder()
+                              .message(Messages.SUCCESS_SAVE_DATA_MODEL(nombreQueryString))
+                              .data(this.baseDatosService.findAll())
+                              .build());
    }
 
    /* ► Client-Rest ... */
@@ -522,7 +430,7 @@ public class RimextraccionController extends CommonController<TablaDinamica, Rim
          return ResponseEntity
                   .status(HttpStatus.NO_CONTENT)
                   .header(HttpHeaders.WARNING, Messages.MESSAGGE_WARNING_EMPTY)
-                  .body(null);
+                  .body(List.of());
       }
 
       /*► Depositar query-result a template `xlsx` ...  */
@@ -589,7 +497,7 @@ public class RimextraccionController extends CommonController<TablaDinamica, Rim
 
       Optional<QueryString> queryStringOld = this.queryStringService.findByNombre(queryStringName);
       if(queryStringOld.isPresent()) 
-         throw new CreateTableWarning(Messages.WARNING_DUPLICATE_MODEL_DATA(queryStringName));
+         throw new RimdepurarExtraccionWarningException(Messages.WARNING_DUPLICATE_MODEL_DATA(queryStringName));
 
       /*► Update `RimQueryString` ... */
       QueryString queryStringNew = this.queryStringService
@@ -611,51 +519,8 @@ public class RimextraccionController extends CommonController<TablaDinamica, Rim
                                        .data(basesDatos)
                                        .build());
    }
-
-   @GetMapping(path = { "/findAllTest" })
-   public ResponseEntity<?> findAllTest() {
-       return ResponseEntity.ok().body(DataModelHelper.convertTuplesToJson(this.service.findAllTest(), false));
-   }
    
    // #region: Métodos privados ...
-
-   private int[] generateRangeNumbersToArr(int... params) {/*► (tamaño, rangoIni, rangoFin) */
-
-      int countParam = params.length;
-      int rangoFin = 0,
-          rangoIni = 1;
-
-      switch (countParam) {
-         case 1:
-            rangoFin = params[0];
-            break;
-         case 2:
-            rangoFin = (params[1] - params[0]) + 1;
-            rangoIni = params[0];
-            break;
-      }
-
-      int[] consecutiveArr = new int[rangoFin];
-      for (int i = 0; i < rangoFin; i++) {
-         consecutiveArr[i] = rangoIni + i;
-      }
-
-      return consecutiveArr;
-   }
-
-   private String convertArrIntToStr(int[] intArray) {
-      String arrStr = Arrays.toString(intArray);
-      return arrStr.substring(1, arrStr.length() - 1);
-   }
-
-   /* private Integer[] convertStrCsvToIntArr(String strCsv) {
-      return Arrays
-               .stream(strCsv.split(","))
-               .map(String::trim)
-               .filter(e -> !e.isEmpty())
-               .map(Integer::parseInt)
-               .toArray(Integer[]::new);
-   } */
 
    private List<String> getKeysOfMap(Map<String, Object> map){
 
@@ -717,39 +582,41 @@ public class RimextraccionController extends CommonController<TablaDinamica, Rim
 
    private void alterMetadataOfTablaDinamica(TablaDinamicaDto tablaDinamicaDto) {
 
-      /* ► Dep's ...  */
+      // ► Dep's ...
       Long idTabla = tablaDinamicaDto.getIdTabla();
       String nombreTabla = tablaDinamicaDto.getNombre();
       String alterType = tablaDinamicaDto.getAlterTableType();
       String camposCsv = tablaDinamicaDto.getCamposCsv().replaceAll("[']", "").trim();
 
+      // ► Repo dep's ...
       TablaDinamica tablaDinamica = super.service
                                              .findById(idTabla)
                                              .orElseThrow(DataAccessEmptyWarning::new);
 
-      /* » META-TABLE: Nombre y tipo ... */
+      // » META-TABLE: Nombre y tipo ...
       List<Map<String, Object>> metaFields = super.service.findMetaTablaDinamicaByNombre(nombreTabla);
 
-      StringBuilder queryString = new StringBuilder();/* » Query-String ... */
+      StringBuilder queryString = new StringBuilder();// » Query-String ...
 
       switch (alterType) {
          case AlterTableType.ADD_COLUMN_E:
          case AlterTableType.ADD_COLUMN_A:
-            /* ► camposCsv: `sNumero_Pasaporte_e | TYPE | INFO` ... */
-            String fieldName = camposCsv.split("\\|")[0].trim(),/* » Nombre de campo ... */
-                   nameAndTypeField = fieldName.concat(" ").concat(camposCsv.split("\\|")[1].trim());
 
-            metaFields.stream().forEach(f -> {/* » Validación: Si, nombre de campo existe en Tabla-Dinámica... */
+            // ► camposCsv: `sNumero_Pasaporte_e | TYPE | INFO | REQUIRED` ...
+            String fieldName = camposCsv.split("\\|")[0].trim();// » Nombre de campo ...
+                   /* nameAndTypeField = fieldName.concat(" ").concat(camposCsv.split("\\|")[1].trim()); */
+
+            metaFields.stream().forEach(f -> {// » Validación: Si, nombre de campo existe en Tabla-Dinámica...
                if (f.get("nombre").equals(fieldName))
                   throw new RimdepurarExtraccionWarningException(Messages.WARNING_ALTER_TABLE_ADD_COLUMN(fieldName));
             });
 
-            /* ► Inserta: Nombre de campo en tabla física ... */
+            // ► Inserta: Nombre de campo en tabla física ...
             queryString
                   .append("ALTER TABLE ").append(nombreTabla)
-                  .append(" ADD ").append(nameAndTypeField).append(" NULL ");
+                  .append(" ADD ").append(fieldName).append(" VARCHAR(MAX) NULL ");
 
-            /* ► Inserta: Nombre de campo en: `GrupoCamposAnalisis.metaFieldsCsv` ... */
+            // ► Inserta: Nombre de campo en: `GrupoCamposAnalisis.metaFieldsCsv` ...
             if (alterType.equals(AlterTableType.ADD_COLUMN_A)) {
 
                Long idGrupo = tablaDinamicaDto.getGrupoCamposAnalisis().getIdGrupo();
@@ -764,7 +631,7 @@ public class RimextraccionController extends CommonController<TablaDinamica, Rim
                                                 : camposCsv);
                                  });
 
-            } else {
+            } else {// ► AlterTableType.ADD_COLUMN_E
 
                /* ► Dep's: */
                String currentMetaFieldsCsv = Optional.ofNullable(tablaDinamica.getMetaFieldsCsv()).orElse("");
@@ -773,7 +640,7 @@ public class RimextraccionController extends CommonController<TablaDinamica, Rim
                if(currentMetaFieldsCsv.isEmpty())
                   tablaDinamica.setMetaFieldsCsv(camposCsv);
                else
-                  tablaDinamica.setMetaFieldsCsv(currentMetaFieldsCsv.concat(", ").concat(camposCsv));
+                  tablaDinamica.setMetaFieldsCsv(currentMetaFieldsCsv.concat(",").concat(camposCsv));
 
             }
 
@@ -783,13 +650,13 @@ public class RimextraccionController extends CommonController<TablaDinamica, Rim
          case AlterTableType.ALTER_COLUMN_E:
          case AlterTableType.ALTER_COLUMN_A:
 
-            /* ► camposCsv: `sNumero_Pasaporte_e | TYPE | INFO` ... */
+            /* ► camposCsv: `sNumero_Pasaporte_e | TYPE | INFO | REQUIRED` ... */
             String prevMetaField = camposCsv.split(",")[0].trim(),
                    nextMetaField = camposCsv.split(",")[1].trim(),
                    prevFieldName = prevMetaField.split("\\|")[0].trim(),
-                   nextFieldName = nextMetaField.split("\\|")[0].trim(),
-                   nameAndTypeFromNextField = "[".concat(nextFieldName).concat("] ")
-                                                .concat(nextMetaField.split("\\|")[1].trim());
+                   nextFieldName = nextMetaField.split("\\|")[0].trim();
+                   /* nameAndTypeFromNextField = "[".concat(nextFieldName).concat("] ")
+                                                .concat(nextMetaField.split("\\|")[1].trim()); */
 
             /* » Actualizar nombre de campo en tabla física ... */
             queryString.append("SP_RENAME").append(" 'dbo.")
@@ -797,8 +664,8 @@ public class RimextraccionController extends CommonController<TablaDinamica, Rim
                        .append("]', '").append(nextFieldName).append("', 'COLUMN' ");
 
             /* » Actualizar meta-datos de campo en tabla física ... */
-            queryString.append("ALTER TABLE ").append(nombreTabla)
-                       .append(" ALTER COLUMN ").append(nameAndTypeFromNextField);
+            /* queryString.append("ALTER TABLE ").append(nombreTabla)
+                       .append(" ALTER COLUMN ").append(nameAndTypeFromNextField); */
 
             /* ► Si el Campo es: `_a` ... */
             if (alterType.equals(AlterTableType.ALTER_COLUMN_A)) {
@@ -905,8 +772,9 @@ public class RimextraccionController extends CommonController<TablaDinamica, Rim
       super.service.alterTablaDinamica(queryString.toString());
    }
 
-   private List<TablaDinamica> saveAndCreateTablaDinamica(TablaDinamicaDto tablaDinamicaDto){
+   private List<TablaDinamicaDto> saveAndCreateTablaDinamica(TablaDinamicaDto tablaDinamicaDto){
 
+      // ► Dep's ...
       String nombreTabla = tablaDinamicaDto.getNombre();
 
       /* » Valida: Si, existe tabla dinámica... */
@@ -921,21 +789,11 @@ public class RimextraccionController extends CommonController<TablaDinamica, Rim
       /* » Create: tabla dinámica física ... */
       super.service.createTable(nombreTabla);
 
-      return this.service.findAll();
+      return this.service.findTablaDinamicaByUsrCreador(tablaDinamicaDto.getUsrCreador());
    }
-
    // #endregion
 
    //#region Fallback methods ...
-
-   private Response<List<TablaDinamicaDto>> findAllTablaDinamica(TablaDinamicaDto tablaDinamicaDto){
-      return Response
-               .<List<TablaDinamicaDto>>builder()
-               .message(Messages.MESSAGE_SUCCESS_CREATE)
-               .data(this.commonService.findAllTablaDinamica())
-               .build();
-   }
-
    //#endregion
 
    // #region Body-Request ...

@@ -37,6 +37,9 @@ public class Messages {
    public static final String SUCCESS_CREATE_RECORDS_FOR_CTRLCAL = "¡Registros para control de calidad generedos exitosamente!";
    public static final String SUCCESS_RESULT_CONFORMITY_CTRLCAL = "¡Resultado de la conformidad del control de calidad, fué registrado exitosamente!";
    public static final String SUCCESS_VALIDATE_RECORD_CTRLCAL = "¡Validación registrada exitosamente!";
+   public static final String SUCCESS_SAVE_TIPO_LOGICO = "¡Tipo guardado exitosamente!";
+   public static final String SUCCESS_SAVE_EVENTO = "¡Evento guardado existosamente!";
+   public static final String SUCCESS_DELETE_EVENTO = "¡Evento eliminado existosamente!";
 
    /*-> WARNING: */
    public static final String MESSAGGE_WARNING_EMPTY = "¡No hay registros para mostrar!";
@@ -54,6 +57,9 @@ public class Messages {
    public static final String WARNING_RECORDS_NOT_FOUND_TO_SEGMENT = "¡No existen registros, para segmentar!";
    public static final String WARNING_IS_IN_CTRLCAL = "¡Asignación actualmente se encuentra en control de calidad!";
    public static final String WARNING_USER_NOT_EXISTS = "¡Usuario ingresado no existe!";
+   public static final String WARNING_TIPO_LOGICO_NOT_AVAILABLE = "¡Nombre de para el tipo lógico: %s, en uso!";
+   public static final String WARNING_EVENTO_NOT_EXISTS = "¡Evento con id: %s, no existe!";
+   public static final String WARNING_MIN_RECORDS_TO_ASSIGN = "¡Registro mínimos permitidos: %s!";
 
    /*-> ERROR: */
    public final static String MESSAGGE_ERROR_DATA_ACCESS = "¡Ocurrió un error, contacte a sitemas y proporcione este código %s!";
@@ -168,6 +174,18 @@ public class Messages {
 
    public static String WARNING_DUPLICATE_MODEL_DATA(String modelName){
       return String.format(WARNING_DUPLICATE_MODEL_DATA, modelName);
+   }
+
+   public static String WARNING_TIPO_LOGICO_NOT_AVAILABLE(String tipoLogico){
+      return String.format(WARNING_TIPO_LOGICO_NOT_AVAILABLE, tipoLogico);
+   }
+
+   public static String WARNING_EVENTO_NOT_EXISTS(long idEvento){
+      return String.format(WARNING_EVENTO_NOT_EXISTS, idEvento);
+   }
+
+   public static String WARNING_MIN_RECORDS_TO_ASSIGN(int records){
+      return String.format(WARNING_MIN_RECORDS_TO_ASSIGN, records);
    }
 
    /*-> ERROR */

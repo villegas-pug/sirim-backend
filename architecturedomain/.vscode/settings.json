@@ -22,5 +22,6 @@
       "commandCenter.border": "#e7e7e799"
    },
    "peacock.color": "#215732",
-   "java.configuration.updateBuildConfiguration": "automatic"
+   "java.configuration.updateBuildConfiguration": "automatic",
+   "java.compile.nullAnalysis.mode": "automatic"
 }

@@ -15,9 +15,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
-
 import com.commons.utils.models.enums.RimGrupo;
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.GenericGenerator;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -38,6 +37,7 @@ public class Usuario implements Serializable{
    private String nombres;
    
    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+   @JsonIgnoreProperties(value = { "usuario" }, allowSetters = true)
    @OrderBy("procedimiento ASC")
    private List<UsrProcedimiento> usrProcedimiento;
 
@@ -65,6 +65,9 @@ public class Usuario implements Serializable{
 
    @Column(name = "sRegimenLaboral", length = 25, nullable = false)
    private String regimenLaboral;
+
+   @Column(name = "sFoto", columnDefinition = "VARCHAR(MAX) NULL")
+   private String foto;
 
    public Usuario() {
       this.usrProcedimiento = new ArrayList<>();

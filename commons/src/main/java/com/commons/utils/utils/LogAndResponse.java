@@ -1,5 +1,6 @@
 package com.commons.utils.utils;
 
+import java.util.List;
 import java.util.UUID;
 import com.commons.utils.constants.LevelLog;
 import lombok.extern.log4j.Log4j2;
@@ -30,6 +31,7 @@ public class LogAndResponse {
       return Response
                .builder()
                .levelLog(levelLog)
+               .data(List.of())
                .message(msjResponse)
                .build();
    }

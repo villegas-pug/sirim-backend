@@ -34,7 +34,6 @@ public class UsrProcedimiento implements Serializable {
    private Long idUsrProcedimiento;
 
    @ManyToOne(fetch = FetchType.EAGER)
-   @JsonIgnoreProperties(value = { "usrProcedimiento" })
    @JoinColumn(name = "uIdUsuario")
    private Usuario usuario;
 

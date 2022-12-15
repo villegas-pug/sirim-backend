@@ -1,7 +1,8 @@
 package com.microservicio.rimextraccion.services;
 
 import java.util.List;
-import com.microservicio.rimextraccion.models.entities.BaseDatos;
+
+import com.commons.utils.models.entities.BaseDatos;
 import com.microservicio.rimextraccion.repository.BaseDatosRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;

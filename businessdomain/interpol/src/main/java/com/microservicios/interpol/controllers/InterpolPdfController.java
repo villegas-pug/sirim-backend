@@ -30,6 +30,7 @@ public class InterpolPdfController {
     private InterpolPdfService service;
 
     @PostMapping(path = "/saveAll")
+    @SuppressWarnings(value = { "null" })
     public ResponseEntity<?> saveAll(@RequestPart MultipartFile archivo) throws IOException {
 
         String fileName = archivo.getOriginalFilename().split("\\.")[0];

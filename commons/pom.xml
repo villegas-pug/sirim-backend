@@ -15,9 +15,7 @@
    <groupId>com.commons</groupId>
    <artifactId>utils</artifactId>
    <version>1.0</version>
-
    <name>utils</name>
-   <description>Project for Spring Boot</description>
 
    <properties>
       <java.version>11</java.version>

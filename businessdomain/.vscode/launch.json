@@ -119,6 +119,66 @@
          "projectName": "generic",
          "args": "",
          "envFile": "${workspaceFolder}/.env"
+      },
+      {
+         "type": "java",
+         "name": "Spring Boot-RimcommonApplication<rimcommon>",
+         "request": "launch",
+         "cwd": "${workspaceFolder}",
+         "mainClass": "com.microservicio.rimcommon.RimcommonApplication",
+         "projectName": "rimcommon",
+         "args": "",
+         "envFile": "${workspaceFolder}/.env"
+      },
+      {
+         "type": "java",
+         "name": "Spring Boot-RimasignacionApplication<rimasignacion>",
+         "request": "launch",
+         "cwd": "${workspaceFolder}",
+         "mainClass": "com.microservicio.rimasignacion.RimasignacionApplication",
+         "projectName": "rimasignacion",
+         "args": "",
+         "envFile": "${workspaceFolder}/.env"
+      },
+      {
+         "type": "java",
+         "name": "Spring Boot-RimanalisisApplication<rimanalisis>",
+         "request": "launch",
+         "cwd": "${workspaceFolder}",
+         "mainClass": "com.microservicio.rimanalisis.RimanalisisApplication",
+         "projectName": "rimanalisis",
+         "args": "",
+         "envFile": "${workspaceFolder}/.env"
+      },
+      {
+         "type": "java",
+         "name": "Spring Boot-RimctrlcalidadApplication<rimctrlcalidad>",
+         "request": "launch",
+         "cwd": "${workspaceFolder}",
+         "mainClass": "com.microservicio.rimctrlcalidad.RimctrlcalidadApplication",
+         "projectName": "rimctrlcalidad",
+         "args": "",
+         "envFile": "${workspaceFolder}/.env"
+      },
+      {
+         "type": "java",
+         "name": "Spring Boot-RimmantenimientoApplication<rimmantenimiento>",
+         "request": "launch",
+         "cwd": "${workspaceFolder}",
+         "mainClass": "com.microservicio.rimmantenimiento.RimmantenimientoApplication",
+         "projectName": "rimmantenimiento",
+         "args": "",
+         "envFile": "${workspaceFolder}/.env"
+      },
+      {
+         "type": "java",
+         "name": "Spring Boot-RimreportesApplication<rimreportes>",
+         "request": "launch",
+         "cwd": "${workspaceFolder}",
+         "mainClass": "com.microservicio.rimreportes.RimreportesApplication",
+         "projectName": "rimreportes",
+         "args": "",
+         "envFile": "${workspaceFolder}/.env"
       }
    ]
 }
