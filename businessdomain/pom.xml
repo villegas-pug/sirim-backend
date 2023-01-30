@@ -117,8 +117,9 @@
       <module>rimasignacion</module>
       <module>rimanalisis</module>
       <module>rimctrlcalidad</module>
-      <module>rimmantenimiento</module>
+      <module>rimmomantenimiento</module>
       <module>rimreportes</module>
+      <module>rrhh</module>
    </modules>
 
 </project>

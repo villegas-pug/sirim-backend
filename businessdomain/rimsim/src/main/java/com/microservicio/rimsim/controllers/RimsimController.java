@@ -10,6 +10,10 @@ import com.commons.utils.helpers.DataModelHelper;
 import com.commons.utils.models.dto.QueryClauseDto;
 import com.commons.utils.utils.Response;
 import com.microservicio.rimsim.models.dto.RequestParamsDnvDto;
+import com.microservicio.rimsim.models.dto.RptPasaportesIndicadoresDto;
+import com.microservicio.rimsim.models.dto.RptPasaportesPor12UltimosMesesDto;
+import com.microservicio.rimsim.models.dto.RptPasaportesPor31UltimosDiasDto;
+import com.microservicio.rimsim.models.dto.RptPasaportesPorAñosDto;
 import com.microservicio.rimsim.services.RimsimService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -66,6 +70,76 @@ public class RimsimController {
                                        .message(Messages.MESSAGE_SUCCESS_LIST_ENTITY)
                                        .data(DataModelHelper.convertTuplesToJson(dnvDb, false))
                                        .build());
+   }
+   
+   @GetMapping( path = { "/findAllPais" } )
+   public ResponseEntity<?> findAllPais() {
+      return ResponseEntity.ok().body(
+                                    Response
+                                       .builder()
+                                       .message(Messages.MESSAGE_SUCCESS_LIST_ENTITY)
+                                       .data(this.service.findAllPais())
+                                       .build());
+   }
+
+   @GetMapping( path = { "/findAllSimUsuario" } )
+   @ResponseStatus(code = HttpStatus.OK)
+   public Response<List<Map<String, Object>>> findAllSimUsuario() {
+      return Response
+                  .<List<Map<String, Object>>>builder()
+                  .message(Messages.MESSAGE_SUCCESS_LIST_ENTITY)
+                  .data(this.service.findAllSimUsuario())
+                  .build();
+   }
+
+   @GetMapping(path = { "/findAllDependencia" })
+   public ResponseEntity<?> findAllDependencia() {
+      return ResponseEntity.ok().body(
+                                    Response
+                                       .builder()
+                                       .message(Messages.MESSAGE_SUCCESS_LIST_ENTITY)
+                                       .data(this.service.findAllPais())
+                                       .build());
+   }
+
+   @GetMapping( path = { "/getRptPasaportesIndicadores" } )
+   @ResponseStatus(value = HttpStatus.OK)
+   public Response<RptPasaportesIndicadoresDto> getRptPasaportesIndicadores() {
+       return Response
+                  .<RptPasaportesIndicadoresDto>builder()
+                  .message(Messages.MESSAGE_SUCCESS_LIST_ENTITY)
+                  .data(this.service.getRptPasaportesIndicadores())
+                  .build();
+   }
+
+   @GetMapping( path = { "/getRptPasaportesEntregadosPorAños" } )
+   @ResponseStatus(value = HttpStatus.OK)
+   public Response<List<RptPasaportesPorAñosDto>> getRptPasaportesEntregadosPorAños() {
+       return Response
+                  .<List<RptPasaportesPorAñosDto>>builder()
+                  .message(Messages.MESSAGE_SUCCESS_LIST_ENTITY)
+                  .data(this.service.getRptPasaportesEntregadosPorAños())
+                  .build();
+   }
+
+   @GetMapping( path = { "/getRptPasaportesEntregadosPor12UltimosMeses" } )
+   @ResponseStatus(value = HttpStatus.OK)
+   public Response<List<RptPasaportesPor12UltimosMesesDto>> getRptPasaportesEntregadosPor12UltimosMeses() {
+       return Response
+                  .<List<RptPasaportesPor12UltimosMesesDto>>builder()
+                  .message(Messages.MESSAGE_SUCCESS_LIST_ENTITY)
+                  .data(this.service.getRptPasaportesEntregadosPor12UltimosMeses())
+                  .build();
+   }
+
+   @GetMapping( path = { "/getRptPasaportesEntregadosPor31UltimosDias" } )
+   @ResponseStatus(value = HttpStatus.OK)
+   public Response<List<RptPasaportesPor31UltimosDiasDto>> getRptPasaportesEntregadosPor31UltimosDias() {
+       return Response
+                  .<List<RptPasaportesPor31UltimosDiasDto>>builder()
+                  .message(Messages.MESSAGE_SUCCESS_LIST_ENTITY)
+                  .data(this.service.getRptPasaportesEntregadosPor31UltimosDias())
+                  .build();
    }
    
 }
