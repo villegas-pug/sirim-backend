@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
@@ -17,6 +18,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import com.commons.utils.models.entities.Usuario;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 import lombok.AllArgsConstructor;
@@ -65,11 +67,15 @@ public class FormatoPermisos implements Serializable {
    @Column(name = "sTipoLicencia", length = 255, nullable = false)
    private String tipoLicencia;
    
-   @Column(name = "sDesde", length = 100, nullable = false)
-   private String desde;
+   @Temporal(TemporalType.TIMESTAMP)
+   @JsonFormat(shape = Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm", timezone = "America/Lima")
+   @Column(name = "dDesde", nullable = false)
+   private Date desde;
    
-   @Column(name = "sHasta", length = 55, nullable = false)
-   private String hasta;
+   @Temporal(TemporalType.TIMESTAMP)
+   @JsonFormat(shape = Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm", timezone = "America/Lima")
+   @Column(name = "dHasta", nullable = false)
+   private Date hasta;
    
    @Column(name = "sTotalHoras", length = 55)
    private String totalHoras;
@@ -89,6 +95,22 @@ public class FormatoPermisos implements Serializable {
    
    @Column(name = "bAtendido")
    private boolean atendido;
+
+   @Column(name = "bRecibido")
+   private boolean recibido;
+   
+   @Column(name = "sObservaciones", length = 255)
+   private String observaciones;
+   
+   @Lob
+   @JsonIgnore
+   @Column(name = "xFormato")
+   private byte[] formato;
+   
+   @Lob
+   @JsonIgnore
+   @Column(name = "xSustento")
+   private byte[] sustento;
 
    @Column(name = "bActivo", nullable = false)
    private boolean activo;
