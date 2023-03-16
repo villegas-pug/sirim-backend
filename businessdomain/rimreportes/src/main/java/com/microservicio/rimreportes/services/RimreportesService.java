@@ -7,6 +7,8 @@ import com.microservicio.rimreportes.model.dto.RptDependenciaControlMigratorioDt
 import com.microservicio.rimreportes.model.dto.RptEdadesControlMigratorioDto;
 import com.microservicio.rimreportes.model.dto.RptNacionalidadControlMigratorioDto;
 import com.microservicio.rimreportes.model.dto.RptProduccionDiariaDto;
+import com.microservicio.rimreportes.model.dto.RptProyeccionAnalisisDto;
+import com.microservicio.rimreportes.model.entities.ProyeccionAnalisis;
 
 public interface RimreportesService {
    
@@ -17,5 +19,6 @@ public interface RimreportesService {
    List<RptEdadesControlMigratorioDto> getRptEdadesControlMigratorio(int año, String nacionalidad);
    List<RptNacionalidadControlMigratorioDto> getRptNacionalidadControlMigratorio(int año);
    List<RptProduccionDiariaDto> getRptProduccionDiaria(String fecIni, String fecFin);
+   List<RptProyeccionAnalisisDto> getRptProyeccionAnalisis(int año);
 
 }

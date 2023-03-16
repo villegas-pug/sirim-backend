@@ -108,7 +108,6 @@
    </dependencies>
 
    <modules>
-      <module>generic</module>
       <module>rimsim</module>
       <module>usuario</module>
       <module>interpol</module>
@@ -117,7 +116,7 @@
       <module>rimasignacion</module>
       <module>rimanalisis</module>
       <module>rimctrlcalidad</module>
-      <module>rimmomantenimiento</module>
+      <module>rimmantenimiento</module>
       <module>rimreportes</module>
       <module>rrhh</module>
    </modules>

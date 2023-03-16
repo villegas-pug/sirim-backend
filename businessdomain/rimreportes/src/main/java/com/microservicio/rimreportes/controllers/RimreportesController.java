@@ -1,6 +1,5 @@
 package com.microservicio.rimreportes.controllers;
 
-import java.util.Date;
 import java.util.List;
 import com.commons.utils.constants.Messages;
 import com.commons.utils.utils.Response;
@@ -10,6 +9,8 @@ import com.microservicio.rimreportes.model.dto.RptDependenciaControlMigratorioDt
 import com.microservicio.rimreportes.model.dto.RptEdadesControlMigratorioDto;
 import com.microservicio.rimreportes.model.dto.RptNacionalidadControlMigratorioDto;
 import com.microservicio.rimreportes.model.dto.RptProduccionDiariaDto;
+import com.microservicio.rimreportes.model.dto.RptProyeccionAnalisisDto;
+import com.microservicio.rimreportes.model.entities.ProyeccionAnalisis;
 import com.microservicio.rimreportes.services.RimreportesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -87,6 +88,16 @@ public class RimreportesController {
                 .message(Messages.MESSAGE_SUCCESS_LIST_ENTITY)
                 .data(this.service.getRptProduccionDiaria(fecIni, fecFin))
                 .build();
+   }
+   
+   @GetMapping( path = { "/getRptProyeccionAnalisis" } )
+	@ResponseStatus(value = HttpStatus.OK)
+   public Response<List<RptProyeccionAnalisisDto>> getRptProyeccionAnalisis(@RequestParam int año) {
+		return Response
+					.<List<RptProyeccionAnalisisDto>>builder()
+					.message(Messages.MESSAGE_SUCCESS_LIST_ENTITY)
+					.data(this.service.getRptProyeccionAnalisis(año))
+					.build();
    }
    
 }

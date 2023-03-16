@@ -1,6 +1,5 @@
 package com.microservicio.rimreportes.services;
 
-import java.util.Date;
 import java.util.List;
 import com.commons.utils.errors.DataAccessEmptyWarning;
 import com.microservicio.rimreportes.model.dto.RptAñosControlMigratorioDto;
@@ -9,6 +8,9 @@ import com.microservicio.rimreportes.model.dto.RptDependenciaControlMigratorioDt
 import com.microservicio.rimreportes.model.dto.RptEdadesControlMigratorioDto;
 import com.microservicio.rimreportes.model.dto.RptNacionalidadControlMigratorioDto;
 import com.microservicio.rimreportes.model.dto.RptProduccionDiariaDto;
+import com.microservicio.rimreportes.model.dto.RptProyeccionAnalisisDto;
+import com.microservicio.rimreportes.model.entities.ProyeccionAnalisis;
+import com.microservicio.rimreportes.repository.ProyeccionAnalisisRepository;
 import com.microservicio.rimreportes.repository.RimreportesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,9 @@ public class RimreportesServiceImpl implements RimreportesService {
 
    @Autowired
    private RimreportesRepository repository;
+
+   @Autowired
+   private ProyeccionAnalisisRepository proyeccionAnalisisRepository;
 
    @Override
    @Transactional(readOnly = true)
@@ -66,6 +71,14 @@ public class RimreportesServiceImpl implements RimreportesService {
       List<RptProduccionDiariaDto> rptProduccionDiaria = this.repository.getRptProduccionDiaria(fecIni, fecFin);
       if (rptProduccionDiaria.size() == 0) throw new DataAccessEmptyWarning();
       return rptProduccionDiaria;
+   }
+
+   @Override
+   @Transactional(readOnly = true)
+   public List<RptProyeccionAnalisisDto> getRptProyeccionAnalisis(int año) {
+      List<RptProyeccionAnalisisDto> rptProyeccionAnalisis = this.repository.getRptProyeccionAnalisis(año);
+      if (rptProyeccionAnalisis.size() == 0) throw new DataAccessEmptyWarning();
+      return rptProyeccionAnalisis;
    }
    
 }

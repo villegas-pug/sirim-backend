@@ -7,12 +7,11 @@ import com.microservicio.rimreportes.model.dto.RptDependenciaControlMigratorioDt
 import com.microservicio.rimreportes.model.dto.RptEdadesControlMigratorioDto;
 import com.microservicio.rimreportes.model.dto.RptNacionalidadControlMigratorioDto;
 import com.microservicio.rimreportes.model.dto.RptProduccionDiariaDto;
+import com.microservicio.rimreportes.model.dto.RptProyeccionAnalisisDto;
 import com.microservicio.rimreportes.model.entities.TablaDinamica;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
 
-@Repository
 public interface RimreportesRepository extends JpaRepository<TablaDinamica, Long> {
 
    @Query(value = "{CALL dbo.usp_Rim_Rpt_Control_Migratorio(?, ?)}", nativeQuery = true)
@@ -32,5 +31,8 @@ public interface RimreportesRepository extends JpaRepository<TablaDinamica, Long
 
    @Query(value = "{CALL dbo.usp_Rim_Rpt_Produccion_Diaria(?, ?)}", nativeQuery = true)
    List<RptProduccionDiariaDto> getRptProduccionDiaria(String fecIni, String fecFin);
+
+   @Query(value = "{CALL dbo.usp_Rim_rpt_ProyeccionAnalisisMensual(?)}", nativeQuery = true)
+   List<RptProyeccionAnalisisDto> getRptProyeccionAnalisis(int año);
    
 }
