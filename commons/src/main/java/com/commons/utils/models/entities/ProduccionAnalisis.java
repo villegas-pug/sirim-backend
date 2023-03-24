@@ -46,7 +46,10 @@ public class ProduccionAnalisis implements Serializable {
    @Column(name = "bCompleto",  nullable = false)
    private boolean completo;
    
-   @Column(name = "bRevisado", columnDefinition = "VARCHAR(MAX) NULL")
+   @Column(name = "bTerminado")
+   private @Builder.Default boolean terminado = true;
+
+   @Column(name = "bRevisado", nullable = false)
    private @Builder.Default boolean revisado = false;
    
    @Column(name = "sObservacionesCtrlCal", columnDefinition = "VARCHAR(MAX) NULL")
@@ -62,6 +65,7 @@ public class ProduccionAnalisis implements Serializable {
 
    @PrePersist
    private void prePersist(){
+      this.terminado = true;
       this.completo = true;
       this.fechaFin = new Date();
    }

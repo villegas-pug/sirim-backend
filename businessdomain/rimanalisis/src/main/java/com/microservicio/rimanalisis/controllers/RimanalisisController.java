@@ -13,7 +13,6 @@ import com.commons.utils.models.dto.RptTiempoPromedioAnalisisDto;
 import com.commons.utils.models.entities.Usuario;
 import com.commons.utils.models.enums.RimGrupo;
 import com.commons.utils.utils.Response;
-import com.google.common.base.Strings;
 import com.microservicio.rimanalisis.services.RimanalisisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,6 +30,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
 
 @CrossOrigin(origins = { "*" })
 @RestController
@@ -132,4 +134,14 @@ public class RimanalisisController {
                   .build();
    }
    
+   @PutMapping(path = { "/setTerminadoProduccionAnalisis/{idProdAnalisis}" })
+   public Response<List<?>> setTerminadoProduccionAnalisis(@PathVariable Long idProdAnalisis) {
+      this.rimanalisisService.setTerminadoProduccionAnalisis(idProdAnalisis);
+      return Response
+                  .<List<?>>builder()
+                  .message(Messages.SUCCESS_SAVE_ANALISIS_EXTRACCION)
+                  .data(List.of())
+                  .build();
+   }
+
 }

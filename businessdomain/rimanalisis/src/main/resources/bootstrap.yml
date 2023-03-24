@@ -5,8 +5,8 @@ spring:
         enabled: true
         service-id: config-server
       fail-fast: true
-      name: microservicio-rimanalisis
-      profile: dev
+      name: microservicio-rimanalisisdev
+      profile: prod
       username: rguevarav
       password: Cd1526a2a8
       retry:

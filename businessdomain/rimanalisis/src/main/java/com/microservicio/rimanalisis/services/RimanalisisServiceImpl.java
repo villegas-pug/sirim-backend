@@ -26,6 +26,7 @@ import com.commons.utils.models.dto.RptProduccionHoraLaboralDto;
 import com.commons.utils.models.dto.RptTiempoPromedioAnalisisDto;
 import com.commons.utils.models.dto.TablaDinamicaDto;
 import com.commons.utils.models.entities.AsigGrupoCamposAnalisis;
+import com.commons.utils.models.entities.ProduccionAnalisis;
 import com.commons.utils.models.entities.Usuario;
 import com.commons.utils.models.enums.RimGrupo;
 import com.commons.utils.utils.Response;
@@ -125,6 +126,28 @@ public class RimanalisisServiceImpl implements RimanalisisService {
       return rs;
    }
 
+   @Override
+   @Transactional
+   public void saveProduccionAnalisis(ProduccionAnalisis produccionAnalisis) {
+      this.repository.save(produccionAnalisis);
+   }
+
+   @Override
+   @Transactional(readOnly = true)
+   public ProduccionAnalisis findProduccionAnalisisById(Long idProdAnalisis) {
+      ProduccionAnalisis produccionAnalisis = this.repository.findById(idProdAnalisis)
+                                                             .orElseThrow(DataAccessEmptyWarning::new);
+      return produccionAnalisis;
+   }
+
+   @Override
+   @Transactional
+   public void setTerminadoProduccionAnalisis(Long idProdAnalisis) {
+      ProduccionAnalisis produccionAnalisis = this.findProduccionAnalisisById(idProdAnalisis);
+      produccionAnalisis.setTerminado(!produccionAnalisis.isTerminado());
+      this.saveProduccionAnalisis(produccionAnalisis);
+   }
+
    //#endregion
 
    //#region Client method's ...
@@ -210,7 +233,7 @@ public class RimanalisisServiceImpl implements RimanalisisService {
                 regFin = asigGrupoCamposAnalisis.getRegAnalisisFin();
 
             StringBuilder queryString = new StringBuilder();
-            queryString.append("SELECT * FROM ").append(nombreTabla)
+            queryString.append("SELECT *, [Control_calidad_qc] = '', [criterios_errados_qc] = '', [Detalle_error_qc] = '', [%_error_qc] = '' FROM ").append(nombreTabla)
                        .append(" WHERE nId BETWEEN ")
                        .append(regIni).append(" AND ").append(regFin);
 
@@ -240,7 +263,7 @@ public class RimanalisisServiceImpl implements RimanalisisService {
          int columnWidth = 6000;
          Cell dynamicCell;
 
-         /*► HEADER: Tag's Static's ... */
+         // ► HEADER: Tag's Static's ...
          //------------------------------------------------------------------------------------------------------------------------------------------------------
          // ► Dep's: ...
          XSSFRow rowCodigo = ws.getRow(3);
@@ -483,7 +506,7 @@ public class RimanalisisServiceImpl implements RimanalisisService {
             cellBody.setCellStyle(bodyCellStyle);
             cellBody.setCellValue(String.valueOf(iR));
 
-            /*► Dynamic-Cell: `Aux`, `E`, `A` y `QC` ... */
+            // ► Dynamic-Cell: `Aux`, `E`, `A` y `QC` ...
             for (Entry<String, Object> item : record.entrySet()) {
                iI++;
                cellBody = rowAnalisis.createCell(iI);

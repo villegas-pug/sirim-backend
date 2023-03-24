@@ -5,9 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
 import javax.persistence.Tuple;
-
 import com.commons.utils.models.dto.RptMensualProduccionDto;
 import com.commons.utils.models.dto.RptProduccionHoraLaboralDto;
 import com.commons.utils.models.dto.RptTiempoPromedioAnalisisDto;
@@ -15,9 +13,7 @@ import com.commons.utils.models.entities.AsigGrupoCamposAnalisis;
 import com.commons.utils.models.entities.ProduccionAnalisis;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
 
-@Repository
 public interface ProduccionAnalisisRepository extends JpaRepository<ProduccionAnalisis, Long> {
 
    Optional<ProduccionAnalisis> findByAsigGrupoAndIdRegistroAnalisis(AsigGrupoCamposAnalisis asigGrupoCamposAnalisis, Long idRegistroAnalisis);

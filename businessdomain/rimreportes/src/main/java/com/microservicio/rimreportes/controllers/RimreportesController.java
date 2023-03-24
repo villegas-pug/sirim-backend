@@ -10,7 +10,6 @@ import com.microservicio.rimreportes.model.dto.RptEdadesControlMigratorioDto;
 import com.microservicio.rimreportes.model.dto.RptNacionalidadControlMigratorioDto;
 import com.microservicio.rimreportes.model.dto.RptProduccionDiariaDto;
 import com.microservicio.rimreportes.model.dto.RptProyeccionAnalisisDto;
-import com.microservicio.rimreportes.model.entities.ProyeccionAnalisis;
 import com.microservicio.rimreportes.services.RimreportesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
