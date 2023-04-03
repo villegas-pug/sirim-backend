@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.YearMonth;
 import java.time.format.TextStyle;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -178,6 +179,7 @@ public class RimanalisisServiceImpl implements RimanalisisService {
              metafieldsACsv = "-",
              metafieldsECsv = "-";
       boolean isAssignedTemplate = false;
+      Date dateOfFirstAnalisis = null;
       
       if (isRequestOfRoot) { // Petición del coordinador ...
          
@@ -208,6 +210,16 @@ public class RimanalisisServiceImpl implements RimanalisisService {
          metafieldsACsv = asigGrupoCamposAnalisis.getGrupo().getMetaFieldsCsv();
          metafieldsECsv = asigGrupoCamposAnalisis.getGrupo().getTablaDinamica().getMetaFieldsCsv();
          isAssignedTemplate = recordsBetweenDatesDto.isAssignedTemplate();
+         dateOfFirstAnalisis = !isRequestOfRoot 
+                                       ? asigGrupoCamposAnalisis
+                                                .getProduccionAnalisis()
+                                                .stream()
+                                                .sorted(Comparator.comparing(ProduccionAnalisis::getFechaFin))
+                                                .collect(Collectors.toList())
+                                                .get(0)
+                                                .getFechaFin()
+                                       : null;
+                                       
 
       }
 
@@ -287,14 +299,20 @@ public class RimanalisisServiceImpl implements RimanalisisService {
          rowVersion.getCell(4).setCellValue(usrGrupo == RimGrupo.DEPURACION ? "'01"  : "'02");
 
          XSSFRow rowServidorCargo = ws.getRow(5);
+         Cell cellTagServidorCargo = rowServidorCargo.getCell(1);
+         cellTagServidorCargo.setCellStyle(RimanalisisPoiHelper.createCellStyle(wb, RimanalisisPoiHelper.CellType.HEADER_CELL_TAG));
          Cell cellServidorCargo = rowServidorCargo.getCell(5);
          cellServidorCargo.setCellValue(usrAnalistaCargo);
 
-         XSSFRow rowServidorRemite = ws.getRow(6);
-         Cell cellServidorRemite = rowServidorRemite.getCell(5);
+         XSSFRow rowNombreRemite = ws.getRow(6);
+         Cell cellTagNombreRemite = rowNombreRemite.getCell(1);
+         cellTagNombreRemite.setCellStyle(RimanalisisPoiHelper.createCellStyle(wb, RimanalisisPoiHelper.CellType.HEADER_CELL_TAG));
+         Cell cellServidorRemite = rowNombreRemite.getCell(5);
          cellServidorRemite.setCellValue(usrAnalista);
 
          XSSFRow rowNombreBase = ws.getRow(7);
+         Cell cellTagNombreBase = rowNombreBase.getCell(1);
+         cellTagNombreBase.setCellStyle(RimanalisisPoiHelper.createCellStyle(wb, RimanalisisPoiHelper.CellType.HEADER_CELL_TAG));
          Cell cellNombreBase = rowNombreBase.getCell(5);
          cellNombreBase.setCellValue(nombreTabla);
          //------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -558,7 +576,6 @@ public class RimanalisisServiceImpl implements RimanalisisService {
                                                        .concat(cellLetterPercentErr)
                                                        .concat(String.valueOf(iRowFooter))
                                                        .concat(")")
-                                                       .concat("*100")
                                                        .concat(", 0)")
                                                        .concat("&\"%\"")
                                                        .concat(", \"-\")");
@@ -702,7 +719,7 @@ public class RimanalisisServiceImpl implements RimanalisisService {
          ws.addMergedRegion(new CellRangeAddress(iRowFecha, iRowFecha, iCellHeader - 3, iCellHeader - 2));
 
          Cell cellFechaValue = rowFecha.createCell(iCellHeader - 1);
-         cellFechaValue.setCellValue(new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
+         cellFechaValue.setCellValue(new SimpleDateFormat("dd-MM-yyyy").format(isRequestOfRoot ? new Date() : dateOfFirstAnalisis));
          cellFechaValue.setCellStyle(RimanalisisPoiHelper.createCellStyle(wb, RimanalisisPoiHelper.CellType.HEADER_CELL_TAG_VALUE));
          ws.addMergedRegion(new CellRangeAddress(iRowFecha, iRowFecha, iCellHeader - 1, iCellHeader));
          //------------------------------------------------------------------------------------------------------------------------------------------------------

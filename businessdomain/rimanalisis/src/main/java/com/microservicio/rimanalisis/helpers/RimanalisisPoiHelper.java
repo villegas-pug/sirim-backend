@@ -77,7 +77,7 @@ public class RimanalisisPoiHelper {
          case HEADER_CELL_TAG:
             font.setBold(true);
             font.setColor(HSSFColorPredefined.WHITE.getIndex());
-            cellStyle.setFillForegroundColor(HSSFColorPredefined.DARK_BLUE.getIndex());
+            cellStyle.setFillForegroundColor(HSSFColorPredefined.ROYAL_BLUE.getIndex());
             break; 
          case HEADER_CELL_TAG_VALUE:
             font.setBold(true);
@@ -86,16 +86,22 @@ public class RimanalisisPoiHelper {
             cellStyle.setFillForegroundColor(HSSFColorPredefined.WHITE.getIndex());
             break;
          case HEADER_CELL_EXTRACCION:
-            cellStyle.setFillForegroundColor(HSSFColorPredefined.DARK_BLUE.getIndex());
+            cellStyle.setFillForegroundColor(HSSFColorPredefined.DARK_TEAL.getIndex());
             break;
          case HEADER_CELL_ANALISIS:
-            cellStyle.setFillForegroundColor(HSSFColorPredefined.DARK_YELLOW.getIndex());
+            cellStyle.setFillForegroundColor(HSSFColorPredefined.GOLD.getIndex());
+            font.setColor(HSSFColorPredefined.BLACK.getIndex());
+            font.setBold(true);
             break;
          case HEADER_CELL_CONTROL_CALIDAD:
-            cellStyle.setFillForegroundColor(HSSFColorPredefined.GREEN.getIndex());
+            cellStyle.setFillForegroundColor(HSSFColorPredefined.SEA_GREEN.getIndex());
+            font.setColor(HSSFColorPredefined.BLACK.getIndex());
+            font.setBold(true);
             break;
          case HEADER_CELL_AUX:
-            cellStyle.setFillForegroundColor(HSSFColorPredefined.LIGHT_BLUE.getIndex());
+            cellStyle.setFillForegroundColor(HSSFColorPredefined.SKY_BLUE.getIndex());
+            font.setColor(HSSFColorPredefined.BLACK.getIndex());
+            font.setBold(true);
             break;
          case HEADER_CELL_INFO:
             font.setFontHeightInPoints((short) 8);
@@ -143,7 +149,7 @@ public class RimanalisisPoiHelper {
             font.setColor(HSSFColorPredefined.BLACK.getIndex());
             font.setBold(true);
             font.setFontHeightInPoints((short) 10);
-            cellStyle.setFillForegroundColor(HSSFColorPredefined.LIGHT_BLUE.getIndex());
+            cellStyle.setFillForegroundColor(HSSFColorPredefined.SKY_BLUE.getIndex());
             break;
          default:
             break;
