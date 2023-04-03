@@ -210,7 +210,7 @@ public class RimanalisisServiceImpl implements RimanalisisService {
          metafieldsACsv = asigGrupoCamposAnalisis.getGrupo().getMetaFieldsCsv();
          metafieldsECsv = asigGrupoCamposAnalisis.getGrupo().getTablaDinamica().getMetaFieldsCsv();
          isAssignedTemplate = recordsBetweenDatesDto.isAssignedTemplate();
-         dateOfFirstAnalisis = !isRequestOfRoot 
+         dateOfFirstAnalisis = asigGrupoCamposAnalisis.getProduccionAnalisis().size() > 0
                                        ? asigGrupoCamposAnalisis
                                                 .getProduccionAnalisis()
                                                 .stream()
@@ -218,7 +218,7 @@ public class RimanalisisServiceImpl implements RimanalisisService {
                                                 .collect(Collectors.toList())
                                                 .get(0)
                                                 .getFechaFin()
-                                       : null;
+                                       : new Date();
                                        
 
       }
