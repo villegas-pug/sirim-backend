@@ -14,16 +14,21 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import com.commons.utils.models.enums.RimGrupo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.GenericGenerator;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Entity
 @Table(name = "SidUsuario")
 @Data
+@Builder(builderClassName = "UsuarioBuilder", builderMethodName = "of", buildMethodName = "get")
+@AllArgsConstructor
 @EqualsAndHashCode(of = { "idUsuario" })
 public class Usuario implements Serializable{
 
@@ -69,8 +74,16 @@ public class Usuario implements Serializable{
    @Column(name = "sFoto", columnDefinition = "VARCHAR(MAX) NULL")
    private String foto;
 
+   @Column(name = "bActivo")
+   private @Builder.Default boolean activo = true;
+
    public Usuario() {
       this.usrProcedimiento = new ArrayList<>();
+   }
+
+   @PrePersist
+   private void prePersist(){
+      this.activo = true;
    }
 
    /**
