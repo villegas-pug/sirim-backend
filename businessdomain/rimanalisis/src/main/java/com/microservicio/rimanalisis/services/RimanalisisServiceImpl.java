@@ -173,7 +173,7 @@ public class RimanalisisServiceImpl implements RimanalisisService {
       RimGrupo usrGrupo = null;
       String nombreTabla = "-",
              usrAnalista = "-",
-             usrAnalistaCargo = "-",
+             usrAnalistaCargo = recordsBetweenDatesDto.getUsr().getCargo(),
              usrCreador = "-",
              usrCreadorCargo = "-",
              metafieldsACsv = "-",
@@ -204,7 +204,6 @@ public class RimanalisisServiceImpl implements RimanalisisService {
          usrGrupo = asigGrupoCamposAnalisis.getUsrAnalista().getGrupo();
          nombreTabla = asigGrupoCamposAnalisis.getGrupo().getTablaDinamica().getNombre();
          usrAnalista = asigGrupoCamposAnalisis.getUsrAnalista().getNombres();
-         usrAnalistaCargo = asigGrupoCamposAnalisis.getUsrAnalista().getCargo();
          usrCreador = asigGrupoCamposAnalisis.getGrupo().getTablaDinamica().getUsrCreador().getNombres();
          usrCreadorCargo = asigGrupoCamposAnalisis.getGrupo().getTablaDinamica().getUsrCreador().getCargo();
          metafieldsACsv = asigGrupoCamposAnalisis.getGrupo().getMetaFieldsCsv();
@@ -291,12 +290,12 @@ public class RimanalisisServiceImpl implements RimanalisisService {
             rowCodigo.getCell(1).setCellValue(
                                              usrGrupo == RimGrupo.DEPURACION 
                                                 ? "S10.DRCM.FR.001"
-                                                : "S10.DRCM.FR.002");
+                                                : "S10.DRCM.FR.001");
 
          }
 
          XSSFRow rowVersion = ws.getRow(3);
-         rowVersion.getCell(4).setCellValue(usrGrupo == RimGrupo.DEPURACION ? "'01"  : "'02");
+         rowVersion.getCell(4).setCellValue(usrGrupo == RimGrupo.DEPURACION ? "'01"  : "'01");
 
          XSSFRow rowServidorCargo = ws.getRow(5);
          Cell cellTagServidorCargo = rowServidorCargo.getCell(1);
@@ -325,17 +324,18 @@ public class RimanalisisServiceImpl implements RimanalisisService {
          int iCellHeader = 0;
 
          /*► Static-Cell's ...  */
+         // N° → sId ...
          iCellHeader++;
          Cell cellNro = rowHeader.createCell(iCellHeader);
          cellNro.setCellValue("N°");
          cellNro.setCellStyle(RimanalisisPoiHelper.createCellStyle(wb, RimanalisisPoiHelper.CellType.HEADER_CELL_EXTRACCION));
          ws.setColumnWidth(iCellHeader, 2500);
 
-         iCellHeader++;
+         /* iCellHeader++;
          Cell cellId = rowHeader.createCell(iCellHeader);
          cellId.setCellValue("ID");
          cellId.setCellStyle(RimanalisisPoiHelper.createCellStyle(wb, RimanalisisPoiHelper.CellType.HEADER_CELL_EXTRACCION));
-         ws.setColumnWidth(iCellHeader, 2500);
+         ws.setColumnWidth(iCellHeader, 2500); */
          
          /*► Dynamic-row's ...  */
          int iCellA = 0;
@@ -439,10 +439,10 @@ public class RimanalisisServiceImpl implements RimanalisisService {
          cellNro.setCellValue("Colocar ítem");
          cellNro.setCellStyle(cellInfoStyle);
 
-         iCellInfo++;
+         /* iCellInfo++;
          cellId = rowInfo.createCell(iCellInfo);
          cellId.setCellValue("Colocar el código de identificación del registro en la base de datos");
-         cellId.setCellStyle(cellInfoStyle);
+         cellId.setCellStyle(cellInfoStyle); */
 
          // ► Dynamic-cell's ...
          Map<String, String> metaInfoMap = RimcommonHelper.convertMetaFieldsEAndACsvToMetaInfoMap(metafieldsECsv, metafieldsACsv);
@@ -519,15 +519,15 @@ public class RimanalisisServiceImpl implements RimanalisisService {
             XSSFRow rowAnalisis = ws.createRow(iRowAnalisis + iR);
             
             // N°
-            iI++;
+            /*iI++;
             Cell cellBody = rowAnalisis.createCell(iI);
             cellBody.setCellStyle(bodyCellStyle);
-            cellBody.setCellValue(String.valueOf(iR));
+            cellBody.setCellValue(String.valueOf(iR));*/
 
-            // ► Dynamic-Cell: `Aux`, `E`, `A` y `QC` ...
+            // ► Dynamic-Cell: N° → `sId`, `Aux`, `E`, `A` y `QC` ...
             for (Entry<String, Object> item : record.entrySet()) {
                iI++;
-               cellBody = rowAnalisis.createCell(iI);
+               Cell cellBody = rowAnalisis.createCell(iI);
                cellBody.setCellStyle(bodyCellStyle);
 
                try {
@@ -673,13 +673,13 @@ public class RimanalisisServiceImpl implements RimanalisisService {
 
             cellTitulo.setCellValue(usrGrupo == RimGrupo.DEPURACION
                                                    ? "REGISTRO CONSOLIDADO DE DEPURACIÓN DE DATOS"
-                                                   : "REGISTRO CONSOLIDADO DE ANÁLISIS DE DATOS");
+                                                   : "REGISTRO CONSOLIDADO DE ANÁLISIS DE INFORMACIÓN");
 
          } else {
 
             cellTitulo.setCellValue(usrGrupo == RimGrupo.DEPURACION
                                                    ? "REGISTRO DE DEPURACIÓN DE DATOS"
-                                                   : "REGISTRO DE ANALISIS DE DATOS");
+                                                   : "REGISTRO DE ANÁLISIS DE INFORMACIÓN");
 
          }
 

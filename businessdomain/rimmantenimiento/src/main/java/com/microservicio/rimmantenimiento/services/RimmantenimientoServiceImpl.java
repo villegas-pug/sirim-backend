@@ -13,7 +13,6 @@ import com.commons.utils.models.dto.TablaDinamicaDto;
 import com.commons.utils.models.entities.Evento;
 import com.commons.utils.models.entities.TipoLogico;
 import com.commons.utils.models.entities.Usuario;
-import com.google.common.base.Strings;
 import com.google.common.primitives.Ints;
 import com.microservicio.rimmantenimiento.clients.RimcommonClientRest;
 import com.microservicio.rimmantenimiento.errors.EventoWarningException;

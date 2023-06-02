@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 import com.commons.utils.constants.Messages;
 import com.commons.utils.models.dto.AsigGrupoCamposAnalisisDto;
 import com.commons.utils.models.dto.RegistroTablaDinamicaDto;
-import com.commons.utils.models.dto.TablaDinamicaDto;
 import com.commons.utils.utils.Response;
 import com.microservicio.rimctrlcalidad.services.RimctrlCalidadService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +18,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
+
 
 @CrossOrigin(origins = { "*" })
 @RestController
@@ -114,6 +115,16 @@ public class RimctrlCalidadController {
                   .message(Messages.MESSAGE_SUCCESS_LIST_ENTITY)
                   .data(this.rimctrlCalidadService.findAsigGrupoCamposAnalisisById(idAsigGrupo))
                   .build();
+   }
+
+   @PutMapping(path = { "/saveRectificadoRecordAssigned/{idProdAnalisis}" })
+   public Response<List<?>> saveRectificadoRecordAssigned(@PathVariable Long idProdAnalisis) {
+      this.rimctrlCalidadService.saveRectificadoRecordAssigned(idProdAnalisis);
+      return Response
+               .<List<?>>builder()
+               .message(Messages.MESSAGE_SUCCESS_SAVE("Rectificación"))
+               .data(List.of())
+               .build();
    }
 
 }

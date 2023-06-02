@@ -17,6 +17,7 @@ import com.microservicio.rimctrlcalidad.clients.RimcommonClientRest;
 import com.microservicio.rimctrlcalidad.errors.RimctrlcalidadWarningException;
 import com.microservicio.rimctrlcalidad.repositories.AsigGrupoCamposAnalisisRepository;
 import com.microservicio.rimctrlcalidad.repositories.CtrlCalCamposAnalisisRepository;
+import com.microservicio.rimctrlcalidad.repositories.ProduccionAnalisisRepository;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,9 @@ public class RimctrlCalidadServiceImpl implements RimctrlCalidadService {
 
    @Autowired
    private AsigGrupoCamposAnalisisRepository asigRepository;
+
+   @Autowired
+   private ProduccionAnalisisRepository produccionRepository;
 
    @Autowired
    private RimcommonClientRest rimcommonClient;
@@ -235,6 +239,20 @@ public class RimctrlCalidadServiceImpl implements RimctrlCalidadService {
                                                                            AsigGrupoCamposAnalisisDto.class);
 
       return asigGrupoCamposAnalisisDto;
+
+   }
+
+   @Override
+   @Transactional
+   public void saveRectificadoRecordAssigned(Long idProdAnalisis) {
+      
+      // Repo dep's ...
+      ProduccionAnalisis produccionAnalisis = this.produccionRepository.findById(idProdAnalisis)
+                                                                       .orElseThrow(DataAccessEmptyWarning::new);
+
+      // Save ...
+      produccionAnalisis.setRectificado(!produccionAnalisis.isRectificado());
+      this.produccionRepository.save(produccionAnalisis);
 
    }
 

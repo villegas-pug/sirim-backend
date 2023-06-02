@@ -8,11 +8,12 @@ import com.commons.utils.models.dto.TablaDinamicaDto;
 
 public interface RimctrlCalidadService {
 
-   // ► REPO - METHOD'S ...
+   // ► Repo method's ...
    void saveCtrlCalCamposAnalisis(Long idAsigGrupo);
    void validateRecordAssigned(RegistroTablaDinamicaDto recordAssignedDto);
    void conformToCtrlCal(AsigGrupoCamposAnalisisDto asigGrupoCamposAnalisisDto);
    void saveMetaFieldIdErrorCsv(RegistroTablaDinamicaDto registroTablaDinamica);
+   void saveRectificadoRecordAssigned(Long idProdAnalisis);
    AsigGrupoCamposAnalisisDto findAsigGrupoCamposAnalisisById(Long idAsigGrupo);
 
    // ► Client-Rest method's ...
@@ -20,8 +21,6 @@ public interface RimctrlCalidadService {
    List<Map<String, Object>> findTablaDinamicaByIdCtrlCalAndIds(Long idCtrlCal, String idsCsv);
    String generateIdsCsvForCtrlCal(String nombreTabla, int regIni, int regFIn);
 
-   // ► CUSTOM - METHOD'S ...
-
-
+   // ► Custom method's ...
    
 }

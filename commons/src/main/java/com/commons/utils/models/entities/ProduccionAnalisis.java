@@ -51,6 +51,9 @@ public class ProduccionAnalisis implements Serializable {
 
    @Column(name = "bRevisado", nullable = false)
    private @Builder.Default boolean revisado = false;
+
+   @Column(name = "bRectificado")
+   private @Builder.Default boolean rectificado = false;
    
    @Column(name = "sObservacionesCtrlCal", columnDefinition = "VARCHAR(MAX) NULL")
    private String observacionesCtrlCal;
