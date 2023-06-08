@@ -178,7 +178,7 @@ public class RimanalisisServiceImpl implements RimanalisisService {
              usrCreadorCargo = "-",
              metafieldsACsv = "-",
              metafieldsECsv = "-";
-      boolean isAssignedTemplate = false;
+      boolean isAssignedTemplate = recordsBetweenDatesDto.isAssignedTemplate();;
       Date dateOfFirstAnalisis = null;
       
       if (isRequestOfRoot) { // Petición del coordinador ...
@@ -208,7 +208,6 @@ public class RimanalisisServiceImpl implements RimanalisisService {
          usrCreadorCargo = asigGrupoCamposAnalisis.getGrupo().getTablaDinamica().getUsrCreador().getCargo();
          metafieldsACsv = asigGrupoCamposAnalisis.getGrupo().getMetaFieldsCsv();
          metafieldsECsv = asigGrupoCamposAnalisis.getGrupo().getTablaDinamica().getMetaFieldsCsv();
-         isAssignedTemplate = recordsBetweenDatesDto.isAssignedTemplate();
          dateOfFirstAnalisis = asigGrupoCamposAnalisis.getProduccionAnalisis().size() > 0
                                        ? asigGrupoCamposAnalisis
                                                 .getProduccionAnalisis()
@@ -233,8 +232,21 @@ public class RimanalisisServiceImpl implements RimanalisisService {
 
       if (isRequestOfRoot){ // Petición del coordinador ...
 
-         ds = this.getRptS10DRCMFR001Produccion(nombreTabla, fecIni, fecFin, true, 0L);
+         if (isAssignedTemplate) {// Backup: Base completa  ...
 
+            // Dep's ...
+            StringBuilder queryString = new StringBuilder();
+            queryString.append("SELECT *, [Control_calidad_qc] = '', [criterios_errados_qc] = '', [Detalle_error_qc] = '', [%_error_qc] = '' FROM ")
+                       .append(nombreTabla);
+
+            ds = this.rimcommonClient.findDynamicSelectStatement(queryString.toString()).getData();
+
+         } else {
+
+            ds = this.getRptS10DRCMFR001Produccion(nombreTabla, fecIni, fecFin, true, 0L);
+
+         }
+         
       } else { // Petición del analista ...
 
          if (isAssignedTemplate) {// Registros asignados ...
