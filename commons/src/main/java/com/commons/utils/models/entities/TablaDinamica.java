@@ -47,6 +47,7 @@ public class TablaDinamica implements Serializable {
 
    @ManyToOne(fetch = FetchType.EAGER)
    @JoinColumn(name = "uIdUsrCreador", nullable = false)
+   @JsonIgnoreProperties(value = { "usrProcedimiento", "foto" })
    private Usuario usrCreador;
 
    @OneToMany(mappedBy = "tablaDinamica", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)

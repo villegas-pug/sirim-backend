@@ -30,7 +30,7 @@ import lombok.EqualsAndHashCode;
 @Builder(builderClassName = "UsuarioBuilder", builderMethodName = "of", buildMethodName = "get")
 @AllArgsConstructor
 @EqualsAndHashCode(of = { "idUsuario" })
-public class Usuario implements Serializable{
+public class Usuario implements Serializable {
 
    @Id
    @GeneratedValue(generator = "my-uuid")

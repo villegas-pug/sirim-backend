@@ -29,7 +29,7 @@ public class TablaDinamicaDto {
    private Date fechaCreacion;
    private boolean activo;
 
-   /*» Utility Properties ...  */
+   // » Utility Properties ...
    private String camposCsv;
    private String alterTableType;
 

@@ -567,20 +567,20 @@ public class RimanalisisServiceImpl implements RimanalisisService {
             XSSFRow rowTotal = ws.createRow(iRowFooter);
             
             // ► Static-cell's ...
-            Cell cellEstado = rowTotal.createCell(totalFieldsFromDS - 2);
+            Cell cellEstado = rowTotal.createCell(totalFieldsFromDS - 3);
             cellEstado.setCellValue("Estado");
             cellEstado.setCellStyle(RimanalisisPoiHelper.createCellStyle(wb, RimanalisisPoiHelper.CellType.FOOTER_CELL_TOTAL_TAG));
    
-            Cell cellValidado = rowTotal.createCell(totalFieldsFromDS - 1);
+            Cell cellValidado = rowTotal.createCell(totalFieldsFromDS - 2);
             cellValidado.setCellValue(asigGrupoCamposAnalisis.isCtrlCalConforme() ? "VALIDADO" : "OBSERVADO");
             cellValidado.setCellStyle(RimanalisisPoiHelper.createCellStyle(wb, RimanalisisPoiHelper.CellType.BODY_CELL_ANALISIS));
    
-            Cell cellErr = rowTotal.createCell(totalFieldsFromDS);
+            Cell cellErr = rowTotal.createCell(totalFieldsFromDS - 1);
             cellErr.setCellValue("% error promedio");
             cellErr.setCellStyle(RimanalisisPoiHelper.createCellStyle(wb, RimanalisisPoiHelper.CellType.FOOTER_CELL_TOTAL_TAG));
             
             // ► Dynamic-cell's ...
-            Cell cellPercentErr = rowTotal.createCell(totalFieldsFromDS + 1);
+            Cell cellPercentErr = rowTotal.createCell(totalFieldsFromDS);
             String cellLetterPercentErr = CellReference.convertNumToColString(cellPercentErr.getColumnIndex()),
                    formulaPercentErr = "IFERROR(ROUND(AVERAGE(".concat(cellLetterPercentErr)
                                                        .concat(String.valueOf(iRowAnalisis + 2))

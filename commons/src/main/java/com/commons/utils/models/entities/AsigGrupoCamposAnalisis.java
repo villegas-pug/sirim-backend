@@ -18,7 +18,9 @@ import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -48,7 +50,7 @@ public class AsigGrupoCamposAnalisis implements Serializable {
    
    @ManyToOne(fetch = FetchType.EAGER)
    @JoinColumn(name = "uIdUsrAnalista", nullable = false)
-   @JsonIgnoreProperties(value = { "usrProcedimiento" })
+   @JsonIgnoreProperties(value = { "usrProcedimiento", "foto" })
    private Usuario usrAnalista;
    
    @Builder.Default
@@ -67,12 +69,12 @@ public class AsigGrupoCamposAnalisis implements Serializable {
 
    @Temporal(TemporalType.TIMESTAMP)
    @Column(name = "dFechaAsignacion", length = 55, nullable = false)
+   @JsonFormat(shape = Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss", timezone = "America/Lima")
    private Date fechaAsignacion;
 
    @PrePersist
    private void prePersist(){
       this.ctrlCalConforme = false;
-      this.fechaAsignacion = new Date();
    }
 
    public void addProduccionAnalisis(ProduccionAnalisis prod){

@@ -37,7 +37,7 @@ public class RimasignacionController {
       // ► Dep's ...
       int rangeIni = asigGrupoCamposAnalisis.getRegAnalisisIni(),
           rangeFin = asigGrupoCamposAnalisis.getRegAnalisisFin();
-      
+          
       // ► Validación: Si no existe usuario ...
       if(asigGrupoCamposAnalisis.getUsrAnalista().getIdUsuario() == null)
          throw new RimasignacionWarningException(Messages.WARNING_USER_NOT_EXISTS);
@@ -48,32 +48,34 @@ public class RimasignacionController {
 
       // ► Repo dep's ...
       GrupoCamposAnalisisDto grupoAnalisis = this.rimasignacionService
-                                                         .findGrupoCamposAnalisisById(asigGrupoCamposAnalisis.getGrupo().getIdGrupo());
+                                                         .findGrupoCamposAnalisisById(asigGrupoCamposAnalisis.getGrupo()
+                                                         .getIdGrupo());
 
-      String nombreTabla = grupoAnalisis.getTablaDinamica().getNombre();
+      String nombreTabla = grupoAnalisis.getTablaDinamica()
+                                        .getNombre();
 
       int totalRegExtraccion = this.rimasignacionService.countTablaByNombre(nombreTabla).intValue();
       if(totalRegExtraccion == 0) throw new RimasignacionWarningException(Messages.WARNING_RECORDS_NOT_FOUND_TO_SEGMENT);
 
-      /*► Correlativo iniciado en 0 e incrementado en 1, a partir de un valor máximo ...  */
+      // ► Correlativo iniciado en 0 e incrementado en 1, a partir de un valor máximo ...
       String rangesAvailables = this.convertArrIntToStr(this.generateRangeNumbersToArr(totalRegExtraccion));
 
-      /*► Rangos asigandos en el grupo ... */
+      // ► Rangos asigandos en el grupo ...
       for (AsigGrupoCamposAnalisisDto asign : grupoAnalisis.getAsigGrupoCamposAnalisis()) {
 
-         /*► Rangos asignados ...  */
+         // ► Rangos asignados ...
          String rangoAsignedBefore = this.convertArrIntToStr(
                                                 this.generateRangeNumbersToArr(asign.getRegAnalisisIni(), asign.getRegAnalisisFin()));
 
-         /*► Reemplaza `Rangos asignados` en `rangeExtraccionStr` ... */
+         // ► Reemplaza `Rangos asignados` en `rangeExtraccionStr` ...
          rangesAvailables = rangesAvailables.replace(rangoAsignedBefore, "").replace(", ,", ",");
       }
 
-      /*► Validar: Si el rango enviado está disponible ... */
+      // ► Validar: Si el rango enviado está disponible ...
       String rangeAssigned = this.convertArrIntToStr(this.generateRangeNumbersToArr(rangeIni, rangeFin));
       boolean isAvailableRange = rangesAvailables.contains(rangeAssigned);
 
-      /*► Save: ... */
+      // ► Save: ...
       if (isAvailableRange) this.rimasignacionService.save(asigGrupoCamposAnalisis);
       else throw new RimasignacionWarningException(Messages.WARNING_ASIGN_REG_ANALISIS);
 

@@ -1,6 +1,7 @@
 package com.microservicio.rimcommon.services;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -245,7 +246,8 @@ public class RimcommonServiceImpl implements RimcommonService {
       if (unfinished) { // ► Asignaciones pendientes ...
          asigGrupoCamposAnalisisDb = asigGrupoCamposAnalisisDb
                                                 .stream()
-                                                .filter(RimcommonServiceImpl::isAsigUnfinished)
+                                                .filter(RimcommonServiceImpl::isAsigUnfinished)// Asignaciones `PENDIENTES` ...
+                                                .filter(asig -> asig.getFechaAsignacion().compareTo(new Date()) <= 0)// Asignaciones anteriores a la fecha de asignación ...
                                                 .collect(Collectors.toList());
 
             if (asigGrupoCamposAnalisisDb.size() == 0) throw new DataAccessEmptyWarning();

@@ -12,7 +12,7 @@ public class GrupoCamposAnalisisDto {
    @JsonIgnoreProperties(value = { "lstGrupoCamposAnalisis" }, allowSetters = true)
    private TablaDinamicaDto tablaDinamica;
 
-   @JsonIgnoreProperties(value = { "grupo" }, allowSetters = true)
+   @JsonIgnoreProperties(value = { "grupo", "produccionAnalisis" }, allowSetters = true)
    private List<AsigGrupoCamposAnalisisDto> asigGrupoCamposAnalisis;
 
    private String nombre;

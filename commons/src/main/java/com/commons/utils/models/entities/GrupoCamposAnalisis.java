@@ -44,7 +44,7 @@ public class GrupoCamposAnalisis implements Serializable {
    private TablaDinamica tablaDinamica;
 
    @OneToMany(mappedBy = "grupo", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-   @JsonIgnoreProperties(value = { "grupo" })
+   @JsonIgnoreProperties(value = { "grupo", "produccionAnalisis" })
    private @Builder.Default List<AsigGrupoCamposAnalisis> asigGrupoCamposAnalisis = new ArrayList<>();
 
    @Column(name = "sNombre", length = 100, nullable = false)

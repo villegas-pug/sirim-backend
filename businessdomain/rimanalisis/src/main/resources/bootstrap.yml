@@ -1,9 +1,6 @@
-eureka:
-  client:
-    service-url:
-      defaultZone: http://172.27.250.43:8761/eureka
-
 spring:
+  application:
+    name: microservicio-rimanalisis
   cloud:
     config:
       discovery:
@@ -17,3 +14,10 @@ spring:
       retry:
         max-attempts: 1
         max-interval: 1000
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://172.27.250.43:8761/eureka
+  instance:
+    instance-id: ${spring.application.name}:${random.uuid}
