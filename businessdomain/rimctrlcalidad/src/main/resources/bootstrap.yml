@@ -11,4 +11,4 @@ spring:
       password: Cd1526a2a8
       retry:
         max-attempts: 1
-        max-interval: 1000
+        max-interval: 1000  

@@ -190,6 +190,16 @@
          "projectName": "rrhh",
          "args": "",
          "envFile": "${workspaceFolder}/.env"
+      },
+      {
+         "type": "java",
+         "name": "Spring Boot-RimreglanegocioApplication<rimreglanegocio>",
+         "request": "launch",
+         "cwd": "${workspaceFolder}",
+         "mainClass": "com.microservicio.rimreglanegocio.RimreglanegocioApplication",
+         "projectName": "rimreglanegocio",
+         "args": "",
+         "envFile": "${workspaceFolder}/.env"
       }
    ]
 }

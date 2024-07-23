@@ -55,7 +55,7 @@
          <groupId>org.springframework.boot</groupId>
          <artifactId>spring-boot-starter-actuator</artifactId>
       </dependency>
-
+ 
       <!-- Handle Multipart/form-data -->
       <dependency>
          <groupId>org.apache.poi</groupId>
@@ -73,7 +73,7 @@
       <dependency>
          <groupId>org.springframework.cloud</groupId>
          <artifactId>spring-cloud-starter-openfeign</artifactId>
-     </dependency>
+      </dependency>
 
       <!-- Hystrix -->
       <!-- <dependency>
@@ -119,6 +119,7 @@
       <module>rimmantenimiento</module>
       <module>rimreportes</module>
       <module>rrhh</module>
+      <module>rimreglanegocio</module>
    </modules>
 
 </project>
