@@ -1,9 +1,11 @@
-package com.microservicio.rimreglanegocio.models.entities;
+package com.commons.utils.models.entities;
 
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -11,46 +13,40 @@ import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+
 @Entity
-@Table(name = "RimReglaNegocio")
+@Table(name = "RimRNRegistroEjecucionScript")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@EqualsAndHashCode(of = { "idRN" })
-public class ReglaNegocio {
+@EqualsAndHashCode(of = { "idRegistroEjecucion" })
+public class RNRegistroEjecucionScript {
 
    @Id
-   @Column(name = "sIdRN")
-   private String idRN;
-   
-   @Column(name = "sTablas", nullable = false)
-   private String tablas;
-   
-   @Column(name = "sCampos", nullable = false)
-   private String campos;
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
+   @Column(name = "nIdRegistroEjecucion", nullable = false)
+   private Long idRegistroEjecucion;
    
    @ManyToOne(fetch = FetchType.EAGER)
-   @JoinColumn(name = "nIdProceso", nullable = false)
-   private RNProceso proceso;
+   @JoinColumn(name = "nIdRNControlCambio", nullable = false)
+   private RNControlCambios controlCambio;
    
-   @ManyToOne(fetch = FetchType.EAGER)
-   @JoinColumn(name = "nIdDimensionRegla", nullable = false)
-   private RNDimension dimensionRegla;
+   @Column(name = "nResultado", nullable = false)
+   private Long resultado;
    
-   @ManyToOne(fetch = FetchType.EAGER)
-   @JoinColumn(name = "nIdStatusRegla", nullable = false)
-   private RNStatus statusRegla;
-   
-   @Column(name = "dFechaCreacion", nullable = false)
+   @Temporal(TemporalType.TIMESTAMP)
+   @Column(name = "dFechaEjecucion", nullable = false)
    @JsonFormat(shape = Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss", locale = "America/Lima")
-   private Date fechaCreacion;
+   private Date fechaEjecucion;
    
    @Column(name = "bActivo", nullable = false)
    private boolean activo;
@@ -58,7 +54,6 @@ public class ReglaNegocio {
    @PrePersist
    private void prePersist() {
       this.activo = true;
-      this.fechaCreacion = new Date();
    }
    
 }

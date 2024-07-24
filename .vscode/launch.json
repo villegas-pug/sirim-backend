@@ -9,7 +9,8 @@
          "mainClass": "com.server.eureka.EurekaApplication",
          "projectName": "eureka",
          "args": "",
-         "envFile": "${workspaceFolder}/.env"
+         "envFile": "${workspaceFolder}/.env",
+         "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=51515 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=eureka"
       },
       {
          "type": "java",
@@ -20,7 +21,8 @@
          "mainClass": "com.server.config.ConfigApplication",
          "projectName": "config",
          "args": "",
-         "envFile": "${workspaceFolder}/.env"
+         "envFile": "${workspaceFolder}/.env",
+         "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=51543 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=config"
       },
       {
          "type": "java",
@@ -31,7 +33,8 @@
          "mainClass": "com.microservicios.gateway.GatewayApplication",
          "projectName": "gateway",
          "args": "",
-         "envFile": "${workspaceFolder}/.env"
+         "envFile": "${workspaceFolder}/.env",
+         "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=51554 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=gateway"
       },
       {
          "type": "java",
@@ -42,7 +45,8 @@
          "mainClass": "com.microservicio.usuario.UsuarioApplication",
          "projectName": "usuario",
          "args": "",
-         "envFile": "${workspaceFolder}/.env"
+         "envFile": "${workspaceFolder}/.env",
+         "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=51584 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=usuario"
       },
       {
          "type": "java",
@@ -96,6 +100,27 @@
          "console": "internalConsole",
          "mainClass": "com.microservicio.dependencia.DependenciaApplication",
          "projectName": "dependencia",
+         "args": "",
+         "envFile": "${workspaceFolder}/.env"
+      },
+      {
+         "type": "java",
+         "name": "Spring Boot-RimreglanegocioApplication<rimreglanegocio>",
+         "request": "launch",
+         "cwd": "${workspaceFolder}",
+         "mainClass": "com.microservicio.rimreglanegocio.RimreglanegocioApplication",
+         "projectName": "rimreglanegocio",
+         "args": "",
+         "envFile": "${workspaceFolder}/.env",
+         "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=58227 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=rimreglanegocio"
+      },
+      {
+         "type": "java",
+         "name": "Spring Boot-RimreportesApplication<rimreportes>",
+         "request": "launch",
+         "cwd": "${workspaceFolder}",
+         "mainClass": "com.microservicio.rimreportes.RimreportesApplication",
+         "projectName": "rimreportes",
          "args": "",
          "envFile": "${workspaceFolder}/.env"
       }

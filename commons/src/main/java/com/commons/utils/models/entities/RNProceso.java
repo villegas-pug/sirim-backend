@@ -1,4 +1,4 @@
-package com.microservicio.rimreglanegocio.models.entities;
+package com.commons.utils.models.entities;
 
 import java.util.Date;
 import javax.persistence.Column;
@@ -10,7 +10,6 @@ import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -36,6 +35,18 @@ public class RNProceso {
    
    @Column(name = "sDescripcion", nullable = false)
    private String descripcion;
+
+   @Column(name = "nTotalRegCorrectos", nullable = false, columnDefinition = "BIGINT DEFAULT 0")
+   private Long totalRegCorrectos;
+   
+   @Column(name = "nTotalRegIncorrectos", nullable = false, columnDefinition = "BIGINT DEFAULT 0")
+   private Long totalRegIncorrectos; 
+   
+   @Column(name = "nTotalRegistros", nullable = false, columnDefinition = "BIGINT DEFAULT 0")
+   private Long totalRegistros; 
+   
+   @Column(name = "nTotalReglas", nullable = false, columnDefinition = "INT DEFAULT 0")
+   private int totalReglas;
    
    @Column(name = "bActivo", nullable = false)
    private @Builder.Default boolean activo = true;

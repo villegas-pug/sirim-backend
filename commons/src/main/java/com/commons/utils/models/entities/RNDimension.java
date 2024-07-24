@@ -1,15 +1,12 @@
-package com.microservicio.rimreglanegocio.models.entities;
+package com.commons.utils.models.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
-import com.microservicio.rimreglanegocio.models.enums.TipoScript;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,25 +15,24 @@ import lombok.NoArgsConstructor;
 
 
 @Entity
-@Table(name = "RimRNTipoScript")
+@Table(name = "RimRNDimension")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@EqualsAndHashCode(of = { "idTipoScript" })
-public class RNTipoScript {
+@EqualsAndHashCode(of = { "idDimension" })
+public class RNDimension {
 
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
-   @Column(name = "nIdTipoScript", nullable = false)
-   private int idTipoScript;
+   @Column(name = "nIdDimension")
+   private Long idDimension;
    
-   @Enumerated(EnumType.STRING)
-   @Column(name = "sDescripcion", nullable = false)
-   private TipoScript descripcion;
+   @Column(name = "sNombre", nullable = false)
+   private String nombre;
    
    @Column(name = "bActivo", nullable = false)
-   private boolean activo;
+   private @Builder.Default boolean activo = true;
 
    @PrePersist
    private void prePersist() {

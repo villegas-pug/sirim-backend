@@ -26,8 +26,8 @@ public class Procedimiento implements Serializable {
    @Column(name = "nIdProcedimiento")
    private Long idProcedimiento;
    
-   @Enumerated(value = EnumType.STRING)
-   @Column(name = "sTipo", length = 15, nullable = false)
+   @Enumerated(EnumType.STRING)
+   @Column(name = "sTipo", length = 25, nullable = false)
    private TipoProcedimiento tipo;
    
    @Column(name = "sNombre", length = 55, nullable = false, unique = true)
@@ -45,17 +45,11 @@ public class Procedimiento implements Serializable {
    @Column(name = "bActivo", nullable = false)
    private boolean activo;
    
-   @Column(name = "sRutaMod", length = 25, nullable = false)
-   private String rutaMod;
+   @Column(name = "sRutaPag", length = 55, nullable = false)
+   private String rutaPag;
    
-   @Column(name = "sRutaSubmod", length = 25)
-   private String rutaSubmod;
-
-   @Column(name = "sRefItem", length = 55)
-   private String refItem;
-   
-   @Column(name = "sDisposicion", length = 15)
-   private String disposicion;
+   @Column(name = "sRutaSubpag", length = 55)
+   private String rutaSubpag;
 
    @Column(name = "nSecuencia", nullable = true)
    private int secuencia;
@@ -69,7 +63,7 @@ public class Procedimiento implements Serializable {
    }
 
    public String getRutaPrincipal() {
-      this.setRutaPrincipal(this.getRutaMod().concat(this.getRutaSubmod()));
+      this.setRutaPrincipal(this.getRutaPag().concat(this.getRutaSubpag()));
       return this.rutaPrincipal;
    }
 

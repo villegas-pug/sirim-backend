@@ -1,4 +1,4 @@
-package com.microservicio.rimreglanegocio.models.entities;
+package com.commons.utils.models.entities;
 
 import java.util.Date;
 import javax.persistence.Column;
@@ -45,8 +45,8 @@ public class RNControlCambios {
    private String definicionRegla;
    
    @ManyToOne(fetch = FetchType.EAGER)
-   @JoinColumn(name = "nIdOperadorCreador", nullable = false)
-   private RNUsuario operadorCreador;
+   @JoinColumn(name = "uIdUsuarioCreador", nullable = false)
+   private Usuario usuarioCreador;
    
    @Temporal(TemporalType.TIMESTAMP)
    @JsonFormat(shape = Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss", locale = "America/Lima")
