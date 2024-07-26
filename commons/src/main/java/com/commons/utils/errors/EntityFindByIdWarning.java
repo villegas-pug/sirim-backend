@@ -8,7 +8,7 @@ public class EntityFindByIdWarning extends RuntimeException {
 
    public EntityFindByIdWarning(long id) {
       super(Messages.MESSAGE_WARNING_ENTITY_FIND_BY_ID(id));
-      System.setProperty(props.LEVELLOG, LevelLog.WARNING);
+      System.setProperty(props.LEVELLOG, MessageType.WARNING);
    }
 
 }

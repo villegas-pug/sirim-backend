@@ -7,6 +7,6 @@ public class DataAccessEmptyWarning extends RuntimeException {
 
    public DataAccessEmptyWarning() {
       super(Messages.MESSAGGE_WARNING_EMPTY());
-      System.setProperty("levelLog", LevelLog.WARNING);
+      System.setProperty("levelLog", MessageType.WARNING);
    }
 }

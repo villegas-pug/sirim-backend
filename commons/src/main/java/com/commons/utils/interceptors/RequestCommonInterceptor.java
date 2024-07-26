@@ -1,6 +1,6 @@
 package com.commons.utils.interceptors;
 
-import com.commons.utils.constants.LevelLog;
+import com.commons.utils.constants.MessageType;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -17,7 +17,7 @@ public class RequestCommonInterceptor implements HandlerInterceptor {
       /* System.setProperty("microservicio", microservicio); */
 
       /*-> Default... */
-      System.setProperty("levelLog", LevelLog.ERROR);
+      System.setProperty("levelLog", MessageType.ERROR);
       return true;
    }
 

@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import com.commons.utils.constants.LevelLog;
+import com.commons.utils.constants.MessageType;
 import com.commons.utils.constants.Messages;
 import com.commons.utils.controllers.CommonController;
 import com.commons.utils.errors.DataAccessEmptyWarning;
@@ -133,7 +133,7 @@ public class InterpolController extends CommonController<Interpol, InterpolServi
          return ResponseEntity.ok().body(
                                     Response
                                        .builder()
-                                       .levelLog(LevelLog.ERROR)
+                                       .messageType(MessageType.ERROR)
                                        .message(e.getMessage())
                                        .data(Arrays.asList())
                                        .build());

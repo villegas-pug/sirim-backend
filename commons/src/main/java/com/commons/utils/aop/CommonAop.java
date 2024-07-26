@@ -1,6 +1,6 @@
 package com.commons.utils.aop;
 
-import com.commons.utils.constants.LevelLog;
+import com.commons.utils.constants.MessageType;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Before;
 public class CommonAop {
@@ -16,6 +16,6 @@ public class CommonAop {
       String microservicio = rootPackage[2].toString();/* » com.microservicios.test.controllers.TestController */
       System.setProperty("microservicio", microservicio);
       System.setProperty("method", point.getSignature().getName());
-      System.setProperty("levelLog", LevelLog.ERROR);/* » Default level-log... */
+      System.setProperty("levelLog", MessageType.ERROR);/* » Default level-log... */
    }
 }

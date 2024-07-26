@@ -1,7 +1,7 @@
 package com.microservicio.rimextraccion.handlers;
 
 import java.util.List;
-import com.commons.utils.constants.LevelLog;
+import com.commons.utils.constants.MessageType;
 import com.commons.utils.handlers.CommonControllerAdv;
 import com.commons.utils.models.dto.TablaDinamicaDto;
 import com.commons.utils.utils.Response;
@@ -28,7 +28,7 @@ public class RimextraccionControllerAdv extends CommonControllerAdv {
 
       return Response
                .<List<TablaDinamicaDto>>builder()
-               .levelLog(System.getProperty(LevelLog.WARNING))
+               .messageType(System.getProperty(MessageType.WARNING))
                .message(e.getMessage())
                .data(tablaDinamicaDb)
                .build();

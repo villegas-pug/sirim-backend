@@ -11,7 +11,7 @@ public class UserNotFoundWarning extends RuntimeException {
 
    public UserNotFoundWarning(String login) {
       super(Messages.MESSAGE_WARNING_USER_NOTFOUND(login));
-      System.setProperty("levelLog", LevelLog.WARNING);
+      System.setProperty("levelLog", MessageType.WARNING);
    }
 
 }

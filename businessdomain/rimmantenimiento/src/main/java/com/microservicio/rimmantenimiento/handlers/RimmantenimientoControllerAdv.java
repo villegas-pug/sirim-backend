@@ -1,7 +1,7 @@
 package com.microservicio.rimmantenimiento.handlers;
 
 import java.util.List;
-import com.commons.utils.constants.LevelLog;
+import com.commons.utils.constants.MessageType;
 import com.commons.utils.constants.Messages;
 import com.commons.utils.handlers.CommonControllerAdv;
 import com.commons.utils.models.dto.TablaDinamicaDto;
@@ -26,7 +26,7 @@ public class RimmantenimientoControllerAdv extends CommonControllerAdv {
    public Response<List<TablaDinamicaDto>> test(Exception e){
       return Response
                   .<List<TablaDinamicaDto>>builder()
-                  .levelLog(LevelLog.WARNING)
+                  .messageType(MessageType.WARNING)
                   .message(Messages.MESSAGGE_ERROR_DATA_ACCESS)
                   .data(rimmantenimientoService.findAllTablaDinamica())
                   .build();
@@ -37,7 +37,7 @@ public class RimmantenimientoControllerAdv extends CommonControllerAdv {
    public Response<List<?>> rimeventoWarningException(Exception e){
       return Response
                .<List<?>>builder()
-               .levelLog(System.getProperty(LevelLog.WARNING))
+               .messageType(System.getProperty(MessageType.WARNING))
                .message(e.getMessage())
                .data(List.of())
                .build();

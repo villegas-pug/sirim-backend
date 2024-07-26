@@ -1,7 +1,7 @@
 package com.microservicio.rimasignacion.handlers;
 
 import java.util.List;
-import com.commons.utils.constants.LevelLog;
+import com.commons.utils.constants.MessageType;
 import com.commons.utils.handlers.CommonControllerAdv;
 import com.commons.utils.models.dto.TablaDinamicaDto;
 import com.commons.utils.utils.Response;
@@ -25,7 +25,7 @@ public class RimasignacionControllerAdv extends CommonControllerAdv {
 
       return Response
                   .<List<TablaDinamicaDto>>builder()
-                  .levelLog(LevelLog.WARNING)
+                  .messageType(MessageType.WARNING)
                   .message(e.getMessage())
                   .data(this.rimasignacionService.findAllTablaDinamica())
                   .build();

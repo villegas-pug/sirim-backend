@@ -2,7 +2,7 @@ package com.microservicio.rimanalisis.handlers;
 
 import java.util.List;
 
-import com.commons.utils.constants.LevelLog;
+import com.commons.utils.constants.MessageType;
 import com.commons.utils.handlers.CommonControllerAdv;
 import com.commons.utils.models.dto.TablaDinamicaDto;
 import com.commons.utils.utils.Response;
@@ -27,7 +27,7 @@ public class RimanalisisControllerAdv extends CommonControllerAdv {
 
       return Response
                   .<List<TablaDinamicaDto>>builder()
-                  .levelLog(LevelLog.WARNING)
+                  .messageType(MessageType.WARNING)
                   .message(e.getMessage())
                   .data(this.commonClientRest.findAllTablaDinamica().getData())
                   .build();

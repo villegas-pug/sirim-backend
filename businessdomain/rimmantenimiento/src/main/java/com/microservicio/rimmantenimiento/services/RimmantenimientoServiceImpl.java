@@ -3,9 +3,8 @@ package com.microservicio.rimmantenimiento.services;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Random;
-import com.commons.utils.constants.LevelLog;
+import com.commons.utils.constants.MessageType;
 import com.commons.utils.constants.Messages;
 import com.commons.utils.constants.RimHttpHeaders;
 import com.commons.utils.errors.DataAccessEmptyWarning;
@@ -23,7 +22,6 @@ import com.microservicio.rimmantenimiento.repositories.ConvenioRepository;
 import com.microservicio.rimmantenimiento.repositories.EventoRepository;
 import com.microservicio.rimmantenimiento.repositories.TipoLogicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -285,16 +283,14 @@ public class RimmantenimientoServiceImpl implements RimmantenimientoService {
                                              .get();
    
          String nombreAnexo = detConvenio.getNombreAnexo();
-         anexo = new ByteArrayResource(detConvenio.getAnexo());
          
-         headers.add(RimHttpHeaders.RESPONSE_STATUS, LevelLog.SUCCESS);
+         headers.add(RimHttpHeaders.RESPONSE_STATUS, MessageType.SUCCESS);
          headers.add(RimHttpHeaders.MESSAGE, Messages.MESSAGE_SUCCESS_DOWNLOAD);
          headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=\"".concat(nombreAnexo).concat("\""));
 
       } catch (Exception e) {
-
          headers.add(RimHttpHeaders.MESSAGE, e.getMessage());
-         headers.add(RimHttpHeaders.RESPONSE_STATUS, LevelLog.ERROR);
+         headers.add(RimHttpHeaders.RESPONSE_STATUS, MessageType.ERROR);
 
       }
       

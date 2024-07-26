@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import com.commons.utils.constants.LevelLog;
+import com.commons.utils.constants.MessageType;
 import com.commons.utils.constants.Messages;
 import com.commons.utils.constants.RimHttpHeaders;
 import com.commons.utils.models.dto.RecordsBetweenDatesDto;
@@ -69,7 +69,7 @@ public class RimanalisisController {
       HttpHeaders headers = new HttpHeaders();
       String contentDisposition = String.format("attachment; filename=\"%s_%s_%s.xlsx\"", fileName, usr.getNombres(), df.format(new Date()));
       headers.add(HttpHeaders.CONTENT_DISPOSITION, contentDisposition);
-      headers.add(RimHttpHeaders.RESPONSE_STATUS, LevelLog.SUCCESS);
+      headers.add(RimHttpHeaders.RESPONSE_STATUS, MessageType.SUCCESS);
       headers.add(RimHttpHeaders.MESSAGE, Messages.MESSAGE_SUCCESS_DOWNLOAD);
 
       byteArrResource = this.rimanalisisService.convertProduccionAnalisisToByteArrResource(recordsBetweenDatesDto);
@@ -100,7 +100,7 @@ public class RimanalisisController {
                                                                                              .concat(usrAnalista.getNombres())
                                                                                              .concat(".xlsx")));
 
-      headers.add(RimHttpHeaders.RESPONSE_STATUS, LevelLog.SUCCESS);
+      headers.add(RimHttpHeaders.RESPONSE_STATUS, MessageType.SUCCESS);
       headers.add(RimHttpHeaders.MESSAGE, Messages.MESSAGE_SUCCESS_DOWNLOAD);
 
       return ResponseEntity

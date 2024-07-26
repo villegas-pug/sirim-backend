@@ -5,19 +5,17 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import com.commons.utils.constants.LevelLog;
+import com.commons.utils.constants.MessageType;
 import com.commons.utils.constants.Messages;
 import com.commons.utils.constants.RimHttpHeaders;
 import com.commons.utils.models.entities.Usuario;
 import com.commons.utils.utils.Response;
-import com.microservicio.rrhh.models.dto.ControlPermisosDto;
 import com.microservicio.rrhh.models.entities.FormatoPermisos;
 import com.microservicio.rrhh.models.enums.AttachmentType;
 import com.microservicio.rrhh.models.enums.ValidateType;
 import com.microservicio.rrhh.services.RrhhService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -88,7 +86,7 @@ public class RrhhController {
 
       HttpHeaders headers = new HttpHeaders();
       headers.add(HttpHeaders.CONTENT_DISPOSITION, String.format(contentDisposition, servidor, dateFormat.format(fechaFormato)));
-      headers.add(RimHttpHeaders.RESPONSE_STATUS, LevelLog.SUCCESS);
+      headers.add(RimHttpHeaders.RESPONSE_STATUS, MessageType.SUCCESS);
       headers.add(RimHttpHeaders.MESSAGE, Messages.MESSAGE_SUCCESS_DOWNLOAD);
 
       return ResponseEntity
@@ -192,7 +190,7 @@ public class RrhhController {
 
       // » Dep's ...
        HttpHeaders headers = new HttpHeaders();
-       headers.add(RimHttpHeaders.RESPONSE_STATUS, LevelLog.SUCCESS);
+       headers.add(RimHttpHeaders.RESPONSE_STATUS, MessageType.SUCCESS);
        headers.add(RimHttpHeaders.MESSAGE, Messages.MESSAGE_SUCCESS_DOWNLOAD);
        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=".concat(type.name()).concat(".pdf"));
 

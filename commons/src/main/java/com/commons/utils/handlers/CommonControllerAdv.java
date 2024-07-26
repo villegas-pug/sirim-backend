@@ -2,7 +2,7 @@ package com.commons.utils.handlers;
 
 import java.util.List;
 
-import com.commons.utils.constants.LevelLog;
+import com.commons.utils.constants.MessageType;
 import com.commons.utils.constants.Messages;
 import com.commons.utils.constants.RimHttpHeaders;
 import com.commons.utils.errors.AsignWarning;
@@ -89,7 +89,7 @@ public class CommonControllerAdv extends ResponseEntityExceptionHandler {
    @ResponseStatus(value = HttpStatus.OK)
    public ResponseEntity<?> notFoundDownloadException(Exception e){
       HttpHeaders headers = new HttpHeaders();
-      headers.add(RimHttpHeaders.RESPONSE_STATUS, LevelLog.WARNING);
+      headers.add(RimHttpHeaders.RESPONSE_STATUS, MessageType.WARNING);
       headers.add(RimHttpHeaders.MESSAGE, Messages.MESSAGGE_WARNING_EMPTY);
             
       return ResponseEntity
