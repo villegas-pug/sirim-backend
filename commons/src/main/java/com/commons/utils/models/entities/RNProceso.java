@@ -8,6 +8,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 import lombok.AllArgsConstructor;
@@ -51,8 +54,9 @@ public class RNProceso {
    @Column(name = "bActivo", nullable = false)
    private @Builder.Default boolean activo = true;
    
+   @Temporal(TemporalType.TIMESTAMP)
    @Column(name = "dFechaCreacion", nullable = false)
-   @JsonFormat(shape = Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss", locale = "America/Lima")
+   @JsonFormat(shape = Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss", timezone = "America/Lima")
    private @Builder.Default Date fechaCreacion = new Date();
 
    @PrePersist

@@ -45,7 +45,7 @@ public class RNRegistroEjecucionScript {
    
    @Temporal(TemporalType.TIMESTAMP)
    @Column(name = "dFechaEjecucion", nullable = false)
-   @JsonFormat(shape = Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss", locale = "America/Lima")
+   @JsonFormat(shape = Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss", timezone = "America/Lima")
    private Date fechaEjecucion;
    
    @Column(name = "bActivo", nullable = false)
