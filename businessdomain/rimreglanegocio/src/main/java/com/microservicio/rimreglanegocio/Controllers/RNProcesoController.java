@@ -16,14 +16,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class RNProcesoController {
    
    @Autowired
-   private RNProcesoService rnProcesoService;
+   private RNProcesoService service;
 
    @GetMapping(path = { "/findAllRNProceso" })
    public Response<List<RNProceso>> findAllRNProceso() {
        return Response
                   .<List<RNProceso>>builder()
                   .message(Messages.MESSAGE_SUCCESS_LIST_ENTITY)
-                  .data(this.rnProcesoService.findAllRNProceso())
+                  .data(this.service.findAllRNProceso())
                   .build();
    }
 
