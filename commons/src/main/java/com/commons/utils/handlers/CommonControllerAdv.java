@@ -29,25 +29,15 @@ public class CommonControllerAdv extends ResponseEntityExceptionHandler {
 
    // #region: Internal Exceptión
    @Override
-   protected ResponseEntity<Object> handleExceptionInternal(
-         Exception ex, Object body, HttpHeaders headers,
-         HttpStatus status, WebRequest request) {
-      return new ResponseEntity<>(handleInternalResponseException(status, ex), status);
+   protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
+      return new ResponseEntity<>(handleResponse(Messages.MESSAGGE_ERROR_DATA_ACCESS(), MessageType.ERROR), status);
    }
 
    @Override
-   protected ResponseEntity<Object> handleHttpMessageNotReadable(
-            HttpMessageNotReadableException ex,
-            HttpHeaders headers, HttpStatus status, WebRequest request) {
-      return new ResponseEntity<>(handleInternalResponseException(status, ex), status);
+   protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+      return new ResponseEntity<>(handleResponse(Messages.MESSAGGE_ERROR_DATA_ACCESS(), MessageType.ERROR), status);
    }
 
-   private Response<Object> handleInternalResponseException(HttpStatus status, Exception ex) {
-      return LogAndResponse.handleLogAndResponse(
-                  Messages.MESSAGGE_ERROR_DATA_ACCESS(), 
-                  ex.getMessage(),
-                  status.getReasonPhrase());
-   }
    // #endregion
 
    // #region : Custom Exception
@@ -55,34 +45,31 @@ public class CommonControllerAdv extends ResponseEntityExceptionHandler {
    @ResponseStatus(HttpStatus.OK)
    @ExceptionHandler({ DataAccessEmptyWarning.class })
    public Response<Object> handlerNotFound(DataAccessEmptyWarning e) {
-      String msjResponse = e.getMessage();
-      return LogAndResponse.handleLogAndResponse(msjResponse, msjResponse, null);
+      return handleResponse(e.getMessage(), MessageType.WARNING);
    }
 
    @ResponseStatus(HttpStatus.OK)
    @ExceptionHandler({ EntityFindByIdWarning.class, UserNotFoundWarning.class })
    public Response<Object> handleDataAccessError(Exception e) {
-      String msjResponse = e.getMessage();
-      return LogAndResponse.handleLogAndResponse(msjResponse, msjResponse, null);
+      return handleResponse(e.getMessage(), MessageType.WARNING);
    }
 
    @ResponseStatus(HttpStatus.OK)
-   @ExceptionHandler({Exception.class, DataAccessException.class })
+   @ExceptionHandler({ Exception.class, DataAccessException.class })
    public Response<Object> handleDataAccessException(Exception e) {
-      String msjResponse = Messages.MESSAGGE_ERROR_DATA_ACCESS();
-      return LogAndResponse.handleLogAndResponse(msjResponse, e.getMessage(), e.toString());
+      return handleResponse(e.getMessage(), MessageType.WARNING);
    }
 
    @ResponseStatus(HttpStatus.OK)
    @ExceptionHandler({ FileSaveWarnning.class })
    public Response<Object> handleSaveException(Exception e){
-      return LogAndResponse.handleLogAndResponse(e.getMessage(), e.getMessage(), null);
+      return handleResponse(e.getMessage(), MessageType.WARNING);
    }
    
    @ResponseStatus(code = HttpStatus.OK)
    @ExceptionHandler({ CreateTableWarning.class, AsignWarning.class })
    public Response<Object> handleCreateTableException(Exception e){
-      return LogAndResponse.handleLogAndResponse(e.getMessage(), e.getMessage(), null);
+      return handleResponse(e.getMessage(), MessageType.WARNING);
    }
 
    @ExceptionHandler(value = { NotFoundDownloadException.class })
@@ -99,5 +86,14 @@ public class CommonControllerAdv extends ResponseEntityExceptionHandler {
    }
 
    // endregion
+
+   public Response<Object> handleResponse(String msjLog, String messageType) {
+      return Response
+               .builder()
+                  .messageType(messageType)
+                  .message(msjLog)
+                  .data(List.of())
+                  .build();
+   }
 
 }

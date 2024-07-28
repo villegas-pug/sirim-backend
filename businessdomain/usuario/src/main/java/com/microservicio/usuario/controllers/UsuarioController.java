@@ -94,10 +94,10 @@ public class UsuarioController {
       Usuario usuario = service.findByLogin(login).orElseThrow(() -> new UserNotFoundWarning(login));
 
       return Response
-            .<Usuario>builder()
-            .message(Messages.MESSAGE_SUCCESS_LIST_ENTITY)
-            .data(usuario)
-            .build();
+               .<Usuario>builder()
+               .message(Messages.MESSAGE_SUCCESS_LIST_ENTITY)
+               .data(usuario)
+               .build();
       }
 
    @GetMapping(path="/findByUserAuth/{userAuth}")
