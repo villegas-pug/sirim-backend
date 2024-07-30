@@ -20,12 +20,20 @@ public class ReglaNegocioServiceImpl implements ReglaNegocioService {
    @Override
    @Transactional(readOnly = true)
    public List<ReglaNegocio> findReglasNegocioByProceso(RNProceso proceso) {
+      if (proceso.getIdProceso() == null)
+         throw new DataAccessEmptyWarning();
       
       List<ReglaNegocio> reglaNegociosDb = this.repository.findByProceso(proceso);
       if (reglaNegociosDb.size() == 0)
          throw new DataAccessEmptyWarning();
 
       return reglaNegociosDb;
+   }
+
+   @Override
+   @Transactional
+   public Long createOneRegistroEjecucionScript(Long idRNControlCambio) {
+      return this.repository.createOneRegistroEjecucionScript(idRNControlCambio);
    }
    
 }

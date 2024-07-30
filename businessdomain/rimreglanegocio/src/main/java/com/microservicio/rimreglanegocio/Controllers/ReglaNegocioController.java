@@ -11,6 +11,7 @@ import com.microservicio.rimreglanegocio.services.ReglaNegocioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,12 +27,23 @@ public class ReglaNegocioController {
 
    @PostMapping(path = { "/findReglasNegocioByProceso" })
    public Response<List<ReglaNegocio>> findReglasNegocioByProceso(@RequestBody RNProceso proceso) {
-       return Response
-                  .<List<ReglaNegocio>>builder()
-                  .message(Messages.MESSAGE_SUCCESS_LIST_ENTITY)
-                  .data(this.service.findReglasNegocioByProceso(proceso))
-                  .build();
+      return Response
+            .<List<ReglaNegocio>>builder()
+            .message(Messages.MESSAGE_SUCCESS_LIST_ENTITY)
+            .data(this.service.findReglasNegocioByProceso(proceso))
+            .build();
    }
+   
+   @PostMapping(path = { "/createOneRegistroEjecucionScript/{idRNControlCambio}" })
+   public Response<?>createOneRegistroEjecucionScript(@PathVariable Long idRNControlCambio) {       
+      Long totalRegistros = this.service.createOneRegistroEjecucionScript(idRNControlCambio);
+      return Response
+               .builder()
+               .message(Messages.MESSAGE_SUCCESS_CREATE)
+               .data(totalRegistros)
+               .build();
+   }
+   
    
    
 
