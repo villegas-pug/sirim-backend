@@ -34,9 +34,9 @@ public class ReglaNegocioController {
             .build();
    }
    
-   @PostMapping(path = { "/createOneRegistroEjecucionScript/{idRNControlCambio}" })
-   public Response<?>createOneRegistroEjecucionScript(@PathVariable Long idRNControlCambio) {       
-      Long totalRegistros = this.service.createOneRegistroEjecucionScript(idRNControlCambio);
+   @PostMapping(path = { "/createOneRegistroEjecucionScript/{idProceso}/{idRNControlCambio}" })
+   public Response<?>createOneRegistroEjecucionScript(@PathVariable int idProceso, @PathVariable Long idRNControlCambio) {       
+      Long totalRegistros = this.service.createOneRegistroEjecucionScript(idProceso, idRNControlCambio);
       return Response
                .builder()
                .message(Messages.MESSAGE_SUCCESS_CREATE)

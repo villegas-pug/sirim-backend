@@ -71,6 +71,9 @@ public class RNControlCambios {
    
    @Column(name = "sScript", nullable = false, columnDefinition = "VARCHAR(5000)")
    private String script;
+
+   @Column(name = "jResultSet", columnDefinition = "TEXT NULL")
+   private String resultSet;
    
    @Column(name = "bActivo", nullable = false)
    private boolean activo;

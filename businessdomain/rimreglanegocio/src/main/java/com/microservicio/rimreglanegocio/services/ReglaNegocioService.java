@@ -8,6 +8,6 @@ import com.commons.utils.models.entities.ReglaNegocio;
 public interface ReglaNegocioService {
    
    List<ReglaNegocio> findReglasNegocioByProceso(RNProceso proceso);
-   Long createOneRegistroEjecucionScript(Long idRNControlCambio);
+   Long createOneRegistroEjecucionScript(int idProceso, Long idRNControlCambio);
 
 }

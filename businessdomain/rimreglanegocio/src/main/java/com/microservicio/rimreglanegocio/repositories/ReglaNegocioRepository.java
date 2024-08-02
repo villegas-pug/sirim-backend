@@ -13,7 +13,7 @@ public interface ReglaNegocioRepository extends JpaRepository<ReglaNegocio, Stri
 
    List<ReglaNegocio> findByProceso(RNProceso proceso);
 
-   @Query(value = "{CALL dbo.up_Rim_RN_InsertaRegistroEjecucionScript(?)}", nativeQuery = true)
-   Long createOneRegistroEjecucionScript(Long idRNControlCambio);
+   @Query(value = "{CALL dbo.up_Rim_RN_InsertaRegistroEjecucionScript(?, ?)}", nativeQuery = true)
+   Long createOneRegistroEjecucionScript(int idProceso, Long idRNControlCambio);
 
 }

@@ -32,8 +32,8 @@ public class ReglaNegocioServiceImpl implements ReglaNegocioService {
 
    @Override
    @Transactional
-   public Long createOneRegistroEjecucionScript(Long idRNControlCambio) {
-      return this.repository.createOneRegistroEjecucionScript(idRNControlCambio);
+   public Long createOneRegistroEjecucionScript(int idProceso, Long idRNControlCambio) {
+      return this.repository.createOneRegistroEjecucionScript(idProceso, idRNControlCambio);
    }
    
 }
