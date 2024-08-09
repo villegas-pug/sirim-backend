@@ -35,5 +35,15 @@ public class ReglaNegocioServiceImpl implements ReglaNegocioService {
    public Long createOneRegistroEjecucionScript(int idProceso, Long idRNControlCambio) {
       return this.repository.createOneRegistroEjecucionScript(idProceso, idRNControlCambio);
    }
+
+   @Override
+   @Transactional(readOnly = true)
+   public ReglaNegocio findReglaNegocioById(String idRN) {
+
+      ReglaNegocio reglaNegocio = this.repository.findById(idRN)
+                                                 .orElseThrow(() -> new DataAccessEmptyWarning());
+
+      return reglaNegocio;
+   }
    
 }

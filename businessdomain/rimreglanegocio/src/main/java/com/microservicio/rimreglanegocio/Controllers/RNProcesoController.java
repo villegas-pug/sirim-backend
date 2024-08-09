@@ -1,7 +1,6 @@
 package com.microservicio.rimreglanegocio.Controllers;
 
 import java.util.List;
-import com.commons.utils.constants.Messages;
 import com.commons.utils.models.entities.RNProceso;
 import com.commons.utils.utils.Response;
 import com.microservicio.rimreglanegocio.services.RNProcesoService;
@@ -22,7 +21,6 @@ public class RNProcesoController {
    public Response<List<RNProceso>> findAllRNProceso() {
        return Response
                   .<List<RNProceso>>builder()
-                  .message(Messages.MESSAGE_SUCCESS_LIST_ENTITY)
                   .data(this.service.findAllRNProceso())
                   .build();
    }

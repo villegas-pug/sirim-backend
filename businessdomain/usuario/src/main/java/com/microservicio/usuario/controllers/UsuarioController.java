@@ -95,7 +95,6 @@ public class UsuarioController {
 
       return Response
                .<Usuario>builder()
-               .message(Messages.MESSAGE_SUCCESS_LIST_ENTITY)
                .data(usuario)
                .build();
       }

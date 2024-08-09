@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 
@@ -29,19 +31,28 @@ public class ReglaNegocioController {
    public Response<List<ReglaNegocio>> findReglasNegocioByProceso(@RequestBody RNProceso proceso) {
       return Response
             .<List<ReglaNegocio>>builder()
-            .message(Messages.MESSAGE_SUCCESS_LIST_ENTITY)
             .data(this.service.findReglasNegocioByProceso(proceso))
             .build();
    }
    
    @PostMapping(path = { "/createOneRegistroEjecucionScript/{idProceso}/{idRNControlCambio}" })
-   public Response<?>createOneRegistroEjecucionScript(@PathVariable int idProceso, @PathVariable Long idRNControlCambio) {       
+   public Response<?> createOneRegistroEjecucionScript(@PathVariable int idProceso,
+         @PathVariable Long idRNControlCambio) {
       Long totalRegistros = this.service.createOneRegistroEjecucionScript(idProceso, idRNControlCambio);
       return Response
-               .builder()
-               .message(Messages.MESSAGE_SUCCESS_CREATE)
-               .data(totalRegistros)
-               .build();
+            .builder()
+            .message("Registro ejecución script creado exitosamente")
+            .data(totalRegistros)
+            .build();
+   }
+   
+   
+   @GetMapping(path = { "/findReglaNegocioById" })
+   public Response<?> findReglaNegocioById(@RequestParam String idRN) {
+       return Response
+                  .<ReglaNegocio>builder()
+                  .data(this.service.findReglaNegocioById(idRN))
+                  .build();
    }
    
    
